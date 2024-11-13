@@ -125,18 +125,22 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
     |>{\centering\arraybackslash}X|
   }
   \hline
-  \textbf{Logistica in entrata(LE)} & \textbf{Attività operative(AO)} & \textbf{Logistica in uscita(LU)} & \textbf{Marketing e vendita(MV)} & \textbf{Servizi post-vendita} \\ 
-  \hline
-  Row 1, Col 1 & Row 1, Col 2 & Row 1, Col 3 & Row 1, Col 4 & Row 1, Col 5 \\
-  \hline
+  \textbf{Logistica in entrata(LE)} & \textbf{Attività operative(AO)} & \textbf{Logistica in uscita(LU)} & \textbf{Marketing e vendita(MV)} & \textbf{Servizi post-vendita} \\ \hline
+  \begin{minipage}[t]{\textwidth}
+  
+  \begin{tabular}{>{\raggedright\arraybackslash}X}
+    LE1: pacchi in arrivo da uffici \\ \hline
+    LE2: pacchi in arrivo da clienti \\ \hline
+  \end{tabular} 
+  \end{minipage} &
+
+  \begin{tabular}{>{\raggedright\arraybackslash}X}
+    AO1: sistemazione pacchi in magazzino \\ \hline
+    AO2: catalogazione pacchi \\ \hline
+    AO3:  \\ \hline
+  \end{tabular} & 
+  col 3 & col 4 & col 5 \\ \hline
 \end{tabularx}
-
-
-
-
-
-
-
 
 \printindex
 \end{document}
