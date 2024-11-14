@@ -1,6 +1,6 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
-\usepackage{tabularx}
+\usepackage{multirow,tabularx}
 \usepackage{geometry}
  \geometry{
  a4paper,
@@ -20,13 +20,12 @@
 \addtolength{\topmargin}{-0.49998pt}
  
  \usepackage{fancyhdr}
- \pagestyle{fancy}
  \fancyhf{}
  \fancyfoot[R]{\includegraphics[width=1.5cm]{assets/logo.png}}
  \fancyhead[L]{OPCal}
  \fancyhead[R]{\theauthor}
 
-\begin{document}
+\begin{document}\pagestyle{fancy}
 
 \begin{titlepage}
     \centering
@@ -116,30 +115,61 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 \newpage
 \section{Analisi dei Requisiti}
 \subsection{Analisi dello scenario}
- 
-\begin{tabularx}{\textwidth}{
-    |>{\centering\arraybackslash}X
-    |>{\centering\arraybackslash}X
-    |>{\centering\arraybackslash}X
-    |>{\centering\arraybackslash}X
-    |>{\centering\arraybackslash}X|
-  }
+
+\newcolumntype{Y}{@{}>{\centering\arraybackslash}X}
+\newcolumntype{R}{@{}>{\raggedright\arraybackslash}X}
+
+\renewcommand{\arraystretch}{2}
+
+\begin{tabularx}{\textwidth}{|*{5}{Y|}}
   \hline
   \textbf{Logistica in entrata(LE)} & \textbf{Attività operative(AO)} & \textbf{Logistica in uscita(LU)} & \textbf{Marketing e vendita(MV)} & \textbf{Servizi post-vendita} \\ \hline
-  \begin{minipage}[t]{\textwidth}
   
-  \begin{tabular}{>{\raggedright\arraybackslash}X}
-    LE1: pacchi in arrivo da uffici \\ \hline
-    LE2: pacchi in arrivo da clienti \\ \hline
-  \end{tabular} 
-  \end{minipage} &
+  \begin{tabular}{R}
+    LE1: registrazione cliente \\ \hline
+    LE2: aggiornamento dati cliente \\ \hline
+    LE3: registrazione operazioni \\ \hline
+  \end{tabular} &
 
-  \begin{tabular}{>{\raggedright\arraybackslash}X}
-    AO1: sistemazione pacchi in magazzino \\ \hline
-    AO2: catalogazione pacchi \\ \hline
-    AO3:  \\ \hline
+  \begin{tabular}{R}
+    AO1: prenotazione spedizione \\ \hline
+    AO2: monitoraggio spedizione \\ \hline
+    AO3: modifica spedizione \\ \hline
+    AO4: supervisione prestazioni \\ \hline
   \end{tabular} & 
-  col 3 & col 4 & col 5 \\ \hline
+  
+  \begin{tabular}{R}
+    LU1: notifica spedizione \\ \hline
+  \end{tabular} & 
+
+  \begin{tabular}{R}
+    MV1: comunicazione promozioni \\ \hline
+  \end{tabular} & 
+
+  \begin{tabular}{R}
+    SPV1: gestione resi \\ 
+  \end{tabular} \\ 
+  \hline
+
+  \multicolumn{5}{|c|}{Approvvigionamenti(AP)} \\ 
+  \hline
+    \multicolumn{5}{|c|}{AP1:} \\ 
+    \multicolumn{5}{|c|}{AP2:} \\
+  \hline
+
+  \multicolumn{5}{|c|}{Gestione risorse umane(GRU)} \\ \hline
+    \multicolumn{5}{|c|}{GRU1:} \\
+    \multicolumn{5}{|c|}{GRU2:} \\
+  \hline
+
+  \multicolumn{5}{|c|}{Sviluppo tecnologie(ST)} \\ \hline
+    \multicolumn{5}{|c|}{ST1:} \\
+    \multicolumn{5}{|c|}{ST2:} \\
+  \hline
+  \multicolumn{5}{|c|}{Gestione infrastrutture(GI)} \\ \hline
+    \multicolumn{5}{|c|}{GI1:} \\
+    \multicolumn{5}{|c|}{GI2:} \\
+  \hline
 \end{tabularx}
 
 \printindex
