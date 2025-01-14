@@ -1,8 +1,23 @@
-\documentclass{article}
+\documentclass[a4paper,12pt]{article}
 \usepackage{silence}
-\usepackage[utf8]{inputenc}
+\usepackage[utf8]{inputenc} % Supporto per caratteri UTF-8
+\usepackage[T1]{fontenc} % Migliore codifica dei font
+\usepackage{lmodern} % Font leggibili
 \usepackage{multirow,tabularx}
 \usepackage{geometry}
+\usepackage{float} % La flag H nelle figure, 
+\usepackage{xcolor} % Per i colori
+\usepackage{hyperref} % Collegamenti ipertestuali
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	urlcolor=blue,
+	pdftitle={},
+	pdfauthor={},
+	pdfsubject={}
+}
+
 \geometry{
   a4paper,
   total={170mm,257mm},
@@ -11,9 +26,7 @@
 }
 \usepackage{graphicx}
 \usepackage{titling}
-\usepackage{cmbright}
-\usepackage{imakeidx}
-\makeindex
+%\usepackage{cmbright}
 
 \author{Umberto Frega, Leonardo Napoli}
 \setlength{\headheight}{12.49998pt}
@@ -48,7 +61,8 @@
 	\end{minipage}
 
 \end{titlepage}
-
+	\tableofcontents
+	\newpage
 \section{Introduzione}
 L'Organizzazione Postale Calabrese (OPCal) affiliato a Poste Italiane, con sede legale a Cosenza e filiale a Rende(CS), consiste in un Ufficio atto alla spedizione e ricezione di corrispondenze nonchè all'erogazione di servizi bancari, quali pagamenti di bollette o bonifici.
 \subsection{Sede}
@@ -116,7 +130,7 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 \section{Analisi dei Requisiti}
 \subsection{Analisi dello scenario}
 
-\centering
+\begin{center}
 \includegraphics[width=0.8\linewidth]{assets/valueChain.png}
 \vspace{1cm}
 
@@ -181,6 +195,34 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 	\multicolumn{5}{|c|}{GI1: manutenzione}                                                                                                                                                             \\
 	\hline
 \end{tabularx}
+\end{center}
 
-\printindex
+\subsubsection{Registrazione cliente}
+\textbf{Nome processo} (identificativo): registrazione cliente (LE1) \\
+\textbf{Attori coinvolti}: Cliente, Sportellista \\
+\textbf{Archivi coinvolti}: Lista degli utenti \\ 
+\textbf{Descrizione del processo}:  Un \textbf{cliente} può registrarsi presentandosi in sede e richiedendo l'apposito documento da compilare con: nome, cognome, data di nascita e residenza, dopo di ciò lo \textbf{sportellista} inserirà il documento all'interno della \underline{lista degli utenti} dove all'occorrenza inserirà anche i dati in merito alle sue spedizioni (vedi LE4: registrazioni spedizioni in entrata). Nel caso in cui il \textbf{cliente} volesse accedere ai suoi dati si deve recare in sede e richiederle allo \textbf{sportellista}, che attingerà alla \underline{lista degli utenti}, questi dati sono sempre aggiornati dagli \textbf{sportellisti} (vedi LE2: aggiornamento dati cliente). \\ \\
+\textbf{Processi correlati:}\\LE2,LE4.
+\\ \\
+\underline{Cosiderazioni dopo l'implementazione del nuovo sistema informativo}: \\ Queste operazioni saranno gestite in automatico tramite l'apposita piattaforma, senza che il cliente vada in sede e senza che lo sportellista lo inserisca manualmente nell'archivio.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE1.png}
+	\caption{Activity Diagram per LE1}
+\end{figure}
+
+
 \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
