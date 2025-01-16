@@ -1,0 +1,17 @@
+@startuml
+
+start
+
+:Operazione dipendente;
+if (Tipo di operazione?) then (Consegna corrispondenza)
+  :Portalettere consegna corrispondenza;\n:Destinatario firma ricevuta;
+  if (Portalettere ritorna in sede?) then (Sì)
+    :Aggiorna registro delle spedizioni;
+  endif
+else (Gestione magazzino)
+  :Magazziniere riceve o invia pacchi;\nAggiorna inventario;
+endif
+
+stop
+
+@enduml

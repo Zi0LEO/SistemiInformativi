@@ -137,7 +137,7 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 	\item \textbf{Interfaccia} \begin{itemize}
 		      \item Il sistema provvede un'interfaccia per utenti e dipendenti.
 		      \item Tale interfaccia avrà una duplice implementazione, un sito web e un applicativo per dispostivi mobili (Android o IOS).
-		      \item Le funzionalità esposte al pubblico saranno tutte disponibili tramite le interfacce specificate,
+		      \item Le funzionalità esposte al pubblico saranno tutte disponibili tramite le interfacce specificate.
 	      \end{itemize}
 \end{enumerate}
 
@@ -247,5 +247,45 @@ senza che il cliente vada in sede e senza che lo sportellista lo inserisca manua
   \includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE2.png}
 	\caption{Activity Diagram per LE2}
 \end{figure}
+
+\subsubsection{Registrazione operazione dipendenti}
+\textbf{Nome processo} (identificativo): Registrazione operazioni dipendenti (LE3) \\
+\textbf{Attori coinvolti}: Dipendenti \\
+\textbf{Archivi coinvolti}: Inventario, Registro delle spedizioni \\
+Quando un \textbf{portalettere} consegna una qualunque corrispondenza il destinatario deve firmare una ricevuta cartacea che attesta che una spedizione è contrassegnata come cosegnata, nel momento in cui il \textbf{portalettere} ritorna in sede dovrà aggiornare il \underline{registro delle spedizioni}, stessa cosa per \textbf{magazzinieri} che dopo aver ricevuto o mandato in spedizione dei pacchi all'interno del magazzino, dovranno premurarsi loro di aggiornare l'\underline{inventario}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE3.png}
+	\caption{Activity Diagram per LE3}
+\end{figure}
+
+
+\subsubsection{Registrazione spedizioni in entrata}
+\textbf{Nome processo} (identificativo): Registrazione spedizioni in entrata (LE4) \\
+\textbf{Attori coinvolti}: Magazziniere \\
+\textbf{Archivi coinvolti}: Inventario, registro spedizioni in entrata \\
+Alla consegna di una spedizione in entrata, il \textbf{magazziniere} che la riceve deve aggiornare l'\underline{inventario}, nello specifico dovrà registrare in quale scaffale è precisamente collocato (vedi A05: smistamento spedizioni).
+Il \textbf{magazziniere} dovà dopodichè aggioranare il \underline{registro delle spedizioni in entrata}, contrassegnando ciò che arriva come consegnato e con la data di consegna.\\
+\textbf{Processi correlati:}\\ AO5.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\linewidth]{assets/activitydiagram_LE4.png}
+	\caption{Activity Diagram per LE4}
+\end{figure}
+
+\subsubsection{Registrazione pagamento}
+\textbf{Nome processo} (identificativo): Registrazione pagamento (LE5) \\
+\textbf{Attori coinvolti}: Sportellista, Cliente  \\
+\textbf{Archivi coinvolti}: Libro contabile\\
+Nel momento in cui un \textbf{cliente} vuole spedire una corrispondenza essa avrà delle fasce di prezzo in relazione dalla dimensione del pacco da spedire e dalla distanza o dazi doganali, nel momento in cui un pagamento è ricevuto lo \textbf{sportellista} (tramite le procecdure descritte in MV1: incasso allo sportello e MV2: incasso con contrassegno) lo riporta all'interno del \underline{libro contabile}. \\
+\textbf{Processi correlati:} \\ MV1, MV2.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE5.png}
+	\caption{Activity Diagram per LE5}
+\end{figure}
+
 
 \end{document}
