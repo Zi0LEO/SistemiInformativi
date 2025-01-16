@@ -1,0 +1,22 @@
+@startuml
+|Sportellista|
+start
+if (Cambio di stato in LE4?) then (Sì)
+    :Aggiorna il registro spedizioni;
+endif
+stop
+
+|Magazziniere|
+start
+if (Cambio di stato in AO1 o AO5?) then (Sì)
+    :Aggiorna il registro spedizioni;
+endif
+stop
+
+|Portalettere|
+start
+if (Cambio di stato in LU2?) then (Sì)
+    :Aggiorna il registro spedizioni;
+endif
+stop
+@enduml

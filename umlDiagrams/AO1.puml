@@ -1,0 +1,22 @@
+@startuml
+|Magazziniere|
+start
+:Consulta il registro spedizioni;
+:Ordina le spedizioni per priorità;
+
+while (Ci sono spedizioni da gestire?) is (Sì)
+    :Consulta l'inventario per trovare l'articolo;
+    :Recupera l'articolo dal magazzino;
+    :Aggiorna lo stato dell'articolo a "spedito";
+    
+    |Corriere|
+    :Carica l'articolo sul furgone;
+    
+    |Magazziniere|
+    if (Furgone pieno?) then (Sì)
+        stop
+    endif
+endwhile (No)
+
+stop
+@enduml
