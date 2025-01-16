@@ -169,9 +169,7 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 		\hline
 		AO1: invio corrispondenza                   \\ \hline
 		AO2: monitoraggio spedizione                \\ \hline
-		AO3: modifica spedizione                    \\ \hline
-		AO4: supervisione prestazioni               \\ \hline
-		AO5: smistamento corrispondenza in arrivo   \\ \hline
+		AO3: smistamento corrispondenza in arrivo   \\ \hline
   \end{tabular} &
 
 	\begin{tabular}{R}
@@ -252,7 +250,7 @@ senza che il cliente vada in sede e senza che lo sportellista lo inserisca manua
 \textbf{Attori coinvolti}: Magazziniere, Corriere \\
 \textbf{Archivi coinvolti}: Registro spedizioni, inventario magazzino \\
 \textbf{Descrizione del processo}: A fine giornata, i \textbf{magazzinieri} consultano il \underline{registro spedizioni} per verificare la corrispondenza
-in attesa di essere inviata. A partire dalla spedizione con la priorità più alta, consultano l'\underline{inventario}, in cui è riportata la posizione dell'articolo
+in attesa di essere inviata. A partire dalla spedizione in attesa da più tempo, consultano l'\underline{inventario}, in cui è riportata la posizione dell'articolo
 all'interno del magazzino, e lo caricano sul furgone del \textbf{corriere}. Questo processo si ripete fino al riempimento del furgone. \\ \\
 \textbf{Processi correlati:}\\LE4\\ \\
 \begin{figure}[H]
@@ -273,5 +271,17 @@ nel caso dei processi AO1 o AO5 per i \textbf{magazzinieri} o LU2 per i \textbf{
   \centering
   \includegraphics[width=0.8\linewidth]{assets/activitydiagram_AO2.png}
 	\caption{Activity Diagram per AO2}
+\end{figure}
+
+\subsubsection{Smistamento corrispondenza}
+\textbf{Nome processo} (identificativo): Smistamento corrispondenza (AO3)\\
+\textbf{Attori coinvolti}: Corriere, Magazziniere \\
+\textbf{Archivi coinvolti}: Inventario \\
+\textbf{Descrizione del processo}: All'arrivo del corriere, i \textbf{magazzinieri} provvedono allo scarico della corrispondenza, al collocamento sugli scaffali ed
+all'aggiornamento dell'\underline{inventario}, con tanto di data di arrivo e destinazione.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{assets/activitydiagram_AO3.png}
+	\caption{Activity Diagram per AO3}
 \end{figure}
 \end{document}

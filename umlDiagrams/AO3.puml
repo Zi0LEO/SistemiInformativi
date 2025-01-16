@@ -1,0 +1,11 @@
+@startuml
+|Corriere|
+start
+:Arriva al magazzino;
+:Scarica la corrispondenza;
+
+|Magazziniere|
+:Colloca la corrispondenza sugli scaffali;
+:Aggiorna l'inventario;
+stop
+@enduml
