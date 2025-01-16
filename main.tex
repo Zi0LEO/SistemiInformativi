@@ -216,19 +216,36 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 \subsubsection{Registrazione cliente}
 \textbf{Nome processo} (identificativo): registrazione cliente (LE1) \\
 \textbf{Attori coinvolti}: Cliente, Sportellista \\
-\textbf{Archivi coinvolti}: Lista degli utenti \\ 
+\textbf{Archivi coinvolti}: Lista degli utenti, Registro operazioni \\ 
 \textbf{Descrizione del processo}:  Un \textbf{cliente} può registrarsi presentandosi in sede e richiedendo l'apposito documento da compilare con: 
 nome, cognome, data di nascita e residenza, dopo di ciò lo \textbf{sportellista} inserirà il documento all'interno della \underline{lista degli utenti} 
 dove all'occorrenza inserirà anche i dati in merito alle sue spedizioni (vedi LE4: registrazioni spedizioni in entrata). Nel caso in cui il \textbf{cliente} 
 volesse accedere ai suoi dati si deve recare in sede e richiederle allo \textbf{sportellista}, che attingerà alla \underline{lista degli utenti}, questi dati 
 sono sempre aggiornati dagli \textbf{sportellisti} (vedi LE2: aggiornamento dati cliente). \\ \\
-\textbf{Processi correlati:}\\LE2,LE4.\\ \newline
+\textbf{Processi correlati:}\\LE2,LE4.\\ \\
 \underline{Cosiderazioni dopo l'implementazione del nuovo sistema informativo}: \\ Queste operazioni saranno gestite in automatico tramite l'apposita piattaforma, 
 senza che il cliente vada in sede e senza che lo sportellista lo inserisca manualmente nell'archivio.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE1.png}
 	\caption{Activity Diagram per LE1}
+\end{figure}
+
+\subsubsection{Aggiornamento dati cliente}
+\textbf{Nome processo} (identificativo): Aggiornamento dati cliente (LE2) \\
+\textbf{Attori coinvolti}: Cliente, Sportellista \\
+\textbf{Archivi coinvolti}: Lista degli utenti \\ 
+\textbf{Descrizione del processo}:  Un \textbf{cliente} può accedere e modificare i propri dati presentandosi in sede provvisto di documento di identità.
+Lo \textbf{sportellista} inserirà l'operazione effettuata nel \underline{registro operazioni}.
+Se l'identità è verificata, lo \textbf{sportellista} accede alla \underline{lista utenti} e mostra i dati al \textbf{cliente}.
+Nel caso in cui il \textbf{cliente} voglia modificare i propri dati si procede come in LE1.\\ \\
+\textbf{Processi correlati:}\\LE1.\\ \\
+\underline{Cosiderazioni dopo l'implementazione del nuovo sistema informativo}: \\ Queste operazioni saranno gestite in automatico tramite l'apposita piattaforma, 
+senza che il cliente vada in sede e senza che lo sportellista lo inserisca manualmente nell'archivio.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE2.png}
+	\caption{Activity Diagram per LE2}
 \end{figure}
 
 \end{document}
