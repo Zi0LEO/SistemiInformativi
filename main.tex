@@ -167,12 +167,11 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 
 	\begin{tabular}{R}
 		\hline
-		AO1: prenotazione spedizione  \\ \hline
-		AO2: monitoraggio spedizione  \\ \hline
-		AO3: modifica spedizione      \\ \hline
-		AO4: supervisione prestazioni \\ \hline
-		AO5: smistamento spedizioni   \\ \hline
-		AO6: pagamento verso terzi    \\ \hline
+		AO1: invio corrispondenza                   \\ \hline
+		AO2: monitoraggio spedizione                \\ \hline
+		AO3: modifica spedizione                    \\ \hline
+		AO4: supervisione prestazioni               \\ \hline
+		AO5: smistamento corrispondenza in arrivo   \\ \hline
   \end{tabular} &
 
 	\begin{tabular}{R}
@@ -194,20 +193,20 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 		SPV1: gestione resi     \\ \hline
 		SPV2: gestione reclami  \\ \hline
 		SPV3: raccolta feedback \\ \hline
-	\end{tabular}                                                                                                                                                                    \\
+	\end{tabular} \\ 
 	\hline
 
-	\multicolumn{5}{|c|}{Approvvigionamenti (AP)}                                                                                                                                                       \\ \hline
-	\multicolumn{5}{|c|}{AP1: acquisto consumabili}                                                                                                                                                     \\
-	\multicolumn{5}{|c|}{AP2: acquisto nuova attrezzatura}                                                                                                                                              \\
+	\multicolumn{5}{|c|}{Approvvigionamenti (AP)}          \\ \hline
+	\multicolumn{5}{|c|}{AP1: acquisto consumabili}        \\
+	\multicolumn{5}{|c|}{AP2: acquisto nuova attrezzatura} \\
 	\hline
-	\multicolumn{5}{|c|}{Gestione risorse umane (GRU)}                                                                                                                                                  \\ \hline
-	\multicolumn{5}{|c|}{GRU1: gestione turni di lavoro}                                                                                                                                                \\
-	\multicolumn{5}{|c|}{GRU2: gestione buste paga}                                                                                                                                                     \\
-	\multicolumn{5}{|c|}{GRU3: valutazione dipendenti}                                                                                                                                                  \\
+	\multicolumn{5}{|c|}{Gestione risorse umane (GRU)}     \\ \hline
+	\multicolumn{5}{|c|}{GRU1: gestione turni di lavoro}   \\
+	\multicolumn{5}{|c|}{GRU2: gestione buste paga}        \\ 
+	\multicolumn{5}{|c|}{GRU3: valutazione dipendenti}     \\
 	\hline
-	\multicolumn{5}{|c|}{Gestione infrastrutture (GI)}                                                                                                                                                  \\ \hline
-	\multicolumn{5}{|c|}{GI1: manutenzione}                                                                                                                                                             \\
+	\multicolumn{5}{|c|}{Gestione infrastrutture (GI)}     \\ \hline
+	\multicolumn{5}{|c|}{GI1: manutenzione}                \\
 	\hline
 \end{tabularx}
 \end{center}
@@ -245,6 +244,20 @@ senza che il cliente vada in sede e senza che lo sportellista lo inserisca manua
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE2.png}
+	\caption{Activity Diagram per LE2}
+\end{figure}
+
+\subsubsection{Invio corrispondenza}
+\textbf{Nome processo} (identificativo): Invio corrispondenza (AO1) \\
+\textbf{Attori coinvolti}: Magazziniere, Corriere \\
+\textbf{Archivi coinvolti}: Registro spedizioni, inventario magazzino \\
+\textbf{Descrizione del processo}: A fine giornata, i \textbf{magazzinieri} consultano il \underline{registro spedizioni} per verificare la corrispondenza
+in attesa di essere inviata. A partire dalla spedizione con la priorità più alta, consultano l'\underline{inventario}, in cui è riportata la posizione dell'articolo
+all'interno del magazzino, e lo caricano sul furgone del \textbf{corriere}. Questo processo si ripete fino al riempimento del furgone. \\ \\
+\textbf{Processi correlati:}\\LE4\\ \\
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{assets/activitydiagram_AO1.png}
 	\caption{Activity Diagram per LE2}
 \end{figure}
 
