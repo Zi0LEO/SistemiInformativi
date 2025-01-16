@@ -219,15 +219,14 @@ nome, cognome, data di nascita e residenza, dopo di ciò lo \textbf{sportellista
 dove all'occorrenza inserirà anche i dati in merito alle sue spedizioni (vedi LE4: registrazioni spedizioni in entrata). Nel caso in cui il \textbf{cliente} 
 volesse accedere ai suoi dati si deve recare in sede e richiederle allo \textbf{sportellista}, che attingerà alla \underline{lista degli utenti}, questi dati 
 sono sempre aggiornati dagli \textbf{sportellisti} (vedi LE2: aggiornamento dati cliente). \\ \\
-\textbf{Processi correlati:}\\LE2,LE4.\\ \\
-\underline{Cosiderazioni dopo l'implementazione del nuovo sistema informativo}: \\ Queste operazioni saranno gestite in automatico tramite l'apposita piattaforma, 
-senza che il cliente vada in sede e senza che lo sportellista lo inserisca manualmente nell'archivio.
+\textbf{Processi correlati:}\\LE2,LE4.\\
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE1.png}
 	\caption{Activity Diagram per LE1}
 \end{figure}
 
+\newpage
 \subsubsection{Aggiornamento dati cliente}
 \textbf{Nome processo} (identificativo): Aggiornamento dati cliente (LE2) \\
 \textbf{Attori coinvolti}: Cliente, Sportellista \\
@@ -236,33 +235,37 @@ senza che il cliente vada in sede e senza che lo sportellista lo inserisca manua
 Lo \textbf{sportellista} inserirà l'operazione effettuata nel \underline{registro operazioni}.
 Se l'identità è verificata, lo \textbf{sportellista} accede alla \underline{lista utenti} e mostra i dati al \textbf{cliente}.
 Nel caso in cui il \textbf{cliente} voglia modificare i propri dati si procede come in LE1.\\ \\
-\textbf{Processi correlati:}\\LE1.\\ \\
-\underline{Cosiderazioni dopo l'implementazione del nuovo sistema informativo}: \\ Queste operazioni saranno gestite in automatico tramite l'apposita piattaforma, 
-senza che il cliente vada in sede e senza che lo sportellista lo inserisca manualmente nell'archivio.
+\textbf{Processi correlati:}\\LE1.\\
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE2.png}
 	\caption{Activity Diagram per LE2}
 \end{figure}
 
+\newpage
 \subsubsection{Registrazione operazione dipendenti}
 \textbf{Nome processo} (identificativo): Registrazione operazioni dipendenti (LE3) \\
 \textbf{Attori coinvolti}: Dipendenti \\
 \textbf{Archivi coinvolti}: Inventario, Registro delle spedizioni \\
-Quando un \textbf{portalettere} consegna una qualunque corrispondenza il destinatario deve firmare una ricevuta cartacea che attesta che una spedizione è contrassegnata come cosegnata, nel momento in cui il \textbf{portalettere} ritorna in sede dovrà aggiornare il \underline{registro delle spedizioni}, stessa cosa per \textbf{magazzinieri} che dopo aver ricevuto o mandato in spedizione dei pacchi all'interno del magazzino, dovranno premurarsi loro di aggiornare l'\underline{inventario}
+\textbf{Descrizione del processo}: Quando un \textbf{portalettere} consegna una qualunque corrispondenza il destinatario deve firmare una ricevuta 
+cartacea che attesta che una spedizione è contrassegnata come cosegnata, nel momento in cui il \textbf{portalettere} ritorna in sede dovrà aggiornare il 
+\underline{registro delle spedizioni}, stessa cosa per \textbf{magazzinieri} che dopo aver ricevuto o mandato in spedizione dei pacchi all'interno del
+magazzino, dovranno premurarsi loro di aggiornare l'\underline{inventario} \\ 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE3.png}
 	\caption{Activity Diagram per LE3}
 \end{figure}
 
+\newpage
 \subsubsection{Registrazione spedizioni in entrata}
 \textbf{Nome processo} (identificativo): Registrazione spedizioni in entrata (LE4) \\
 \textbf{Attori coinvolti}: Magazziniere \\
 \textbf{Archivi coinvolti}: Inventario, registro spedizioni in entrata \\
-Alla consegna di una spedizione in entrata, il \textbf{magazziniere} che la riceve deve aggiornare l'\underline{inventario}, nello specifico dovrà registrare in quale scaffale è precisamente collocato (vedi A05: smistamento spedizioni).
-Il \textbf{magazziniere} dovà dopodichè aggioranare il \underline{registro delle spedizioni in entrata}, contrassegnando ciò che arriva come consegnato e con la data di consegna.\\
-\textbf{Processi correlati:}\\ AO5.
+\textbf{Descrizione del processo}: Alla consegna di una spedizione in entrata, il \textbf{magazziniere} che la riceve deve aggiornare l'\underline{inventario}, 
+nello specifico dovrà registrare in quale scaffale è precisamente collocato (vedi A05: smistamento spedizioni). Il \textbf{magazziniere} dovrà dopodichè aggiornare 
+il \underline{registro delle spedizioni in entrata}, contrassegnando ciò che arriva come consegnato e con la data di consegna.\\ \\
+\textbf{Processi correlati:}\\ AO5. \\ 
 
 \begin{figure}[H]
 	\centering
@@ -270,12 +273,15 @@ Il \textbf{magazziniere} dovà dopodichè aggioranare il \underline{registro del
 	\caption{Activity Diagram per LE4}
 \end{figure}
 
+\newpage
 \subsubsection{Registrazione pagamento}
 \textbf{Nome processo} (identificativo): Registrazione pagamento (LE5) \\
 \textbf{Attori coinvolti}: Sportellista, Cliente  \\
 \textbf{Archivi coinvolti}: Libro contabile\\
-Nel momento in cui un \textbf{cliente} vuole spedire una corrispondenza essa avrà delle fasce di prezzo in relazione dalla dimensione del pacco da spedire e dalla distanza o dazi doganali, nel momento in cui un pagamento è ricevuto lo \textbf{sportellista} (tramite le procecdure descritte in MV1: incasso allo sportello e MV2: incasso con contrassegno) lo riporta all'interno del \underline{libro contabile}. \\
-\textbf{Processi correlati:} \\ MV1, MV2.
+\textbf{Descrizione del processo}: Nel momento in cui un \textbf{cliente} vuole spedire una corrispondenza essa avrà delle fasce di prezzo in relazione 
+dalla dimensione del pacco da spedire e dalla distanza o dazi doganali, nel momento in cui un pagamento è ricevuto lo \textbf{sportellista} 
+(tramite le procecdure descritte in MV1: incasso allo sportello e MV2: incasso con contrassegno) lo riporta all'interno del \underline{libro contabile}. \\ \\
+\textbf{Processi correlati:} \\ MV1, MV2. \\
 
 \begin{figure}[H]
 	\centering
@@ -283,6 +289,7 @@ Nel momento in cui un \textbf{cliente} vuole spedire una corrispondenza essa avr
 	\caption{Activity Diagram per LE5}
 \end{figure}
 
+\newpage
 \subsubsection{Invio corrispondenza}
 \textbf{Nome processo} (identificativo): Invio corrispondenza (AO1) \\
 \textbf{Attori coinvolti}: Magazziniere, Corriere \\
@@ -290,13 +297,14 @@ Nel momento in cui un \textbf{cliente} vuole spedire una corrispondenza essa avr
 \textbf{Descrizione del processo}: A fine giornata, i \textbf{magazzinieri} consultano il \underline{registro spedizioni} per verificare la corrispondenza
 in attesa di essere inviata. A partire dalla spedizione in attesa da più tempo, consultano l'\underline{inventario}, in cui è riportata la posizione dell'articolo
 all'interno del magazzino, e lo caricano sul furgone del \textbf{corriere}. Questo processo si ripete fino al riempimento del furgone. \\ \\
-\textbf{Processi correlati:}\\LE4\\ \\
+\textbf{Processi correlati:}\\LE4\\
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{assets/activitydiagram_AO1.png}
 	\caption{Activity Diagram per AO1}
 \end{figure}
 
+\newpage
 \subsubsection{Monitoraggio spedizioni}
 \textbf{Nome processo} (identificativo): Monitoraggio spedizioni (AO2)\\
 \textbf{Attori coinvolti}: Sportellista, Magazziniere, Portalettere \\
@@ -304,19 +312,20 @@ all'interno del magazzino, e lo caricano sul furgone del \textbf{corriere}. Ques
 \textbf{Descrizione del processo}: Ogni volta che lo stato della spedizione cambia, quindi nel caso del processo LE4 per lo \textbf{sportellista},
 nel caso dei processi AO1 o AO5 per i \textbf{magazzinieri} o LU2 per i \textbf{portalettere}, è necessario tenerne traccia nel 
 \underline{registro spedizioni}, spuntando sotto la voce segnata dello stato raggiunto tra le seguenti: Presa in carico, spedito, arrivato alla filiale, consegnato. \\ \\
-\textbf{Processi correlati:}\\LE4, AO1, AO5, LU2\\ \\
+\textbf{Processi correlati:}\\LE4, AO1, AO5, LU2\\
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{assets/activitydiagram_AO2.png}
 	\caption{Activity Diagram per AO2}
 \end{figure}
 
+\newpage
 \subsubsection{Smistamento corrispondenza}
 \textbf{Nome processo} (identificativo): Smistamento corrispondenza (AO3)\\
 \textbf{Attori coinvolti}: Corriere, Magazziniere \\
 \textbf{Archivi coinvolti}: Inventario \\
 \textbf{Descrizione del processo}: All'arrivo del corriere, i \textbf{magazzinieri} provvedono allo scarico della corrispondenza, al collocamento sugli scaffali ed
-all'aggiornamento dell'\underline{inventario}, con tanto di data di arrivo e destinazione.
+all'aggiornamento dell'\underline{inventario}, con tanto di data di arrivo e destinazione. \\
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{assets/activitydiagram_AO3.png}
