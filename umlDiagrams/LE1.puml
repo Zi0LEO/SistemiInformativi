@@ -1,0 +1,20 @@
+@startuml
+|Cliente|
+start
+:Si reca in sede per registrarsi;
+:Richiede il modulo di registrazione;
+
+|Sportellista|
+:Consegna il modulo di registrazione;
+
+|Cliente|
+:Compila il modulo con nome, cognome, data di nascita e residenza;
+
+|Sportellista|
+:Inserisce i dati nella lista degli utenti;
+if (Il cliente richiede spedizioni?) then (Sì)
+    :Aggiunge i dati sulle spedizioni [LE4];
+endif
+
+stop
+@enduml

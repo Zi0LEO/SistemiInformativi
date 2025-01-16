@@ -1,0 +1,23 @@
+@startuml
+|Cliente|
+start
+    :Si presenta in sede con documento;
+
+|Sportellista|
+    :Accede alla lista utenti;
+    :Verifica l'identità;
+
+if (Identità verificata?) then (Sì)
+    :Registra l'operazione nel registro operazioni;
+    :Mostra i dati al Cliente;
+    |Cliente|
+    if (Vuole modificare i dati?) then (Sì)
+        :Procedi con il processo LE1;
+    endif
+else (No)
+    |Sportellista|
+    :Informa il Cliente e interrompe il processo;
+endif
+
+stop
+@enduml
