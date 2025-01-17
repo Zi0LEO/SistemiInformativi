@@ -163,6 +163,7 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 		LE3: registrazione operazioni dipendenti \\ \hline
 		LE4: registrazione spedizioni in entrata \\ \hline
 		LE5: registrazione pagamento             \\ \hline
+    LE6: controllo magazzino                 \\ \hline
 	\end{tabular} &
 
 	\begin{tabular}{R}
@@ -170,6 +171,7 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 		AO1: invio corrispondenza                   \\ \hline
 		AO2: monitoraggio spedizione                \\ \hline
 		AO3: smistamento corrispondenza in arrivo   \\ \hline
+    AO4: selezione spedizioni in uscita         \\ \hline
   \end{tabular} &
 
 	\begin{tabular}{R}
@@ -177,6 +179,7 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 		LU1: notifica spedizione \\ \hline
 		LU2: consegna a cliente  \\ \hline
 		LU3: consegna ricevuta   \\ \hline
+    LU4: pagamento corriere  \\ \hline
 	\end{tabular} &
 
 	\begin{tabular}{R}
@@ -246,7 +249,7 @@ Nel caso in cui il \textbf{cliente} voglia modificare i propri dati si procede c
 \subsubsection{Registrazione operazione dipendenti}
 \textbf{Nome processo} (identificativo): Registrazione operazioni dipendenti (LE3) \\
 \textbf{Attori coinvolti}: Dipendenti \\
-\textbf{Archivi coinvolti}: Inventario, Registro delle spedizioni \\
+\textbf{Archivi coinvolti}: Registro operazioni dipendenti \\
 \textbf{Descrizione del processo}: Quando un \textbf{portalettere} consegna una qualunque corrispondenza il destinatario deve firmare una ricevuta 
 cartacea che attesta che una spedizione è contrassegnata come cosegnata, nel momento in cui il \textbf{portalettere} ritorna in sede dovrà aggiornare il 
 \underline{registro delle spedizioni}, stessa cosa per \textbf{magazzinieri} che dopo aver ricevuto o mandato in spedizione dei pacchi all'interno del
@@ -292,12 +295,19 @@ dalla dimensione del pacco da spedire e dalla distanza o dazi doganali, nel mome
 \newpage
 \subsubsection{Invio corrispondenza}
 \textbf{Nome processo} (identificativo): Invio corrispondenza (AO1) \\
-\textbf{Attori coinvolti}: Magazziniere, Corriere \\
-\textbf{Archivi coinvolti}: Registro spedizioni, inventario magazzino \\
-\textbf{Descrizione del processo}: A fine giornata, i \textbf{magazzinieri} consultano il \underline{registro spedizioni} per verificare la corrispondenza
-in attesa di essere inviata. A partire dalla spedizione in attesa da più tempo, consultano l'\underline{inventario}, in cui è riportata la posizione dell'articolo
-all'interno del magazzino, e lo caricano sul furgone del \textbf{corriere}. Questo processo si ripete fino al riempimento del furgone. \\ \\
-\textbf{Processi correlati:}\\LE4\\
+\textbf{Attori coinvolti}: Responsabile magazzino, Magazziniere, Corriere \\
+\textbf{Archivi coinvolti}: Registro spedizioni, Inventario, Rubrica corrieri, Lista spedizioni odierne, Registro corrispondenza in uscita \\
+\textbf{Descrizione del processo}: Quando notificato da LE6, il \textbf{responsabile magazzino} controlla nel \textit{registro spedizioni} il numero di articoli
+da spedire verso l'esterno. Sceglie un sottoinsieme di articoli (si veda AO4) e compila la \underline{lista spedizioni odierne}, 
+nella quale va ad inserire gli articoli da spedire in giornata. Una volta compilata la lista, consulta la \underline{rubrica corrieri} al fine
+di trovare quello più conveniente alle condizioni specifiche. Una volta effettuata una stima, inizia a contattare le sedi di corrieri, a partire dalla più 
+conveniente, fin quando trova un corriere disponibile in giornata, con il quale concorda un orario per il ritiro ed un prezzo.
+Una volta trovato l'accordo con il corriere, compila il documento da mandare al \textbf{direttore}, il quale provvederà al pagamento del \textbf{corriere} 
+e conserverà il documento nel \underline{registro corrispondenza in uscita}. Il direttore si occuperà inoltre di stampare la ricevuta di pagamento e 
+consegnarla ai \textbf{magazzinieri}.
+Ricevuta la \underline{lista spedizioni odierne} i \textbf{magazzinieri} consultano l'\underline{inventario}, in cui è riportata la posizione dell'articolo
+all'interno del magazzino, e lo mettono da parte, in attesa del \textbf{corriere}. All'arrivo di questo, caricano sul furgone gli articoli messi da parte. \\
+\textbf{Processi correlati:}\\AO4, LE6\\
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{assets/activitydiagram_AO1.png}
