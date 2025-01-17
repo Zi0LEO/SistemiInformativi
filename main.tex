@@ -302,18 +302,30 @@ da spedire verso l'esterno. Sceglie un sottoinsieme di articoli (si veda AO4) e 
 nella quale va ad inserire gli articoli da spedire in giornata. Una volta compilata la lista, consulta la \underline{rubrica corrieri} al fine
 di trovare quello più conveniente alle condizioni specifiche. Una volta effettuata una stima, inizia a contattare le sedi di corrieri, a partire dalla più 
 conveniente, fin quando trova un corriere disponibile in giornata, con il quale concorda un orario per il ritiro ed un prezzo.
-Una volta trovato l'accordo con il corriere, compila il documento da mandare al \textbf{direttore}, il quale provvederà al pagamento del \textbf{corriere} 
+Una volta trovato l'accordo con il corriere, compila il documento da mandare al \textbf{direttore}, il quale provvederà al pagamento del \textbf{corriere} (LU4)
 e conserverà il documento nel \underline{registro corrispondenza in uscita}. Il direttore si occuperà inoltre di stampare la ricevuta di pagamento e 
 consegnarla ai \textbf{magazzinieri}.
 Ricevuta la \underline{lista spedizioni odierne} i \textbf{magazzinieri} consultano l'\underline{inventario}, in cui è riportata la posizione dell'articolo
-all'interno del magazzino, e lo mettono da parte, in attesa del \textbf{corriere}. All'arrivo di questo, caricano sul furgone gli articoli messi da parte. \\
-\textbf{Processi correlati:}\\AO4, LE6\\
+all'interno del magazzino, e lo mettono da parte, in attesa del \textbf{corriere}. All'arrivo di questo, consegnano la ricevuta e caricano sul furgone gli articoli messi da parte. \\
+\textbf{Processi correlati:}\\AO4, LE6, LU4\\
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{assets/activitydiagram_AO1.png}
 	\caption{Activity Diagram per AO1}
 \end{figure}
 
+Si riporta di seguito il dfd di livello 0:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{assets/dfd_0_AO1.png}
+	\caption{DFD per AO1}
+\end{figure}
+Si riporta di seguito il dfd di livello 1:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{assets/dfd_1_AO1.png}
+	\caption{DFD livello 1 per AO1}
+\end{figure}
 \newpage
 \subsubsection{Monitoraggio spedizioni}
 \textbf{Nome processo} (identificativo): Monitoraggio spedizioni (AO2)\\

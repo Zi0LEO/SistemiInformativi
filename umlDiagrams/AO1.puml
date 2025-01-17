@@ -1,22 +1,44 @@
 @startuml
-|Magazziniere|
+
+|Responsabile Magazzino|
 start
-:Consulta il registro spedizioni;
-:Ordina le spedizioni per priorità;
+:Notifica ricevuta da LE6;
+:Controlla il registro spedizioni;
+:Seleziona gli articoli da spedire (AO4);
+:Compila la lista spedizioni odierne;
+:Consegna la lista spedizioni odierne ai magazzinieri;
 
-while (Ci sono spedizioni da gestire?) is (Sì)
-    :Consulta l'inventario per trovare l'articolo;
-    :Recupera l'articolo dal magazzino;
-    :Aggiorna lo stato dell'articolo a "spedito";
-    
-    |Corriere|
-    :Carica l'articolo sul furgone;
-    
-    |Magazziniere|
-    if (Furgone pieno?) then (Sì)
-        stop
-    endif
-endwhile (No)
+fork
+  :Consulta la rubrica corrieri;
+  while () is (Corriere non disponibile)
+    :Contatta il prossimo corriere;
+  endwhile(Corriere disponibile)
+  :Compila il documento di pagamento per il direttore;
+fork again
+  |Magazziniere|
+  :Consulta la lista spedizioni odierne;
+  :Recupera articoli dall'inventario e li mette da parte;
+end fork
 
+|Direttore|
+: Paga il corriere (LU4);
+: Stampa ricevuta di pagamento;
+: Consegna la ricevuta al magazzino;
+
+fork
+  |Direttore|
+  :Registra l'operazione;
+fork again
+  |Corriere|
+  :Arriva al magazzino all'orario concordato;
+  |Magazziniere|
+  :Consegna ricevuta di pagamento;
+  while () is (Ci sono articoli)
+    :Carica gli articoli sul furgone;
+  endwhile(Articoli terminati)
+  |Corriere|
+  :Parte con la spedizione;
+end fork
 stop
+
 @enduml
