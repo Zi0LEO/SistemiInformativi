@@ -1,20 +1,33 @@
 @startuml
+
 |Cliente|
 start
-:Si reca in sede per registrarsi;
+:Si reca fisicamente nella sede dell'ufficio;
 :Richiede il modulo di registrazione;
+:Compila il modulo con:\nnome, cognome, data di nascita,\ne indirizzo (Via, CAP, Città, Provincia);
+:Presenta un documento d'identità\n(carta d'identità o patente);
 
 |Sportellista|
-:Consegna il modulo di registrazione;
-
-|Cliente|
-:Compila il modulo con nome, cognome, data di nascita e residenza;
-
-|Sportellista|
-:Inserisce i dati nella lista degli utenti;
-if (Il cliente richiede spedizioni?) then (Sì)
-    :Aggiunge i dati sulle spedizioni [LE4];
+:Controlla la coerenza delle informazioni\nnel modulo rispetto al documento d'identità;
+if (Informazioni coerenti?) then (Sì)
+  :Inserisce il cliente nella lista degli utenti;
+  :Registra i dati relativi alle spedizioni\n(se presenti - vedi LE4);
+else (No)
+  :Comunica errore al cliente;
+  stop
 endif
 
+|Cliente|
+if (Vuole accedere ai propri dati?) then (Sì)
+  :Richiede l'accesso ai propri dati allo sportellista;
+  |Sportellista|
+  :Recupera i dati dalla lista degli utenti;
+  :Comunica i dati al cliente;
+else (No)
+endif
+
+|Sportellista|
+:Aggiorna i dati cliente se necessario\n(vedi LE2);
 stop
+
 @enduml

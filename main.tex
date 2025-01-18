@@ -214,77 +214,27 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 
 \newpage
 \subsubsection{Registrazione cliente}
-\textbf{Nome processo} (identificativo): registrazione cliente (LE1) \\
-\textbf{Attori coinvolti}: Cliente, Sportellista \\
-\textbf{Archivi coinvolti}: Lista degli utenti, Registro operazioni \\ 
-\textbf{Descrizione del processo}:  Un \textbf{cliente} può registrarsi presentandosi in sede e richiedendo l'apposito documento da compilare con: 
-nome, cognome, data di nascita e residenza, dopo di ciò lo \textbf{sportellista} inserirà il documento all'interno della \underline{lista degli utenti} 
-dove all'occorrenza inserirà anche i dati in merito alle sue spedizioni (vedi LE4: registrazioni spedizioni in entrata). Nel caso in cui il \textbf{cliente} 
-volesse accedere ai suoi dati si deve recare in sede e richiederle allo \textbf{sportellista}, che attingerà alla \underline{lista degli utenti}, questi dati 
-sono sempre aggiornati dagli \textbf{sportellisti} (vedi LE2: aggiornamento dati cliente). \\ \\
+\textbf{Nome processo} (identificativo): Registrazione cliente (LE1) \\
+\textbf{Attori coinvolti}: Cliente, Sportellista, Portalettere \\
+\textbf{Archivi coinvolti}: Lista clienti, Rubrica degli indirizzi\\ 
+\textbf{Descrizione del processo}:  Un \textbf{cliente} può registrarsi recandosi fisicamente nella sede dell'ufficio e richiedendo l'apposito modulo di registrazione, da compilare con: nome, cognome, data di nascita e indirizzo (nel formato Via, CAP, Città, Provincia) e presentando un documento d'identità come patente o carta d'identità. Dopo di ciò lo \textbf{sportellista} dovrà premurarsi di controllare la coerenza delle informazioni all'interno del modulo confrontate con quelle dell documento d'identità. Lo \textbf{sportellista} inserirà il documento all'interno della \underline{lista degli utenti} , dove all'occorrenza inserirà anche i dati in merito alle spedizioni del'\textbf{cliente}, (vedi LE4: registrazioni spedizioni in entrata) e all'interno della \underline{rubrica degli indirizzi} dove un \textbf{portalettere} (vedi LU:2 consegna a cliente) può attingere per avere informazioni sul cliente a cui deve consengare.  Nel caso in cui il \textbf{cliente} volesse accedere ai suoi dati si deve recare in sede e richiederli allo \textbf{sportellista}, che attingerà alla \underline{lista degli utenti}, i dati presenti nella \underline{lista degli utenti} sono costantemente aggiornati dagli \textbf{sportellisti} per garantire la loro correttezza e completezza. Questi aggiornamenti possono includere modifiche ai dati personali del cliente, come variazioni di indirizzo o recapiti (vedi LE2: aggiornamento dati cliente). \\
 \textbf{Processi correlati:}\\LE2,LE4.\\ \\
 \underline{Cosiderazioni dopo l'implementazione del nuovo sistema informativo}: \\ Queste operazioni saranno gestite in automatico tramite l'apposita piattaforma, 
 senza che il cliente vada in sede e senza che lo sportellista lo inserisca manualmente nell'archivio.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE1.png}
-	\caption{Activity Diagram per LE1}
+	\caption{Activity Diagram di LE1}
 \end{figure}
-
-\subsubsection{Aggiornamento dati cliente}
-\textbf{Nome processo} (identificativo): Aggiornamento dati cliente (LE2) \\
-\textbf{Attori coinvolti}: Cliente, Sportellista \\
-\textbf{Archivi coinvolti}: Lista degli utenti \\ 
-\textbf{Descrizione del processo}:  Un \textbf{cliente} può accedere e modificare i propri dati presentandosi in sede provvisto di documento di identità.
-Lo \textbf{sportellista} inserirà l'operazione effettuata nel \underline{registro operazioni}.
-Se l'identità è verificata, lo \textbf{sportellista} accede alla \underline{lista utenti} e mostra i dati al \textbf{cliente}.
-Nel caso in cui il \textbf{cliente} voglia modificare i propri dati si procede come in LE1.\\ \\
-\textbf{Processi correlati:}\\LE1.\\ \\
-\underline{Cosiderazioni dopo l'implementazione del nuovo sistema informativo}: \\ Queste operazioni saranno gestite in automatico tramite l'apposita piattaforma, 
-senza che il cliente vada in sede e senza che lo sportellista lo inserisca manualmente nell'archivio.
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE2.png}
-	\caption{Activity Diagram per LE2}
-\end{figure}
-
-\subsubsection{Registrazione operazione dipendenti}
-\textbf{Nome processo} (identificativo): Registrazione operazioni dipendenti (LE3) \\
-\textbf{Attori coinvolti}: Dipendenti \\
-\textbf{Archivi coinvolti}: Inventario, Registro delle spedizioni \\
-Quando un \textbf{portalettere} consegna una qualunque corrispondenza il destinatario deve firmare una ricevuta cartacea che attesta che una spedizione è contrassegnata come cosegnata, nel momento in cui il \textbf{portalettere} ritorna in sede dovrà aggiornare il \underline{registro delle spedizioni}, stessa cosa per \textbf{magazzinieri} che dopo aver ricevuto o mandato in spedizione dei pacchi all'interno del magazzino, dovranno premurarsi loro di aggiornare l'\underline{inventario}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE3.png}
-	\caption{Activity Diagram per LE3}
+	\includegraphics[width=0.7\linewidth]{assets/dataflow_lvl0_LE1.png}
+	\caption{Data Flow Diagram LVL 0 di LE1}
 \end{figure}
-
-
-\subsubsection{Registrazione spedizioni in entrata}
-\textbf{Nome processo} (identificativo): Registrazione spedizioni in entrata (LE4) \\
-\textbf{Attori coinvolti}: Magazziniere \\
-\textbf{Archivi coinvolti}: Inventario, registro spedizioni in entrata \\
-Alla consegna di una spedizione in entrata, il \textbf{magazziniere} che la riceve deve aggiornare l'\underline{inventario}, nello specifico dovrà registrare in quale scaffale è precisamente collocato (vedi A05: smistamento spedizioni).
-Il \textbf{magazziniere} dovà dopodichè aggioranare il \underline{registro delle spedizioni in entrata}, contrassegnando ciò che arriva come consegnato e con la data di consegna.\\
-\textbf{Processi correlati:}\\ AO5.
-
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.3\linewidth]{assets/activitydiagram_LE4.png}
-	\caption{Activity Diagram per LE4}
-\end{figure}
-
-\subsubsection{Registrazione pagamento}
-\textbf{Nome processo} (identificativo): Registrazione pagamento (LE5) \\
-\textbf{Attori coinvolti}: Sportellista, Cliente  \\
-\textbf{Archivi coinvolti}: Libro contabile\\
-Nel momento in cui un \textbf{cliente} vuole spedire una corrispondenza essa avrà delle fasce di prezzo in relazione dalla dimensione del pacco da spedire e dalla distanza o dazi doganali, nel momento in cui un pagamento è ricevuto lo \textbf{sportellista} (tramite le procecdure descritte in MV1: incasso allo sportello e MV2: incasso con contrassegno) lo riporta all'interno del \underline{libro contabile}. \\
-\textbf{Processi correlati:} \\ MV1, MV2.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE5.png}
-	\caption{Activity Diagram per LE5}
+	\includegraphics[width=0.7\linewidth]{assets/dataflow_lvl1_LE1.png}
+	\caption{Data Flow Diagram LVL 1 di LE1}
 \end{figure}
 
 
