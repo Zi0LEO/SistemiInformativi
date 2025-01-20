@@ -10,6 +10,7 @@
 \usepackage{float} % La flag H nelle figure, 
 \usepackage{xcolor} % Per i colori
 \usepackage{hyperref} % Collegamenti ipertestuali
+\usepackage{array} % vertical alignment
 
 \hypersetup{
   colorlinks=true,
@@ -217,16 +218,15 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 \textbf{Nome processo} (identificativo): Registrazione cliente (LE1) \\
 \textbf{Attori coinvolti}: Cliente, Sportellista, Portalettere \\
 \textbf{Archivi coinvolti}: Lista clienti, Rubrica degli indirizzi\\ 
-\textbf{Descrizione del processo}: Un \textbf{cliente} può registrarsi recandosi fisicamente nella sede dell'ufficio e richiedendo l'apposito modulo di registrazione, 
+\textbf{Descrizione processo}: Un \textbf{cliente} può registrarsi recandosi fisicamente nella sede dell'ufficio e richiedendo l'apposito modulo di registrazione, 
 da compilare con: nome, cognome, data di nascita e indirizzo (nel formato Via, CAP, Città, Provincia) e presentando un documento d'identità come patente o carta d'identità. 
 Dopo di ciò lo \textbf{sportellista} dovrà premurarsi di controllare la coerenza delle informazioni all'interno del modulo confrontate con quelle dell documento d'identità. 
-Lo \textbf{sportellista} inserirà il documento all'interno della \underline{lista degli utenti} , dove all'occorrenza inserirà anche i dati in merito alle spedizioni 
-del'\textbf{cliente}, (vedi LE4: registrazioni spedizioni in entrata) e all'interno della \underline{rubrica degli indirizzi} dove un \textbf{portalettere} 
-(vedi LU:2 consegna a cliente) può attingere per avere informazioni sul cliente a cui deve consengare.  Nel caso in cui il \textbf{cliente} volesse accedere ai 
+Lo \textbf{sportellista} inserirà il documento all'interno della \underline{lista degli utenti}, dove all'occorrenza inserirà anche i dati in merito alle spedizioni del \textbf{cliente}, (vedi LE4: registrazioni spedizioni in entrata) e all'interno della \underline{rubrica degli indirizzi} dove un \textbf{portalettere} 
+(vedi LU2: consegna a cliente) può attingere per avere informazioni sul cliente a cui deve consengare.  Nel caso in cui il \textbf{cliente} volesse accedere ai 
 suoi dati si deve recare in sede e richiederli allo \textbf{sportellista}, che attingerà alla \underline{lista degli utenti}, i dati presenti nella 
 \underline{lista degli utenti} sono costantemente aggiornati dagli \textbf{sportellisti} per garantire la loro correttezza e completezza. 
 Questi aggiornamenti possono includere modifiche ai dati personali del cliente, come variazioni di indirizzo o recapiti (vedi LE2: aggiornamento dati cliente). \\
-\textbf{Processi correlati:}\\LE2,LE4.\\ \\
+\textbf{Processi correlati:}\\LE2,LE4, LU2.\\ \\
 \underline{Cosiderazioni dopo l'implementazione del nuovo sistema informativo}: \\ Queste operazioni saranno gestite in automatico tramite l'apposita piattaforma, 
 senza che il cliente vada in sede e senza che lo sportellista lo inserisca manualmente nell'archivio.
 \begin{figure}[H]
@@ -249,14 +249,14 @@ senza che il cliente vada in sede e senza che lo sportellista lo inserisca manua
 \subsubsection{Invio corrispondenza}
 \textbf{Nome processo} (identificativo): Invio corrispondenza (AO1) \\
 \textbf{Attori coinvolti}: Responsabile magazzino, Magazziniere, Corriere \\
-\textbf{Archivi coinvolti}: Registro spedizioni, Inventario, Rubrica corrieri, Lista spedizioni odierne, Registro corrispondenza in uscita \\
-\textbf{Descrizione del processo}: Quando notificato da LE6, il \textbf{responsabile magazzino} controlla nel \textit{registro spedizioni} il numero di articoli
+\textbf{Archivi coinvolti}: Registro spedizioni, Inventario, Rubrica corrieri, Lista spedizioni odierne, Registro pagamenti \\
+\textbf{Descrizione del processo}: Quando notificato da LE6, il \textbf{responsabile magazzino} controlla nel \underline{registro spedizioni} il numero di articoli
 da spedire verso l'esterno. Sceglie un sottoinsieme di articoli (si veda AO4) e compila la \underline{lista spedizioni odierne}, 
 nella quale va ad inserire gli articoli da spedire in giornata. Una volta compilata la lista, consulta la \underline{rubrica corrieri} al fine
 di trovare quello più conveniente alle condizioni specifiche. Una volta effettuata una stima, inizia a contattare le sedi di corrieri, a partire dalla più 
 conveniente, fin quando trova un corriere disponibile in giornata, con il quale concorda un orario per il ritiro ed un prezzo.
 Una volta trovato l'accordo con il corriere, compila il documento da mandare al \textbf{direttore}, il quale provvederà al pagamento del \textbf{corriere} (LU4)
-e conserverà il documento nel \underline{registro corrispondenza in uscita}. Il direttore si occuperà inoltre di stampare la ricevuta di pagamento e 
+e conserverà il documento nel \underline{registro pagamenti}. Il direttore si occuperà inoltre di stampare la ricevuta di pagamento e 
 consegnarla ai \textbf{magazzinieri}.
 Ricevuta la \underline{lista spedizioni odierne} i \textbf{magazzinieri} consultano l'\underline{inventario}, in cui è riportata la posizione dell'articolo
 all'interno del magazzino, e lo mettono da parte, in attesa del \textbf{corriere}. All'arrivo di questo, consegnano la ricevuta e caricano sul furgone gli articoli messi da parte. \\
@@ -279,5 +279,69 @@ Si riporta di seguito il dfd di livello 1:
   \includegraphics[width=0.8\linewidth]{assets/dfd_1_AO1.png}
   \caption{DFD livello 1 per AO1}
 \end{figure}
+
+\subsubsection{Attori e archivi}
+\begin{table}[H]
+  \centering
+  \newcolumntype{Y}{>{\centering\arraybackslash}m{\dimexpr\linewidth/4-2\tabcolsep - 5\arrayrulewidth}}
+  \begin{tabularx}{\dimexpr\textwidth-15\arrayrulewidth}{|*{4}{Y|}} %non so perchè ma vuole proprio 15
+    \hline
+    \textbf{Attore} & \textbf{Descrizione} & \textbf{Processi in cui è coinvolto} & \textbf{Archivi a cui accede} \\ 
+    \hline
+    Cliente & Uno degli utenti dell'OPCAL & - LE1 & \\ 
+    \hline 
+    Sportellista & Uno dei dipendenti che lavora nella sezione sportello & -LE1 & \begin{itemize} \item Lista utenti 
+    	\item Rubrica degli indirizzi \end{itemize} \\ 
+      \hline 
+    Portalettere & Uno dei dipendenti che lavora nella sezione corrispondenze & -LE1 & $\bullet$ Rubrica degli indirizzi \\ 
+    \hline
+    Responsabile magazzino & Il dipendente a capo del magazzino & -AO1 &
+    \begin{itemize}
+      \item{Registro spedizioni}
+      \item{Lista spedizioni odierne}
+      \item{Rubrica corrieri}
+    \end{itemize} \\
+    \hline
+    Direttore & Il responsabile generale, si occupa principalmente di contabilità & -AO1 &
+    \begin{itemize}
+      \item{Registro pagamenti}
+    \end{itemize} \\
+    \hline
+    Magazziniere & Uno dei dipendenti addetto alla sezione magazzino & -AO1 &
+    \begin{itemize}
+      \item{Lista spedizioni odierne}
+      \item{Inventario}
+    \end{itemize} \\
+    \hline
+    Corriere & Un ente esterno che si occupa di gestire la corrispondenza verso zone non sotto la competenza di OPCal & -AO1 & \\
+    \hline
+  \end{tabularx}
+\end{table}
+
+\begin{table}
+  \centering
+  \newcolumntype{Y}{>{\centering\arraybackslash}m{\dimexpr\linewidth/4-2\tabcolsep - 5\arrayrulewidth}}
+
+  \begin{tabularx}{\dimexpr\textwidth-15\arrayrulewidth}{|*{4}{Y|}} %non so perchè ma vuole proprio 15
+    \hline
+    \textbf{Archivio} & \textbf{Descrizione} & \textbf{Processi in cui è coinvolto} & \textbf{Attori che vi accedono} \\ \hline
+    Lista degli utenti & Archivio in cui sono scritte le informazioni su ogni utente, quali nome, cognome, codice fiscale, e-mail & -LE1 & $\bullet$ Sportellista \\ 
+    \hline 
+    Rubrica degli indirizzi & Archivio in cui sono scritte informazioni sugli utenti specifiche per i portalettere, queste sono nome, cognome, numero di telefono,
+    indirizzo & -LE1 & $\bullet$ Portalettere \\ 
+    \hline
+    Registro spedizioni & Archivio in cui sono conservate le informazioni delle spedizioni accettate & -AO1 &
+    \begin{itemize}
+      \item{Sportellista}
+      \item{Responsabile magazzino}
+    \end{itemize} \\
+    \hline
+    Inventario & Archivio che testimonia lo stato del magazzino, conservando informazioni sugli articoli in esso presenti & -AO1 &
+    \begin{itemize}
+      \item{Magazziniere}
+    \end{itemize} \\
+    \hline
+  \end{tabularx}
+\end{table}
 
 \end{document}
