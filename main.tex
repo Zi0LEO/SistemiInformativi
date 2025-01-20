@@ -217,7 +217,7 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 \textbf{Nome processo} (identificativo): Registrazione cliente (LE1) \\
 \textbf{Attori coinvolti}: Cliente, Sportellista, Portalettere \\
 \textbf{Archivi coinvolti}: Lista clienti, Rubrica degli indirizzi\\ 
-\textbf{Descrizione del processo}: Un \textbf{cliente} può registrarsi recandosi fisicamente nella sede dell'ufficio e richiedendo l'apposito modulo di registrazione, 
+\textbf{Descrizione processo}: Un \textbf{cliente} può registrarsi recandosi fisicamente nella sede dell'ufficio e richiedendo l'apposito modulo di registrazione, 
 da compilare con: nome, cognome, data di nascita e indirizzo (nel formato Via, CAP, Città, Provincia) e presentando un documento d'identità come patente o carta d'identità. 
 Dopo di ciò lo \textbf{sportellista} dovrà premurarsi di controllare la coerenza delle informazioni all'interno del modulo confrontate con quelle dell documento d'identità. 
 Lo \textbf{sportellista} inserirà il documento all'interno della \underline{lista degli utenti} , dove all'occorrenza inserirà anche i dati in merito alle spedizioni 
@@ -279,32 +279,21 @@ Si riporta di seguito il dfd di livello 1:
   \includegraphics[width=0.8\linewidth]{assets/dfd_1_AO1.png}
   \caption{DFD livello 1 per AO1}
 \end{figure}
-\newpage
-\subsubsection{Monitoraggio spedizioni}
-\textbf{Nome processo} (identificativo): Monitoraggio spedizioni (AO2)\\
-\textbf{Attori coinvolti}: Sportellista, Magazziniere, Portalettere \\
-\textbf{Archivi coinvolti}: Registro spedizioni \\
-\textbf{Descrizione del processo}: Ogni volta che lo stato della spedizione cambia, quindi nel caso del processo LE4 per lo \textbf{sportellista},
-nel caso dei processi AO1 o AO5 per i \textbf{magazzinieri} o LU2 per i \textbf{portalettere}, è necessario tenerne traccia nel 
-\underline{registro spedizioni}, spuntando sotto la voce segnata dello stato raggiunto tra le seguenti: Presa in carico, spedito, arrivato alla filiale, consegnato. \\ \\
-\textbf{Processi correlati:}\\LE4, AO1, AO5, LU2\\
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\linewidth]{assets/activitydiagram_AO2.png}
-  \caption{Activity Diagram per AO2}
-\end{figure}
 
-\newpage
-\subsubsection{Smistamento corrispondenza}
-\textbf{Nome processo} (identificativo): Smistamento corrispondenza (AO3)\\
-\textbf{Attori coinvolti}: Corriere, Magazziniere \\
-\textbf{Archivi coinvolti}: Inventario \\
-\textbf{Descrizione del processo}: All'arrivo del corriere, i \textbf{magazzinieri} provvedono allo scarico della corrispondenza, al collocamento sugli scaffali ed
-all'aggiornamento dell'\underline{inventario}, con tanto di data di arrivo e destinazione. \\
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\linewidth]{assets/activitydiagram_AO3.png}
-  \caption{Activity Diagram per AO3}
-\end{figure}
+\begin{center}
+  \newcolumntype{Y}{@{}>{\centering\arraybackslash}X @{}}
+  
+  \begin{tabularx}{\textwidth}{|*{4}{Y|}}
+    \hline
+    \textbf{Attore} & \textbf{Descrizione} & \textbf{Processi in cui è coinvolto} & \textbf{Archivi a cui accede} \\ \hline
+    %inserisci attori
+  \end{tabularx}
+  \\
+  \begin{tabularx}{\textwidth}{|*{4}{Y|}}
+    \hline
+    \textbf{Archivio} & \textbf{Descrizione} & \textbf{Processi in cui è coinvolto} & \textbf{Attori che vi accedono} \\ \hline
+    %inserisci archivi
+  \end{tabularx}
+\end{center}
 
 \end{document}
