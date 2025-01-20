@@ -12,12 +12,12 @@
 \usepackage{hyperref} % Collegamenti ipertestuali
 
 \hypersetup{
-	colorlinks=true,
-	linkcolor=blue,
-	urlcolor=blue,
-	pdftitle={},
-	pdfauthor={},
-	pdfsubject={}
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  pdftitle={},
+  pdfauthor={},
+  pdfsubject={}
 }
 
 \geometry{
@@ -44,27 +44,27 @@
 \begin{document}\pagestyle{fancy}
 
 \begin{titlepage}
-	\centering
-	{\Large \bfseries Progetto di MODULO 2: Laboratorio di Sistemi Informativi\par}
-	{\Large Anno Accademico 2024/2025 \par}
-	\vspace{1cm} % Adjust if necessary
-	\vfill
-	{\huge Sistema Informativo per l'Organizzazione Postale Calabrese\par}
-	\vfill
-	\noindent
-	\begin{minipage}[t]{0.5\textwidth}
-		\raggedright
-		Docente \\  prof. Francesco Parisi
-	\end{minipage}%
-	\hfill
-	\begin{minipage}[t]{0.4\textwidth}
-		\raggedleft
-		Studenti \\ Umberto Frega 239527 \\ Leonardo Napoli 234364
-	\end{minipage}
+  \centering
+  {\Large \bfseries Progetto di MODULO 2: Laboratorio di Sistemi Informativi\par}
+  {\Large Anno Accademico 2024/2025 \par}
+  \vspace{1cm} % Adjust if necessary
+  \vfill
+  {\huge Sistema Informativo per l'Organizzazione Postale Calabrese\par}
+  \vfill
+  \noindent
+  \begin{minipage}[t]{0.5\textwidth}
+    \raggedright
+    Docente \\  prof. Francesco Parisi
+  \end{minipage}%
+  \hfill
+  \begin{minipage}[t]{0.4\textwidth}
+    \raggedleft
+    Studenti \\ Umberto Frega 239527 \\ Leonardo Napoli 234364
+  \end{minipage}
 
 \end{titlepage}
-	\tableofcontents
-	\newpage
+\tableofcontents
+\newpage
 \section{Introduzione}
 L'Organizzazione Postale Calabrese (OPCal) affiliato a Poste Italiane, con sede legale a Cosenza e filiale a Rende(CS), 
 consiste in un Ufficio atto alla spedizione e ricezione di corrispondenze.
@@ -77,9 +77,9 @@ Il direttore dal 2020 è il sig.Lucio Dalla. L'ufficio è diviso in 3 sezioni, l
 dal sig.Francesco de Gregori, la sezione Magazzino con 2 dipendenti è gestita dal sig.Adriano Celentano e la sezione Recapiti 
 è gestita dal sig.Francesco Guccini con 2 dipendenti al suo seguito. In totale l'organizzazione ammonta a 11 dipendenti.
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.8\linewidth]{assets/organigramma.jpg}
-	\caption{Organigramma}
+  \centering
+  \includegraphics[width=0.8\linewidth]{assets/organigramma.jpg}
+  \caption{Organigramma}
 \end{figure}
 \subsection{Posizione nel Mercato}
 L'OPCal detiene ad oggi gran parte del palcoscenico postale cosentino, i competitor sono per la maggioranza servizi privati in rapida ascesa.
@@ -90,55 +90,55 @@ garantire una politica di serietà e velocità nel servizio e disponibilità del
 \subsection{Benefici Attesi}
 L'implementazione del sistema all'interno dell'organizzazione aziendale porterà diversi benefici, come:
 \begin{itemize}
-	\item Rinnovamento del sistema attuale;
-	\item Centralizzazione delle funzionalità;
-	\item Centralizzazione dei dati;
-	\item Rimozione della dipendenza da documenti cartacei;
-	\item Maggiore possibilità di estensione dell'organizzazione;
-	\item Semplificazione e deburocratizzazione della user experience;
-	\item Possibilità di avere un sistema pubblicitario più esteso ed efficiente tramite il sito web;
+  \item Rinnovamento del sistema attuale;
+  \item Centralizzazione delle funzionalità;
+  \item Centralizzazione dei dati;
+  \item Rimozione della dipendenza da documenti cartacei;
+  \item Maggiore possibilità di estensione dell'organizzazione;
+  \item Semplificazione e deburocratizzazione della user experience;
+  \item Possibilità di avere un sistema pubblicitario più esteso ed efficiente tramite il sito web;
 
 \end{itemize}
 \subsection{Funzionalità}
 Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 \begin{enumerate}
-	\item \textbf{Gestione dei Clienti} \begin{itemize}
-		      \item Il sistema avrà la funzionalità di mantenere, organizzare e visualizzare le informazioni riguardanti i clienti, 
-            quali \textit{spedizioni a carico}, \textit{saldo corrente} e \textit{pacchi in arrivo}.
-		      \item Ogni cliente avrà la possibilità di visualizzare i suoi dati, prenotarsi allo sportello e prenotare una spedizione 
-            tramite l'apposito sito web oppure l'applicativo per dispositivi mobile.
-		      \item L'utente potrà gestire il proprio saldo corrente e decidere come utilizzarlo.
-	      \end{itemize}
-	\item \textbf{Gestione dei Dipendenti} \begin{itemize}
-		      \item Il sistema terrà traccia dei vari dipendenti e delle operazioni che svolgono durante il giorno, nonchè dei loro 
-            turni e delle loro buste paga.
-		      \item Il responsabile di ciascun settore potrà visualizzare le prestazioni dei propri subordinati, allo scopo di 
-            ammonire e/o premiare i dipendenti meritevoli tramite un sistema di punti.
-		      \item Ogni dipendente potrà accedere alle informazioni riguardanti la propria busta paga e i turni che dovrà rispettare.
-	      \end{itemize}
-	\item \textbf{Gestione dei Recapiti} \begin{itemize}
-		      \item Il sistema terrà traccia dello stato delle spedizioni prenotate, in corso ed effettuate in una base di dati.
-		      \item La base di dati interagirà con l'interfaccia fornita ai dipendenti che si occuperanno di aggiornare lo stato 
-            delle spedizioni.
-		      \item Per ogni missiva presa in carico il sistema sarà responsabile di associarle un codice identificativo univoco a 
-            6 cifre che contraddistinguerà l'oggetto dall'inizio alla fine della sua lavorazione,
-	      \end{itemize}
-	\item \textbf{Gestione del Magazzino} \begin{itemize}
-		      \item Il magazzino interagirà con il sistema tramite una base di dati.
-		      \item La gestione del magazzino sarà strettamente legata alla gestione dei recapiti, in quanto il magazzino contiene 
-            le corrispondenze in entrata e in uscita.
-		      \item Sarà possibile gestire ogni missiva tramite il codice e trovarla facilmente nonchè catalogarla in base ai suoi dati.
-		      \item Per ogni oggetto nel magazzino sarà anche memorizzata la sua posizione negli scaffali.
-	      \end{itemize}
-	\item \textbf{Gestione Pagamenti} \begin{itemize}
-		      \item Il sistema avrà la funzione di monitoraggio dei pagamenti erso l'azienda OPCal.
-		      \item Il cliente potrà visualizzare lo stato dei propri pagamenti.
-	      \end{itemize}
-	\item \textbf{Interfaccia} \begin{itemize}
-		      \item Il sistema provvede un'interfaccia per utenti e dipendenti.
-		      \item Tale interfaccia avrà una duplice implementazione, un sito web e un applicativo per dispostivi mobili (Android o IOS).
-		      \item Le funzionalità esposte al pubblico saranno tutte disponibili tramite le interfacce specificate.
-	      \end{itemize}
+  \item \textbf{Gestione dei Clienti} \begin{itemize}
+      \item Il sistema avrà la funzionalità di mantenere, organizzare e visualizzare le informazioni riguardanti i clienti, 
+        quali \textit{spedizioni a carico}, \textit{saldo corrente} e \textit{pacchi in arrivo}.
+      \item Ogni cliente avrà la possibilità di visualizzare i suoi dati, prenotarsi allo sportello e prenotare una spedizione 
+        tramite l'apposito sito web oppure l'applicativo per dispositivi mobile.
+      \item L'utente potrà gestire il proprio saldo corrente e decidere come utilizzarlo.
+    \end{itemize}
+  \item \textbf{Gestione dei Dipendenti} \begin{itemize}
+      \item Il sistema terrà traccia dei vari dipendenti e delle operazioni che svolgono durante il giorno, nonchè dei loro 
+        turni e delle loro buste paga.
+      \item Il responsabile di ciascun settore potrà visualizzare le prestazioni dei propri subordinati, allo scopo di 
+        ammonire e/o premiare i dipendenti meritevoli tramite un sistema di punti.
+      \item Ogni dipendente potrà accedere alle informazioni riguardanti la propria busta paga e i turni che dovrà rispettare.
+    \end{itemize}
+  \item \textbf{Gestione dei Recapiti} \begin{itemize}
+      \item Il sistema terrà traccia dello stato delle spedizioni prenotate, in corso ed effettuate in una base di dati.
+      \item La base di dati interagirà con l'interfaccia fornita ai dipendenti che si occuperanno di aggiornare lo stato 
+        delle spedizioni.
+      \item Per ogni missiva presa in carico il sistema sarà responsabile di associarle un codice identificativo univoco a 
+        6 cifre che contraddistinguerà l'oggetto dall'inizio alla fine della sua lavorazione,
+    \end{itemize}
+  \item \textbf{Gestione del Magazzino} \begin{itemize}
+      \item Il magazzino interagirà con il sistema tramite una base di dati.
+      \item La gestione del magazzino sarà strettamente legata alla gestione dei recapiti, in quanto il magazzino contiene 
+        le corrispondenze in entrata e in uscita.
+      \item Sarà possibile gestire ogni missiva tramite il codice e trovarla facilmente nonchè catalogarla in base ai suoi dati.
+      \item Per ogni oggetto nel magazzino sarà anche memorizzata la sua posizione negli scaffali.
+    \end{itemize}
+  \item \textbf{Gestione Pagamenti} \begin{itemize}
+      \item Il sistema avrà la funzione di monitoraggio dei pagamenti erso l'azienda OPCal.
+      \item Il cliente potrà visualizzare lo stato dei propri pagamenti.
+    \end{itemize}
+  \item \textbf{Interfaccia} \begin{itemize}
+      \item Il sistema provvede un'interfaccia per utenti e dipendenti.
+      \item Tale interfaccia avrà una duplice implementazione, un sito web e un applicativo per dispostivi mobili (Android o IOS).
+      \item Le funzionalità esposte al pubblico saranno tutte disponibili tramite le interfacce specificate.
+    \end{itemize}
 \end{enumerate}
 
 \newpage
@@ -146,150 +146,103 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 \subsection{Analisi dello scenario}
 
 \begin{center}
-\includegraphics[width=0.8\linewidth]{assets/valueChain.png}
-\vspace{1cm}
+  \includegraphics[width=0.8\linewidth]{assets/valueChain.png}
+  \vspace{1cm}
 
-\newcolumntype{Y}{@{}>{\centering\arraybackslash}X @{}}
-\newcolumntype{R}{@{}>{\raggedright\arraybackslash}X @{}}
+  \newcolumntype{Y}{@{}>{\centering\arraybackslash}X @{}}
+  \newcolumntype{R}{@{}>{\raggedright\arraybackslash}X @{}}
 
-\begin{tabularx}{\textwidth}{|*{5}{Y|}}
-	\hline
-  \textbf{Logistica in entrata (LE)} & \textbf{Attività operative (AO)} & \textbf{Logistica in uscita (LU)} & \textbf{Marketing e vendita (MV)} & \textbf{Servizi post-vendita (SPV)} \\ \hline
+  \begin{tabularx}{\textwidth}{|*{5}{Y|}}
+    \hline
+    \textbf{Logistica in entrata (LE)} & \textbf{Attività operative (AO)} & \textbf{Logistica in uscita (LU)} & \textbf{Marketing e vendita (MV)} & \textbf{Servizi post-vendita (SPV)} \\ \hline
 
-	\begin{tabular}{R}
-		\hline
-		LE1: registrazione cliente               \\ \hline
-		LE2: aggiornamento dati cliente          \\ \hline
-		LE3: registrazione operazioni dipendenti \\ \hline
-		LE4: registrazione spedizioni in entrata \\ \hline
-		LE5: registrazione pagamento             \\ \hline
-    LE6: controllo magazzino                 \\ \hline
-	\end{tabular} &
+    \begin{tabular}{R}
+      \hline
+      LE1: registrazione cliente               \\ \hline
+      LE2: aggiornamento dati cliente          \\ \hline
+      LE3: registrazione operazioni dipendenti \\ \hline
+      LE4: registrazione spedizioni in entrata \\ \hline
+      LE5: registrazione pagamento             \\ \hline
+      LE6: controllo magazzino                 \\ \hline
+    \end{tabular} &
 
-	\begin{tabular}{R}
-		\hline
-		AO1: invio corrispondenza                   \\ \hline
-		AO2: monitoraggio spedizione                \\ \hline
-		AO3: smistamento corrispondenza in arrivo   \\ \hline
-    AO4: selezione spedizioni in uscita         \\ \hline
-  \end{tabular} &
+    \begin{tabular}{R}
+      \hline
+      AO1: invio corrispondenza                   \\ \hline
+      AO2: monitoraggio spedizione                \\ \hline
+      AO3: smistamento corrispondenza in arrivo   \\ \hline
+      AO4: selezione spedizioni in uscita         \\ \hline
+    \end{tabular} &
 
-	\begin{tabular}{R}
-		\hline
-		LU1: notifica spedizione \\ \hline
-		LU2: consegna a cliente  \\ \hline
-		LU3: consegna ricevuta   \\ \hline
-    LU4: pagamento corriere  \\ \hline
-	\end{tabular} &
+    \begin{tabular}{R}
+      \hline
+      LU1: notifica spedizione \\ \hline
+      LU2: consegna a cliente  \\ \hline
+      LU3: consegna ricevuta   \\ \hline
+      LU4: pagamento corriere  \\ \hline
+    \end{tabular} &
 
-	\begin{tabular}{R}
-		\hline
-		MV1: incasso allo sportello   \\ \hline
-		MV2: incasso con contrassegno \\ \hline
-		MV3: comunicazione promozioni \\ \hline
-	\end{tabular} &
+    \begin{tabular}{R}
+      \hline
+      MV1: incasso allo sportello   \\ \hline
+      MV2: incasso con contrassegno \\ \hline
+      MV3: comunicazione promozioni \\ \hline
+    \end{tabular} &
 
-	\begin{tabular}{R}
-		\hline
-		SPV1: gestione resi     \\ \hline
-		SPV2: gestione reclami  \\ \hline
-		SPV3: raccolta feedback \\ \hline
-	\end{tabular} \\ 
-	\hline
+    \begin{tabular}{R}
+      \hline
+      SPV1: gestione resi     \\ \hline
+      SPV2: gestione reclami  \\ \hline
+      SPV3: raccolta feedback \\ \hline
+    \end{tabular} \\ 
+    \hline
 
-	\multicolumn{5}{|c|}{Approvvigionamenti (AP)}          \\ \hline
-	\multicolumn{5}{|c|}{AP1: acquisto consumabili}        \\
-	\multicolumn{5}{|c|}{AP2: acquisto nuova attrezzatura} \\
-	\hline
-	\multicolumn{5}{|c|}{Gestione risorse umane (GRU)}     \\ \hline
-	\multicolumn{5}{|c|}{GRU1: gestione turni di lavoro}   \\
-	\multicolumn{5}{|c|}{GRU2: gestione buste paga}        \\ 
-	\multicolumn{5}{|c|}{GRU3: valutazione dipendenti}     \\
-	\hline
-	\multicolumn{5}{|c|}{Gestione infrastrutture (GI)}     \\ \hline
-	\multicolumn{5}{|c|}{GI1: manutenzione}                \\
-	\hline
-\end{tabularx}
+    \multicolumn{5}{|c|}{Approvvigionamenti (AP)}          \\ \hline
+    \multicolumn{5}{|c|}{AP1: acquisto consumabili}        \\
+    \multicolumn{5}{|c|}{AP2: acquisto nuova attrezzatura} \\
+    \hline
+    \multicolumn{5}{|c|}{Gestione risorse umane (GRU)}     \\ \hline
+    \multicolumn{5}{|c|}{GRU1: gestione turni di lavoro}   \\
+    \multicolumn{5}{|c|}{GRU2: gestione buste paga}        \\ 
+    \multicolumn{5}{|c|}{GRU3: valutazione dipendenti}     \\
+    \hline
+    \multicolumn{5}{|c|}{Gestione infrastrutture (GI)}     \\ \hline
+    \multicolumn{5}{|c|}{GI1: manutenzione}                \\
+    \hline
+  \end{tabularx}
 \end{center}
 
 \newpage
 \subsubsection{Registrazione cliente}
-\textbf{Nome processo} (identificativo): registrazione cliente (LE1) \\
-\textbf{Attori coinvolti}: Cliente, Sportellista \\
-\textbf{Archivi coinvolti}: Lista degli utenti, Registro operazioni \\ 
-\textbf{Descrizione del processo}:  Un \textbf{cliente} può registrarsi presentandosi in sede e richiedendo l'apposito documento da compilare con: 
-nome, cognome, data di nascita e residenza, dopo di ciò lo \textbf{sportellista} inserirà il documento all'interno della \underline{lista degli utenti} 
-dove all'occorrenza inserirà anche i dati in merito alle sue spedizioni (vedi LE4: registrazioni spedizioni in entrata). Nel caso in cui il \textbf{cliente} 
-volesse accedere ai suoi dati si deve recare in sede e richiederle allo \textbf{sportellista}, che attingerà alla \underline{lista degli utenti}, questi dati 
-sono sempre aggiornati dagli \textbf{sportellisti} (vedi LE2: aggiornamento dati cliente). \\ \\
-\textbf{Processi correlati:}\\LE2,LE4.\\
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE1.png}
-	\caption{Activity Diagram per LE1}
-\end{figure}
-
-\newpage
-\subsubsection{Aggiornamento dati cliente}
-\textbf{Nome processo} (identificativo): Aggiornamento dati cliente (LE2) \\
-\textbf{Attori coinvolti}: Cliente, Sportellista \\
-\textbf{Archivi coinvolti}: Lista degli utenti \\ 
-\textbf{Descrizione del processo}:  Un \textbf{cliente} può accedere e modificare i propri dati presentandosi in sede provvisto di documento di identità.
-Lo \textbf{sportellista} inserirà l'operazione effettuata nel \underline{registro operazioni}.
-Se l'identità è verificata, lo \textbf{sportellista} accede alla \underline{lista utenti} e mostra i dati al \textbf{cliente}.
-Nel caso in cui il \textbf{cliente} voglia modificare i propri dati si procede come in LE1.\\ \\
-\textbf{Processi correlati:}\\LE1.\\
+\textbf{Nome processo} (identificativo): Registrazione cliente (LE1) \\
+\textbf{Attori coinvolti}: Cliente, Sportellista, Portalettere \\
+\textbf{Archivi coinvolti}: Lista clienti, Rubrica degli indirizzi\\ 
+\textbf{Descrizione del processo}: Un \textbf{cliente} può registrarsi recandosi fisicamente nella sede dell'ufficio e richiedendo l'apposito modulo di registrazione, 
+da compilare con: nome, cognome, data di nascita e indirizzo (nel formato Via, CAP, Città, Provincia) e presentando un documento d'identità come patente o carta d'identità. 
+Dopo di ciò lo \textbf{sportellista} dovrà premurarsi di controllare la coerenza delle informazioni all'interno del modulo confrontate con quelle dell documento d'identità. 
+Lo \textbf{sportellista} inserirà il documento all'interno della \underline{lista degli utenti} , dove all'occorrenza inserirà anche i dati in merito alle spedizioni 
+del'\textbf{cliente}, (vedi LE4: registrazioni spedizioni in entrata) e all'interno della \underline{rubrica degli indirizzi} dove un \textbf{portalettere} 
+(vedi LU:2 consegna a cliente) può attingere per avere informazioni sul cliente a cui deve consengare.  Nel caso in cui il \textbf{cliente} volesse accedere ai 
+suoi dati si deve recare in sede e richiederli allo \textbf{sportellista}, che attingerà alla \underline{lista degli utenti}, i dati presenti nella 
+\underline{lista degli utenti} sono costantemente aggiornati dagli \textbf{sportellisti} per garantire la loro correttezza e completezza. 
+Questi aggiornamenti possono includere modifiche ai dati personali del cliente, come variazioni di indirizzo o recapiti (vedi LE2: aggiornamento dati cliente). \\
+\textbf{Processi correlati:}\\LE2,LE4.\\ \\
+\underline{Cosiderazioni dopo l'implementazione del nuovo sistema informativo}: \\ Queste operazioni saranno gestite in automatico tramite l'apposita piattaforma, 
+senza che il cliente vada in sede e senza che lo sportellista lo inserisca manualmente nell'archivio.
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE2.png}
-	\caption{Activity Diagram per LE2}
+  \includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE1.png}
+  \caption{Activity Diagram di LE1}
 \end{figure}
-
-\newpage
-\subsubsection{Registrazione operazione dipendenti}
-\textbf{Nome processo} (identificativo): Registrazione operazioni dipendenti (LE3) \\
-\textbf{Attori coinvolti}: Dipendenti \\
-\textbf{Archivi coinvolti}: Registro operazioni dipendenti \\
-\textbf{Descrizione del processo}: Quando un \textbf{portalettere} consegna una qualunque corrispondenza il destinatario deve firmare una ricevuta 
-cartacea che attesta che una spedizione è contrassegnata come cosegnata, nel momento in cui il \textbf{portalettere} ritorna in sede dovrà aggiornare il 
-\underline{registro delle spedizioni}, stessa cosa per \textbf{magazzinieri} che dopo aver ricevuto o mandato in spedizione dei pacchi all'interno del
-magazzino, dovranno premurarsi loro di aggiornare l'\underline{inventario} \\ 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE3.png}
-	\caption{Activity Diagram per LE3}
+  \centering
+  \includegraphics[width=0.7\linewidth]{assets/dataflow_lvl0_LE1.png}
+  \caption{Data Flow Diagram LVL 0 di LE1}
 \end{figure}
-
-\newpage
-\subsubsection{Registrazione spedizioni in entrata}
-\textbf{Nome processo} (identificativo): Registrazione spedizioni in entrata (LE4) \\
-\textbf{Attori coinvolti}: Magazziniere \\
-\textbf{Archivi coinvolti}: Inventario, registro spedizioni in entrata \\
-\textbf{Descrizione del processo}: Alla consegna di una spedizione in entrata, il \textbf{magazziniere} che la riceve deve aggiornare l'\underline{inventario}, 
-nello specifico dovrà registrare in quale scaffale è precisamente collocato (vedi A05: smistamento spedizioni). Il \textbf{magazziniere} dovrà dopodichè aggiornare 
-il \underline{registro delle spedizioni in entrata}, contrassegnando ciò che arriva come consegnato e con la data di consegna.\\ \\
-\textbf{Processi correlati:}\\ AO5. \\ 
-
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=0.3\linewidth]{assets/activitydiagram_LE4.png}
-	\caption{Activity Diagram per LE4}
-\end{figure}
-
-\newpage
-\subsubsection{Registrazione pagamento}
-\textbf{Nome processo} (identificativo): Registrazione pagamento (LE5) \\
-\textbf{Attori coinvolti}: Sportellista, Cliente  \\
-\textbf{Archivi coinvolti}: Libro contabile\\
-\textbf{Descrizione del processo}: Nel momento in cui un \textbf{cliente} vuole spedire una corrispondenza essa avrà delle fasce di prezzo in relazione 
-dalla dimensione del pacco da spedire e dalla distanza o dazi doganali, nel momento in cui un pagamento è ricevuto lo \textbf{sportellista} 
-(tramite le procecdure descritte in MV1: incasso allo sportello e MV2: incasso con contrassegno) lo riporta all'interno del \underline{libro contabile}. \\ \\
-\textbf{Processi correlati:} \\ MV1, MV2. \\
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\linewidth]{assets/activitydiagram_LE5.png}
-	\caption{Activity Diagram per LE5}
+  \centering
+  \includegraphics[width=0.7\linewidth]{assets/dataflow_lvl1_LE1.png}
+  \caption{Data Flow Diagram LVL 1 di LE1}
 \end{figure}
 
 \newpage
@@ -311,21 +264,47 @@ all'interno del magazzino, e lo mettono da parte, in attesa del \textbf{corriere
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{assets/activitydiagram_AO1.png}
-	\caption{Activity Diagram per AO1}
+  \caption{Activity Diagram per AO1}
 \end{figure}
 
 Si riporta di seguito il dfd di livello 0:
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{assets/dfd_0_AO1.png}
-	\caption{DFD per AO1}
+  \caption{DFD per AO1}
 \end{figure}
 Si riporta di seguito il dfd di livello 1:
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{assets/dfd_1_AO1.png}
-	\caption{DFD livello 1 per AO1}
+  \caption{DFD livello 1 per AO1}
 \end{figure}
 \newpage
+\subsubsection{Monitoraggio spedizioni}
+\textbf{Nome processo} (identificativo): Monitoraggio spedizioni (AO2)\\
+\textbf{Attori coinvolti}: Sportellista, Magazziniere, Portalettere \\
+\textbf{Archivi coinvolti}: Registro spedizioni \\
+\textbf{Descrizione del processo}: Ogni volta che lo stato della spedizione cambia, quindi nel caso del processo LE4 per lo \textbf{sportellista},
+nel caso dei processi AO1 o AO5 per i \textbf{magazzinieri} o LU2 per i \textbf{portalettere}, è necessario tenerne traccia nel 
+\underline{registro spedizioni}, spuntando sotto la voce segnata dello stato raggiunto tra le seguenti: Presa in carico, spedito, arrivato alla filiale, consegnato. \\ \\
+\textbf{Processi correlati:}\\LE4, AO1, AO5, LU2\\
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{assets/activitydiagram_AO2.png}
+  \caption{Activity Diagram per AO2}
+\end{figure}
+
+\newpage
+\subsubsection{Smistamento corrispondenza}
+\textbf{Nome processo} (identificativo): Smistamento corrispondenza (AO3)\\
+\textbf{Attori coinvolti}: Corriere, Magazziniere \\
+\textbf{Archivi coinvolti}: Inventario \\
+\textbf{Descrizione del processo}: All'arrivo del corriere, i \textbf{magazzinieri} provvedono allo scarico della corrispondenza, al collocamento sugli scaffali ed
+all'aggiornamento dell'\underline{inventario}, con tanto di data di arrivo e destinazione. \\
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{assets/activitydiagram_AO3.png}
+  \caption{Activity Diagram per AO3}
+\end{figure}
 
 \end{document}
