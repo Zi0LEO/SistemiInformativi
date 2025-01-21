@@ -288,7 +288,8 @@ Si riporta di seguito il dfd di livello 1:
     \hline
     \textbf{Attore} & \textbf{Descrizione} & \textbf{Processi in cui è coinvolto} & \textbf{Archivi a cui accede} \\ 
     \hline
-    Cliente & Uno degli utenti dell'OPCAL & - LE1 & \\ \hline 
+    Cliente & Uno degli utenti dell'OPCAL & - LE1 & \\ 
+    \hline 
     Sportellista & Uno dei dipendenti che lavora nella sezione sportello & -LE1 & \begin{itemize} \item Lista utenti 
     	\item Rubrica degli indirizzi \end{itemize} \\ 
       \hline 
@@ -315,8 +316,11 @@ Si riporta di seguito il dfd di livello 1:
     Corriere & Un ente esterno che si occupa di gestire la corrispondenza verso zone non sotto la competenza di OPCal & -AO1 & \\
     \hline
   \end{tabularx}
+\end{table}
 
-  \vspace{1em}
+\begin{table}
+  \centering
+  \newcolumntype{Y}{>{\centering\arraybackslash}m{\dimexpr\linewidth/4-2\tabcolsep - 5\arrayrulewidth}}
 
   \begin{tabularx}{\dimexpr\textwidth-15\arrayrulewidth}{|*{4}{Y|}} %non so perchè ma vuole proprio 15
     \hline
