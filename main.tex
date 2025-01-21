@@ -280,7 +280,8 @@ Si riporta di seguito il dfd di livello 1:
   \caption{DFD livello 1 per AO1}
 \end{figure}
 
-\begin{table}
+\subsubsection{Attori e archivi}
+\begin{table}[H]
   \centering
   \newcolumntype{Y}{>{\centering\arraybackslash}m{\dimexpr\linewidth/4-2\tabcolsep - 5\arrayrulewidth}}
   \begin{tabularx}{\dimexpr\textwidth-15\arrayrulewidth}{|*{4}{Y|}} %non so perchè ma vuole proprio 15
@@ -322,7 +323,8 @@ Si riporta di seguito il dfd di livello 1:
     \textbf{Archivio} & \textbf{Descrizione} & \textbf{Processi in cui è coinvolto} & \textbf{Attori che vi accedono} \\ \hline
     Lista degli utenti & Archivio in cui sono scritte le informazioni su ogni utente, quali nome, cognome, codice fiscale, e-mail & -LE1 & $\bullet$ Sportellista \\ 
     \hline 
-    Rubrica degli indirizzi & Archivio in cui sono scritte informazioni sugli utenti specifiche per i portalettere, queste sono nome, cognome, numero di telefono, indirizzo & -LE1 & $       \bullet$ Portalettere \\ 
+    Rubrica degli indirizzi & Archivio in cui sono scritte informazioni sugli utenti specifiche per i portalettere, queste sono nome, cognome, numero di telefono,
+    indirizzo & -LE1 & $\bullet$ Portalettere \\ 
     \hline
     Registro spedizioni & Archivio in cui sono conservate le informazioni delle spedizioni accettate & -AO1 &
     \begin{itemize}
