@@ -10,6 +10,7 @@
 \usepackage{float} % La flag H nelle figure, 
 \usepackage{xcolor} % Per i colori
 \usepackage{hyperref} % Collegamenti ipertestuali
+\usepackage{array} % vertical alignment
 
 \hypersetup{
   colorlinks=true,
@@ -248,14 +249,14 @@ senza che il cliente vada in sede e senza che lo sportellista lo inserisca manua
 \subsubsection{Invio corrispondenza}
 \textbf{Nome processo} (identificativo): Invio corrispondenza (AO1) \\
 \textbf{Attori coinvolti}: Responsabile magazzino, Magazziniere, Corriere \\
-\textbf{Archivi coinvolti}: Registro spedizioni, Inventario, Rubrica corrieri, Lista spedizioni odierne, Registro corrispondenza in uscita \\
-\textbf{Descrizione del processo}: Quando notificato da LE6, il \textbf{responsabile magazzino} controlla nel \textit{registro spedizioni} il numero di articoli
+\textbf{Archivi coinvolti}: Registro spedizioni, Inventario, Rubrica corrieri, Lista spedizioni odierne, Registro pagamenti \\
+\textbf{Descrizione del processo}: Quando notificato da LE6, il \textbf{responsabile magazzino} controlla nel \underline{registro spedizioni} il numero di articoli
 da spedire verso l'esterno. Sceglie un sottoinsieme di articoli (si veda AO4) e compila la \underline{lista spedizioni odierne}, 
 nella quale va ad inserire gli articoli da spedire in giornata. Una volta compilata la lista, consulta la \underline{rubrica corrieri} al fine
 di trovare quello più conveniente alle condizioni specifiche. Una volta effettuata una stima, inizia a contattare le sedi di corrieri, a partire dalla più 
 conveniente, fin quando trova un corriere disponibile in giornata, con il quale concorda un orario per il ritiro ed un prezzo.
 Una volta trovato l'accordo con il corriere, compila il documento da mandare al \textbf{direttore}, il quale provvederà al pagamento del \textbf{corriere} (LU4)
-e conserverà il documento nel \underline{registro corrispondenza in uscita}. Il direttore si occuperà inoltre di stampare la ricevuta di pagamento e 
+e conserverà il documento nel \underline{registro pagamenti}. Il direttore si occuperà inoltre di stampare la ricevuta di pagamento e 
 consegnarla ai \textbf{magazzinieri}.
 Ricevuta la \underline{lista spedizioni odierne} i \textbf{magazzinieri} consultano l'\underline{inventario}, in cui è riportata la posizione dell'articolo
 all'interno del magazzino, e lo mettono da parte, in attesa del \textbf{corriere}. All'arrivo di questo, consegnano la ricevuta e caricano sul furgone gli articoli messi da parte. \\
@@ -279,26 +280,62 @@ Si riporta di seguito il dfd di livello 1:
   \caption{DFD livello 1 per AO1}
 \end{figure}
 
-\begin{center}
-  \newcolumntype{Y}{@{}>{\centering\arraybackslash}X @{}}
-  
-  \begin{tabularx}{\textwidth}{|*{4}{Y|}}
+\begin{table}
+  \centering
+  \newcolumntype{Y}{>{\centering\arraybackslash}m{\dimexpr\linewidth/4-2\tabcolsep - 5\arrayrulewidth}}
+  \begin{tabularx}{\dimexpr\textwidth-15\arrayrulewidth}{|*{4}{Y|}} %non so perchè ma vuole proprio 15
     \hline
-    \textbf{Attore} & \textbf{Descrizione} & \textbf{Processi in cui è coinvolto} & \textbf{Archivi a cui accede} \\ \hline
-    %inserisci attori
+    \textbf{Attore} & \textbf{Descrizione} & \textbf{Processi in cui è coinvolto} & \textbf{Archivi a cui accede} \\ 
+    \hline
     Cliente & Uno degli utenti dell'OPCAL & - LE1 & \\ \hline 
     Sportellista & Uno dei dipendenti che lavora nella sezione sportello & -LE1 & \begin{itemize} \item Lista utenti 
-    	\item Rubrica degli indirizzi \end{itemize} \\ \hline 
-    Portalettere & Uno dei dipendenti che lavora nella sezione corrispondenze & -LE1 & $\bullet$ Rubrica degli indirizzi \\ \hline
+    	\item Rubrica degli indirizzi \end{itemize} \\ 
+      \hline 
+    Portalettere & Uno dei dipendenti che lavora nella sezione corrispondenze & -LE1 & $\bullet$ Rubrica degli indirizzi \\ 
+    \hline
+    Responsabile magazzino & Il dipendente a capo del magazzino & -AO1 &
+    \begin{itemize}
+      \item{Registro spedizioni}
+      \item{Lista spedizioni odierne}
+      \item{Rubrica corrieri}
+    \end{itemize} \\
+    \hline
+    Direttore & Il responsabile generale, si occupa principalmente di contabilità & -AO1 &
+    \begin{itemize}
+      \item{Registro pagamenti}
+    \end{itemize} \\
+    \hline
+    Magazziniere & Uno dei dipendenti addetto alla sezione magazzino & -AO1 &
+    \begin{itemize}
+      \item{Lista spedizioni odierne}
+      \item{Inventario}
+    \end{itemize} \\
+    \hline
+    Corriere & Un ente esterno che si occupa di gestire la corrispondenza verso zone non sotto la competenza di OPCal & -AO1 & \\
+    \hline
   \end{tabularx}
-  \\ 
-  \begin{tabularx}{\textwidth}{|*{4}{Y|}}
+
+  \vspace{1em}
+
+  \begin{tabularx}{\dimexpr\textwidth-15\arrayrulewidth}{|*{4}{Y|}} %non so perchè ma vuole proprio 15
     \hline
     \textbf{Archivio} & \textbf{Descrizione} & \textbf{Processi in cui è coinvolto} & \textbf{Attori che vi accedono} \\ \hline
-    %inserisci archivi
-    Lista degli utenti & Archivio in cui sono scritte le informazioni su ogni utente, quali nome, cognome, codice fiscale, e-mail & -LE1 & Sportellista \\ \hline 
-    Rubrica degli indirizzi & Archivio in cui sono scritte informazioni sugli utenti specifiche per i portalettere, queste sono nome, cognome, numero di telefono, indirizzo & -LE1 & $\bullet$ Portalettere \\ \hline 
+    Lista degli utenti & Archivio in cui sono scritte le informazioni su ogni utente, quali nome, cognome, codice fiscale, e-mail & -LE1 & $\bullet$ Sportellista \\ 
+    \hline 
+    Rubrica degli indirizzi & Archivio in cui sono scritte informazioni sugli utenti specifiche per i portalettere, queste sono nome, cognome, numero di telefono, indirizzo & -LE1 & $       \bullet$ Portalettere \\ 
+    \hline
+    Registro spedizioni & Archivio in cui sono conservate le informazioni delle spedizioni accettate & -AO1 &
+    \begin{itemize}
+      \item{Sportellista}
+      \item{Responsabile magazzino}
+    \end{itemize} \\
+    \hline
+    Inventario & Archivio che testimonia lo stato del magazzino, conservando informazioni sugli articoli in esso presenti & -AO1 &
+    \begin{itemize}
+      \item{Magazziniere}
+    \end{itemize} \\
+    \hline
   \end{tabularx}
-\end{center}
+\end{table}
 
 \end{document}
