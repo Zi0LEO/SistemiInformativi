@@ -135,7 +135,7 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
       \item Per ogni oggetto nel magazzino sarà anche memorizzata la sua posizione negli scaffali.
     \end{itemize}
   \item \textbf{Gestione Pagamenti} \begin{itemize}
-      \item Il sistema avrà la funzione di monitoraggio dei pagamenti erso l'azienda OPCal.
+      \item Il sistema avrà la funzione di monitoraggio dei pagamenti verso l'azienda OPCal.
       \item Il cliente potrà visualizzare lo stato dei propri pagamenti.
     \end{itemize}
   \item \textbf{Interfaccia} \begin{itemize}
@@ -350,6 +350,44 @@ Si riporta di seguito il dfd di livello 1:
 \newpage
 \subsection{Requisiti funzionali}
 I gruppi funzionali che si è deciso di implementare sono quelli riguardanti la \textbf{gestione dei clienti} e la \textbf{gestione dei recapiti}.
+
+\subsubsection{Gestione clienti}
+\begin{enumerate}
+	\item{(MUST)} Inserimento dei propri dati anagrafici[Cliente];
+	\item{(MUST)} Modifica dei propri dati anagrafici[Cliente];
+	\item{(MUST)} Implementare la possibilità di poter registrare delle spedizioni[Cliente]; 
+	\item{(MUST)} Implementare la possibilità di poter tracciare le spedizioni[Cliente];
+	\item{(MUST)} Aggiungere una funzione per iniziare una procedura di reso[Cliente];
+	\item{(MUST)} Scaricare tutti i documenti da compilare per procedere con il reso[Cliente];
+	\item{(MUST)} Poter annullare o modificare una procedura di reso[Cliente];
+	\item{(MUST)} Introdurre di un sistema di sicurezza per il login nella piattaforma[Cliente, Sportellista];
+	\item{(MUST)} Dare la possibilità di avere uno storico delle consegne[Cliente];
+	\item{(MUST)} Introdurre un ordinamento per lo storico delle consegne[Cliente]:
+	\begin{enumerate}
+		\item Per data, dalla più alla meno recente (Default);
+		\item Per tipo di spedizione;
+		\item Per numero di ordine;
+		\item In ordine alfabetico.
+	\end{enumerate} 
+	\item{(MUST)} Visualizzare le fatture a proprio carico[Cliente];
+	\item {(MUST)} Ordinare la lista delle fatture a proprio carico[Cliente]:
+	\begin{enumerate}
+		\item Per stato del pagamento (Default);
+		\item Per data del pagamento;
+		\item In ordine alfabetico;
+	\end{enumerate}
+	\item{(MUST)} Visualizzare in tempo reale lo stato delle spedizioni di ogni cliente [Sportellista];
+	\item{(MUST)} Visualizzare in tempo reale lo stato dei pagamenti di ogni cliente [Sportellista];
+	\item{(MUST)} Accedere ai dati anagrafici dei clienti [Sportellista, Portalettere];
+	\item{(MUST)} Accedere ai dati delle spedizioni dei clienti [Sportellista, Portalettere, Responsabili];
+		\item {(MUST)}  Implementare un sistema di mailing lists[Sportellista]:
+	\begin{enumerate}
+		\item Poter mandare e-mail solo a un determinato gruppo di utenti;
+		\item Inviare aggiornamenti sulle spedizioni tramite posta elettronica;
+		\item Inviare aggiornamenti sullo stato di un appuntamento in sede;
+		\item Inviare aggiornamento sullo stato di una procedura di resto.
+	\end{enumerate}
+\end{enumerate}
 \subsubsection{Gestione recapiti}
 \begin{enumerate}
   \item{(MUST)} Associare un cliente ad un indirizzo[sportellista, portalettere];
