@@ -135,7 +135,7 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
       \item Per ogni oggetto nel magazzino sarà anche memorizzata la sua posizione negli scaffali.
     \end{itemize}
   \item \textbf{Gestione Pagamenti} \begin{itemize}
-      \item Il sistema avrà la funzione di monitoraggio dei pagamenti erso l'azienda OPCal.
+      \item Il sistema avrà la funzione di monitoraggio dei pagamenti verso l'azienda OPCal.
       \item Il cliente potrà visualizzare lo stato dei propri pagamenti.
     \end{itemize}
   \item \textbf{Interfaccia} \begin{itemize}
@@ -350,6 +350,41 @@ Si riporta di seguito il dfd di livello 1:
 \newpage
 \subsection{Requisiti funzionali}
 I gruppi funzionali che si è deciso di implementare sono quelli riguardanti la \textbf{gestione dei clienti} e la \textbf{gestione dei recapiti}.
+
+\subsubsection{Gestione clienti}
+\begin{enumerate}
+	\item{(MUST)} Implementare una schermata di sign-in [Cliente];
+	\item{(MUST)} Inserimento dei propri dati anagrafici[Cliente];
+	\item{(MUST)} Modifica dei propri dati anagrafici[Cliente];
+	\item{(MUST)} Implementare la possibilità di poter registrare delle spedizioni[Cliente]; 
+	\item{(MUST)} Implementare la possibilità di poter tracciare le spedizioni[Cliente];
+	\item{(MUST)} Aggiungere una funzione per iniziare una procedura di reso[Cliente];
+	\item{(MUST)} Scaricare tutti i documenti da compilare per procedere con il reso[Cliente];
+	\item{(MUST)} Poter annullare o modificare una procedura di reso[Cliente];
+	\item{(MUST)} Introdurre di un sistema di sicurezza per il login nella piattaforma[Cliente, Sportellista];
+	\item{(MUST)} Dare la possibilità di avere uno storico delle consegne[Cliente];
+	\item{(MUST)} Introdurre un ordinamento per lo storico delle consegne[Cliente]:
+	\begin{enumerate}
+		\item Per data, dalla più alla meno recente (Default);
+		\item Per tipo di spedizione;
+		\item Per numero di ordine;
+		\item In ordine alfabetico.
+	\end{enumerate} 
+	\item{(MUST)} Visualizzare le fatture a proprio carico[Cliente];
+	\item {(MUST)} Ordinare la lista delle fatture a proprio carico[Cliente]:
+	\begin{enumerate}
+		\item Per stato del pagamento (Default);
+		\item Per data del pagamento;
+		\item In ordine alfabetico;
+	\end{enumerate}
+	\item{(MUST)} Visualizzare in tempo reale lo stato delle spedizioni di ogni cliente [Sportellista];
+	\item{(MUST)} Visualizzare in tempo reale lo stato dei pagamenti di ogni cliente [Sportellista];
+	\item{(MUST)} Accedere ai dati anagrafici dei clienti [Sportellista, Portalettere];
+	\item{(MUST)} Modificare i dati anagrafici dei clienti [Sportellista];
+	\item{(MUST)} Accedere ai dati delle spedizioni dei clienti [Sportellista, Portalettere];
+	\item{(MUST)} Modificare i dati in merito alle spedizioni dei clienti [Sportellista, Portalettere];
+	\item {(MUST)}  Implementare un sistema di mailing [Sportellista]:
+\end{enumerate}
 \subsubsection{Gestione recapiti}
 \begin{enumerate}
   \item{(MUST)} Associare un cliente ad un indirizzo[sportellista, portalettere];
@@ -372,6 +407,38 @@ I gruppi funzionali che si è deciso di implementare sono quelli riguardanti la 
       \item{Per data primo ordine};
     \end{enumerate}
 \end{enumerate}
+Per il \textbf{Requisito 20, Implementare un sistema di mailing}, si riporta di seguito una descrizione dettagliata: \\
+ Attore Principale: Sportellista \\
+ Descrizione dello scenario principale:  
+ \begin{enumerate}
+ \item Un cliente si registra all'interno della piattaforma;
+ \item Inserisce nel campo e-mail il suo indirizzo;
+ \item Viene creata una \textit{mailing list} e viene inserito all'interno questo cliente;
+ \item Comincia una pratica di reso, richiede una spedizione oppure un'appuntamento in sede;
+ \item Quando ci sono aggiornamenti su un qualcosa che concerne l'utente viene inviata una e-mail in materia;
+ \item Nel caso in cui ci siano informazioni sui servizi dell'organizzazione possono essere mandati aggiornamenti tramite le \textit{newsletter}.
+\end{enumerate}
+Descrizione di scenari alternativi: \\
+SA1 (Non arriva l'email di aggiornamento): 
+ \begin{enumerate}
+ 	\item Viene mandata una seconda e-mail;
+ 	\item Se il problema persiste si prova a sostituire l'indirizzo dell'utente o a creare una nuova mailing list.
+ \end{enumerate} 
+ 
+Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzionale 1: Gestione clienti} :
+\begin{figure}
+\centering
+\includegraphics[width=10cm]{assets/usecase_clienti.png}
+\caption{Diagramma Casi d'Uso 1}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=10cm]{assets/usecase_clienti_2.png}
+	\caption{Diagramma Casi d'Uso 2}
+\end{figure}
+
+
+
 
 
 \end{document}
