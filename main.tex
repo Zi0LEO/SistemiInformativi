@@ -221,13 +221,12 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
 \textbf{Descrizione processo}: Un \textbf{cliente} può registrarsi recandosi fisicamente nella sede dell'ufficio e richiedendo l'apposito modulo di registrazione, 
 da compilare con: nome, cognome, data di nascita e indirizzo (nel formato Via, CAP, Città, Provincia) e presentando un documento d'identità come patente o carta d'identità. 
 Dopo di ciò lo \textbf{sportellista} dovrà premurarsi di controllare la coerenza delle informazioni all'interno del modulo confrontate con quelle dell documento d'identità. 
-Lo \textbf{sportellista} inserirà il documento all'interno della \underline{lista degli utenti} , dove all'occorrenza inserirà anche i dati in merito alle spedizioni 
-del'\textbf{cliente}, (vedi LE4: registrazioni spedizioni in entrata) e all'interno della \underline{rubrica degli indirizzi} dove un \textbf{portalettere} 
-(vedi LU:2 consegna a cliente) può attingere per avere informazioni sul cliente a cui deve consengare.  Nel caso in cui il \textbf{cliente} volesse accedere ai 
+Lo \textbf{sportellista} inserirà il documento all'interno della \underline{lista degli utenti}, dove all'occorrenza inserirà anche i dati in merito alle spedizioni del \textbf{cliente}, (vedi LE4: registrazioni spedizioni in entrata) e all'interno della \underline{rubrica degli indirizzi} dove un \textbf{portalettere} 
+(vedi LU2: consegna a cliente) può attingere per avere informazioni sul cliente a cui deve consengare.  Nel caso in cui il \textbf{cliente} volesse accedere ai 
 suoi dati si deve recare in sede e richiederli allo \textbf{sportellista}, che attingerà alla \underline{lista degli utenti}, i dati presenti nella 
 \underline{lista degli utenti} sono costantemente aggiornati dagli \textbf{sportellisti} per garantire la loro correttezza e completezza. 
 Questi aggiornamenti possono includere modifiche ai dati personali del cliente, come variazioni di indirizzo o recapiti (vedi LE2: aggiornamento dati cliente). \\
-\textbf{Processi correlati:}\\LE2,LE4.\\ \\
+\textbf{Processi correlati:}\\LE2,LE4, LU2.\\ \\
 \underline{Cosiderazioni dopo l'implementazione del nuovo sistema informativo}: \\ Queste operazioni saranno gestite in automatico tramite l'apposita piattaforma, 
 senza che il cliente vada in sede e senza che lo sportellista lo inserisca manualmente nell'archivio.
 \begin{figure}[H]
@@ -286,7 +285,14 @@ Si riporta di seguito il dfd di livello 1:
   \newcolumntype{Y}{>{\centering\arraybackslash}m{\dimexpr\linewidth/4-2\tabcolsep - 5\arrayrulewidth}}
   \begin{tabularx}{\dimexpr\textwidth-15\arrayrulewidth}{|*{4}{Y|}} %non so perchè ma vuole proprio 15
     \hline
-    \textbf{Attore} & \textbf{Descrizione} & \textbf{Processi in cui è coinvolto} & \textbf{Archivi a cui accede} \\ \hline
+    \textbf{Attore} & \textbf{Descrizione} & \textbf{Processi in cui è coinvolto} & \textbf{Archivi a cui accede} \\ 
+    \hline
+    Cliente & Uno degli utenti dell'OPCAL & - LE1 & \\ \hline 
+    Sportellista & Uno dei dipendenti che lavora nella sezione sportello & -LE1 & \begin{itemize} \item Lista utenti 
+    	\item Rubrica degli indirizzi \end{itemize} \\ 
+      \hline 
+    Portalettere & Uno dei dipendenti che lavora nella sezione corrispondenze & -LE1 & $\bullet$ Rubrica degli indirizzi \\ 
+    \hline
     Responsabile magazzino & Il dipendente a capo del magazzino & -AO1 &
     \begin{itemize}
       \item{Registro spedizioni}
@@ -314,6 +320,10 @@ Si riporta di seguito il dfd di livello 1:
   \begin{tabularx}{\dimexpr\textwidth-15\arrayrulewidth}{|*{4}{Y|}} %non so perchè ma vuole proprio 15
     \hline
     \textbf{Archivio} & \textbf{Descrizione} & \textbf{Processi in cui è coinvolto} & \textbf{Attori che vi accedono} \\ \hline
+    Lista degli utenti & Archivio in cui sono scritte le informazioni su ogni utente, quali nome, cognome, codice fiscale, e-mail & -LE1 & $\bullet$ Sportellista \\ 
+    \hline 
+    Rubrica degli indirizzi & Archivio in cui sono scritte informazioni sugli utenti specifiche per i portalettere, queste sono nome, cognome, numero di telefono, indirizzo & -LE1 & $       \bullet$ Portalettere \\ 
+    \hline
     Registro spedizioni & Archivio in cui sono conservate le informazioni delle spedizioni accettate & -AO1 &
     \begin{itemize}
       \item{Sportellista}
