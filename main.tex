@@ -353,6 +353,7 @@ I gruppi funzionali che si è deciso di implementare sono quelli riguardanti la 
 
 \subsubsection{Gestione clienti}
 \begin{enumerate}
+	\item{(MUST)} Implementare una schermata di sign-in [Cliente];
 	\item{(MUST)} Inserimento dei propri dati anagrafici[Cliente];
 	\item{(MUST)} Modifica dei propri dati anagrafici[Cliente];
 	\item{(MUST)} Implementare la possibilità di poter registrare delle spedizioni[Cliente]; 
@@ -379,14 +380,10 @@ I gruppi funzionali che si è deciso di implementare sono quelli riguardanti la 
 	\item{(MUST)} Visualizzare in tempo reale lo stato delle spedizioni di ogni cliente [Sportellista];
 	\item{(MUST)} Visualizzare in tempo reale lo stato dei pagamenti di ogni cliente [Sportellista];
 	\item{(MUST)} Accedere ai dati anagrafici dei clienti [Sportellista, Portalettere];
-	\item{(MUST)} Accedere ai dati delle spedizioni dei clienti [Sportellista, Portalettere, Responsabili];
-		\item {(MUST)}  Implementare un sistema di mailing lists[Sportellista]:
-	\begin{enumerate}
-		\item Poter mandare e-mail solo a un determinato gruppo di utenti;
-		\item Inviare aggiornamenti sulle spedizioni tramite posta elettronica;
-		\item Inviare aggiornamenti sullo stato di un appuntamento in sede;
-		\item Inviare aggiornamento sullo stato di una procedura di resto.
-	\end{enumerate}
+	\item{(MUST)} Modificare i dati anagrafici dei clienti [Sportellista];
+	\item{(MUST)} Accedere ai dati delle spedizioni dei clienti [Sportellista, Portalettere];
+	\item{(MUST)} Modificare i dati in merito alle spedizioni dei clienti [Sportellista, Portalettere];
+	\item {(MUST)}  Implementare un sistema di mailing [Sportellista]:
 \end{enumerate}
 \subsubsection{Gestione recapiti}
 \begin{enumerate}
@@ -410,6 +407,31 @@ I gruppi funzionali che si è deciso di implementare sono quelli riguardanti la 
       \item{Per data primo ordine};
     \end{enumerate}
 \end{enumerate}
+Per il \textbf{Requisito 20, Implementare un sistema di mailing}, si riporta di seguito una descrizione dettagliata: \\
+ Attore Principale: Sportellista \\
+ Descrizione dello scenario principale:  
+ \begin{enumerate}
+ \item Un cliente si registra all'interno della piattaforma;
+ \item Inserisce nel campo e-mail il suo indirizzo;
+ \item Viene creata una \textit{mailing list} e viene inserito all'interno questo cliente;
+ \item Comincia una pratica di reso, richiede una spedizione oppure un'appuntamento in sede;
+ \item Quando ci sono aggiornamenti su un qualcosa che concerne l'utente viene inviata una e-mail in materia;
+ \item Nel caso in cui ci siano informazioni sui servizi dell'organizzazione possono essere mandati aggiornamenti tramite le \textit{newsletter}.
+\end{enumerate}
+Descrizione di scenari alternativi: \\
+SA1 (Non arriva l'email di aggiornamento): 
+ \begin{enumerate}
+ 	\item Viene mandata una seconda e-mail;
+ 	\item Se il problema persiste si prova a sostituire l'indirizzo dell'utente o a creare una nuova mailing list.
+ \end{enumerate} 
+ 
+Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzionale 1: Gestione clienti} :
+
+
+
+
+
+
 
 
 \end{document}
