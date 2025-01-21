@@ -1,6 +1,9 @@
 \documentclass[a4paper,12pt]{article}
 \hbadness=10000 % prevent stupid useless warnings
 
+\renewcommand{\labelenumii}{\theenumii}
+\renewcommand{\theenumii}{\theenumi.\arabic{enumii}.}
+
 \usepackage{silence}
 \usepackage[utf8]{inputenc} % Supporto per caratteri UTF-8
 \usepackage[T1]{fontenc} % Migliore codifica dei font
@@ -11,6 +14,10 @@
 \usepackage{xcolor} % Per i colori
 \usepackage{hyperref} % Collegamenti ipertestuali
 \usepackage{array} % vertical alignment
+\usepackage{graphicx}
+\usepackage{titling}
+\usepackage{fancyhdr}
+%\usepackage{cmbright}
 
 \hypersetup{
   colorlinks=true,
@@ -27,16 +34,12 @@
   left=20mm,
   top=20mm,
 }
-\usepackage{graphicx}
-\usepackage{titling}
-%\usepackage{cmbright}
 
 \author{Umberto Frega, Leonardo Napoli}
 \setlength{\headheight}{14.49998pt}
 \setlength{\footskip}{47.26675pt}
 \addtolength{\topmargin}{-0.49998pt}
 
-\usepackage{fancyhdr}
 \fancyhf{}
 \fancyfoot[R]{\includegraphics[width=1.5cm]{assets/logo.png}}
 \fancyhead[L]{OPCal}
@@ -343,5 +346,32 @@ Si riporta di seguito il dfd di livello 1:
     \hline
   \end{tabularx}
 \end{table}
+
+\newpage
+\subsection{Requisiti funzionali}
+I gruppi funzionali che si è deciso di implementare sono quelli riguardanti la \textbf{gestione dei clienti} e la \textbf{gestione dei recapiti}.
+\subsubsection{Gestione recapiti}
+\begin{enumerate}
+  \item{(MUST)} Associare un cliente ad un indirizzo[sportellista, portalettere];
+  \item{(MUST)} Visualizzare gli indirizzi dei clienti[portalettere];
+  \item{(MUST)} Visualizzare le spedizioni in arrivo ad un indirizzo[portalettere];
+  \item{(MUST)} Creare una spedizione[sportellista];
+  \item{(MUST)} Aggiornare lo stato di una spedizione:
+    \begin{enumerate}
+      \item{Da "presa in carico" a "spedita"[magazziniere]};
+      \item{Da "spedita" a "arrivata alla filiale"[magazziniere]};
+      \item{Da "arrivata alla filiale" a "in consegna"[magazziniere]};
+      \item{Da "in consegna" a "consegnata"[portalettere]};
+    \end{enumerate}
+  \item{(MUST)} Filtrare la lista degli indirizzi, di default ordinata per nome del cliente, secondo i seguenti criteri[portalettere]:
+    \begin{enumerate}
+      \item{Comune di appartenenza};
+      \item{Numero di ordini ricevuti};
+      \item{Numero di ordini spediti};
+      \item{Per data ultimo ordine};
+      \item{Per data primo ordine};
+    \end{enumerate}
+\end{enumerate}
+
 
 \end{document}
