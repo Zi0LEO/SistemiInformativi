@@ -1,0 +1,51 @@
+@startuml
+
+left to right direction
+
+actor Cliente
+actor Sportellista
+actor Portalettere
+
+usecase "Visualizzazione fatture" as UC11
+usecase "Ordinamento fatture" as UC12
+usecase "Sicurezza login" as UC13
+usecase "Visualizzazione stato spedizioni" as UC14
+usecase "Visualizzazione stato pagamenti" as UC15
+usecase "Accesso dati anagrafici clienti" as UC16
+usecase "Modifica dati anagrafici clienti" as UC17
+usecase "Accesso dati spedizioni clienti" as UC18
+usecase "Modifica dati spedizioni clienti" as UC19
+usecase "Sistema di mailing" as UC20
+
+Cliente --> UC11
+UC12 <-- UC11 : <<include>>
+Cliente --> UC12
+UC13 <-- Cliente : <<include>>
+Cliente --> UC13
+
+Sportellista --> UC13
+Sportellista --> UC14
+Sportellista --> UC15
+Sportellista --> UC16
+Sportellista --> UC17
+Sportellista --> UC18
+Sportellista --> UC19
+Sportellista --> UC20
+
+Portalettere --> UC16
+Portalettere --> UC18
+Portalettere --> UC19
+
+usecase "Ordinamento per stato pagamento" as UC21
+usecase "Ordinamento per data pagamento" as UC22
+usecase "Ordinamento alfabetico" as UC23
+UC12 <-- UC21 : <<extends>>
+UC12 <-- UC22 : <<extends>>
+UC12 <-- UC23 : <<extends>>
+
+UC20 : "Inviare e-mail a gruppi"
+UC20 : "Aggiornamenti spedizioni"
+UC20 : "Aggiornamenti appuntamenti"
+UC20 : "Aggiornamenti resi"
+
+@enduml
