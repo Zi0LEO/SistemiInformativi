@@ -385,28 +385,7 @@ I gruppi funzionali che si è deciso di implementare sono quelli riguardanti la 
 	\item{(MUST)} Modificare i dati in merito alle spedizioni dei clienti [Sportellista, Portalettere];
 	\item {(MUST)}  Implementare un sistema di mailing [Sportellista]:
 \end{enumerate}
-\subsubsection{Gestione recapiti}
-\begin{enumerate}
-  \item{(MUST)} Associare un cliente ad un indirizzo[sportellista, portalettere];
-  \item{(MUST)} Visualizzare gli indirizzi dei clienti[portalettere];
-  \item{(MUST)} Visualizzare le spedizioni in arrivo ad un indirizzo[portalettere];
-  \item{(MUST)} Creare una spedizione[sportellista];
-  \item{(MUST)} Aggiornare lo stato di una spedizione:
-    \begin{enumerate}
-      \item{Da "presa in carico" a "spedita"[magazziniere]};
-      \item{Da "spedita" a "arrivata alla filiale"[magazziniere]};
-      \item{Da "arrivata alla filiale" a "in consegna"[magazziniere]};
-      \item{Da "in consegna" a "consegnata"[portalettere]};
-    \end{enumerate}
-  \item{(MUST)} Filtrare la lista degli indirizzi, di default ordinata per nome del cliente, secondo i seguenti criteri[portalettere]:
-    \begin{enumerate}
-      \item{Comune di appartenenza};
-      \item{Numero di ordini ricevuti};
-      \item{Numero di ordini spediti};
-      \item{Per data ultimo ordine};
-      \item{Per data primo ordine};
-    \end{enumerate}
-\end{enumerate}
+
 Per il \textbf{Requisito 20, Implementare un sistema di mailing}, si riporta di seguito una descrizione dettagliata: \\
  Attore Principale: Sportellista \\
  Descrizione dello scenario principale:  
@@ -418,6 +397,7 @@ Per il \textbf{Requisito 20, Implementare un sistema di mailing}, si riporta di 
  \item Quando ci sono aggiornamenti su un qualcosa che concerne l'utente viene inviata una e-mail in materia;
  \item Nel caso in cui ci siano informazioni sui servizi dell'organizzazione possono essere mandati aggiornamenti tramite le \textit{newsletter}.
 \end{enumerate}
+
 Descrizione di scenari alternativi: \\
 SA1 (Non arriva l'email di aggiornamento): 
  \begin{enumerate}
@@ -436,8 +416,81 @@ Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzional
 	\caption{Diagramma Casi d'Uso 2}
 \end{figure}
 
+\clearpage
+\subsubsection{Gestione recapiti}
+\begin{enumerate}
+  \item{(MUST)} Associare un cliente ai suoi dati rilevanti [sportellista, portalettere];
+  \item{(MUST)} Visualizzare gli indirizzi dei clienti [portalettere];
+  \item{(MUST)} Visualizzare le spedizioni in arrivo ad un indirizzo [portalettere];
+  \item{(MUST)} Visualizzare le spedizioni da ritirare [portalettere];
+  \item{(MUST)} Creare una spedizione [sportellista, cliente];
+  \item{(MUST)} Distinguere tra spedizioni interne e spedizioni verso l'esterno [magazziniere];
+  \item{(MUST)} Tenere traccia delle spedizioni prenotate, in corso ed effettuate [responsabile recapiti];
+  \item{(MUST)} Modificare il ciclo di vita di una spedizione(prenotata, in corso, effettuata);
+  \item{(MUST)} Prendere in carico una spedizione [sportellista, portalettere];
+  \item{(MUST)} Aggiornare lo stato di una spedizione:
+    \begin{enumerate}
+      \item{Da "prenotata" a "presa in carico" [sportellista, portalettere]};
+      \item{Da "presa in carico" a "spedita" [magazziniere]};
+      \item{Da "spedita" a "arrivata alla filiale" [magazziniere]};
+      \item{Da "arrivata alla filiale" a "in consegna" [magazziniere]};
+      \item{Da "in consegna" a "consegnata" [portalettere]};
+      \item{Da "in consegna" a "tentato recapito" [portalettere]};
+    \end{enumerate}
+  \item{(MUST)} Filtrare la lista degli indirizzi, di default ordinata per nome del cliente, secondo i seguenti criteri[portalettere]:
+    \begin{enumerate}
+      \item{Comune di appartenenza};
+      \item{Orario preferito per la consegna};
+      \item{Numero di ordini ricevuti};
+      \item{Numero di ordini spediti};
+      \item{Per data ultimo ordine};
+      \item{Per data primo ordine};
+    \end{enumerate}
+  \item{(MUST)} Filtrare la lista delle spedizioni, di default ordinata per data, secondo i seguenti criteri:
+    \begin{enumerate}
+      \item{Per pagamento};
+      \item{Per indirizzo di consegna};
+      \item{Per indirizzo di partenza};
+      \item{Per stato della spedizione};
+    \end{enumerate}
+  \item{(MUST)} Assegnare ad ogni spedizione un codice univoco [magazziniere, portalettere];
+  \item{(MUST)} Identificare una spedizione solo tramite il suo codice [magazziniere, portalettere];
+  \item{(MUST)} Visualizzare la lista dei corrieri esterni [responsabile magazzino];
+  \item{(MAY)}  Aggiornare la lista dei corrieri con i prezzi automaticamente aggiornati [responsabile magazzino];
+  \item{(MUST)} Calcolare un preventivo per il corriere esterno selezionato [responsabile magazzino];
+  \item{(MUST)} Prenotare il ritiro da parte di un corriere [responsabile magazzino];
+  \item{(MUST)} Registrare il pagamento al corriere [direttore]
+\end{enumerate}
 
-
-
-
+\textbf{N.B.} \\
+Tenere a mente la distinzione tra \textbf{ciclo di vita} e \textbf{stato} di una spedizione. Il \textbf{ciclo di vita} si riferisce
+alla situazione della spedizione(prenotata, in corso, effettuata). Per ognuna di queste, la spedizione verrà catalogata in basi di dati differenti.
+Lo \textbf{stato} è proprio solo delle spedizioni \textit{in corso}(presa in carico, consegnata, ecc.).
+\\ \\
+Per il \textbf{caso d'uso 5 (Creare una spedizione)} segue descrizione dettagliata: \\
+Una spedizione può essere creata da due attori separati:
+\begin{enumerate}
+  \item{Sportellista}: nel caso in cui un cliente si rechi in sede per effettuare una spedizione, l'intera operazione viene effettuata dallo sportellista;
+  \item{Cliente}: il cliente può creare la spedizione tramite l'interfaccia offerta. In questo caso la spedizione effettuata verrà considerata come \textit{prenotata}
+    e il cliente dovrà attendere il ritiro alla prima data utile.
+  
+\end{enumerate}
+Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzionale 2: Gestione recapito} :
+\begin{figure}[H]
+\centering
+\includegraphics[width=10cm]{assets/usecase_recapito_1.png}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{assets/usecase_recapito_2.png}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{assets/usecase_recapito_3.png}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{assets/usecase_recapito_4.png}
+	\caption{Diagramma Casi d'Uso Recapito}
+\end{figure}
 \end{document}
