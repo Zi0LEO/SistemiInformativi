@@ -1,0 +1,19 @@
+@startuml
+left to right direction
+
+actor "Sportellista" as sportellista
+
+usecase "Associare un cliente ai suoi dati rilevanti" as UC1
+usecase "Creare una spedizione" as UC5
+usecase "Prendere in carico una spedizione" as UC9
+usecase "Modificare la situazione di una spedizione" as UC8
+usecase "Aggiornare lo stato di una spedizione" as UC10
+
+sportellista -- UC1
+sportellista -- UC5
+sportellista -- UC9
+sportellista -- UC8
+sportellista -- UC10 : "Da 'prenotata' a 'presa in carico'"
+sportellista -- UC10 : "Da 'presa in carico' a 'spedita'"
+
+@enduml

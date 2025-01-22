@@ -1,0 +1,28 @@
+@startuml
+left to right direction
+actor "Responsabile Recapiti" as responsabile_recapiti
+actor "Responsabile Magazzino" as responsabile_magazzino
+actor "Cliente" as cliente
+actor "Direttore" as direttore
+
+usecase "Tenere traccia delle spedizioni prenotate, in corso ed effettuate" as UC7
+usecase "Modificare la situazione di una spedizione" as UC8
+usecase "Visualizzare la lista dei corrieri esterni" as UC15
+usecase "Aggiornare la lista dei corrieri con i prezzi automaticamente" as UC16
+usecase "Calcolare un preventivo per il corriere esterno" as UC17
+usecase "Creare una spedizione" as UC5
+usecase "Prendere in carico una spedizione" as UC9
+usecase "Prenotare il ritiro da un corriere" as UC18
+usecase "registrare il pagamento al corriere" as UC19
+
+responsabile_recapiti -- UC7
+responsabile_recapiti -- UC8
+responsabile_magazzino -- UC15
+responsabile_magazzino -- UC16
+responsabile_magazzino -- UC17
+responsabile_magazzino -- UC18
+cliente -- UC5
+cliente -- UC9
+direttore -- UC19
+
+@enduml
