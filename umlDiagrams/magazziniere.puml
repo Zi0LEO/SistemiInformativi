@@ -1,0 +1,20 @@
+@startuml
+left to right direction
+actor "Magazziniere" as magazziniere
+
+usecase "Distinguere tra spedizioni interne e spedizioni verso l'esterno" as UC6
+usecase "Tenere traccia delle spedizioni prenotate, in corso ed effettuate" as UC7
+usecase "Assegnare ad ogni spedizione un codice univoco" as UC13
+usecase "Identificare una spedizione tramite codice" as UC14
+usecase "Aggiornare lo stato di una spedizione" as UC10
+usecase "Visualizzare la lista dei corrieri esterni" as UC15
+
+magazziniere -- UC6
+magazziniere -- UC7
+magazziniere -- UC13
+magazziniere -- UC14
+magazziniere -- UC10 : "Da 'preso in carico' a 'spedito'"
+magazziniere -- UC10 : "Da 'arrivata alla filiale' a 'in consegna'"
+magazziniere -- UC15
+
+@enduml
