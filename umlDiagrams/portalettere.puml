@@ -1,0 +1,24 @@
+@startuml
+left to right direction
+actor "Portalettere" as portalettere
+
+usecase "Visualizzare gli indirizzi dei clienti" as UC2
+usecase "Visualizzare le spedizioni in arrivo ad un indirizzo" as UC3
+usecase "Visualizzare le spedizioni da ritirare" as UC4
+usecase "Prendere in carico una spedizione" as UC9
+usecase "Aggiornare lo stato di una spedizione" as UC10
+usecase "Filtrare la lista degli indirizzi" as UC11
+usecase "Filtrare la lista delle spedizioni" as UC12
+
+portalettere -- UC2
+portalettere -- UC3
+portalettere -- UC4
+portalettere -- UC9
+portalettere -- UC10 : "Da 'spedita' a 'arrivata alla filiale'"
+portalettere -- UC10 : "Da 'arrivata alla filiale' a 'in consegna'"
+portalettere -- UC10 : "Da 'in consegna' a 'consegnata'"
+portalettere -- UC10 : "Da 'in consegna' a 'tentato recapito'"
+portalettere -- UC11
+portalettere -- UC12
+
+@enduml
