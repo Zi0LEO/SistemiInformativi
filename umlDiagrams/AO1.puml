@@ -1,6 +1,6 @@
 @startuml
 
-|Responsabile Magazzino|
+|Responsabile Recapito|
 start
 :Notifica ricevuta da LE6;
 :Controlla il registro spedizioni;

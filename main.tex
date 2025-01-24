@@ -251,9 +251,9 @@ senza che il cliente vada in sede e senza che lo sportellista lo inserisca manua
 \newpage
 \subsubsection{Invio corrispondenza}
 \textbf{Nome processo} (identificativo): Invio corrispondenza (AO1) \\
-\textbf{Attori coinvolti}: Responsabile magazzino, Magazziniere, Corriere \\
+\textbf{Attori coinvolti}: Responsabile recapito, Magazziniere, Corriere \\
 \textbf{Archivi coinvolti}: Registro spedizioni, Inventario, Rubrica corrieri, Lista spedizioni odierne, Registro pagamenti \\
-\textbf{Descrizione del processo}: Quando notificato da LE6, il \textbf{responsabile magazzino} controlla nel \underline{registro spedizioni} il numero di articoli
+\textbf{Descrizione del processo}: Quando notificato da LE6, il \textbf{responsabile recapito} controlla nel \underline{registro spedizioni} il numero di articoli
 da spedire verso l'esterno. Sceglie un sottoinsieme di articoli (si veda AO4) e compila la \underline{lista spedizioni odierne}, 
 nella quale va ad inserire gli articoli da spedire in giornata. Una volta compilata la lista, consulta la \underline{rubrica corrieri} al fine
 di trovare quello più conveniente alle condizioni specifiche. Una volta effettuata una stima, inizia a contattare le sedi di corrieri, a partire dalla più 
@@ -294,30 +294,30 @@ Si riporta di seguito il dfd di livello 1:
     Cliente & Uno degli utenti dell'OPCAL & - LE1 & \\ 
     \hline 
     Sportellista & Uno dei dipendenti che lavora nella sezione sportello & -LE1 & \begin{itemize} \item Lista utenti 
-    	\item Rubrica degli indirizzi \end{itemize} \\ 
+    \item Rubrica degli indirizzi \end{itemize} \\ 
       \hline 
-    Portalettere & Uno dei dipendenti che lavora nella sezione corrispondenze & -LE1 & $\bullet$ Rubrica degli indirizzi \\ 
-    \hline
-    Responsabile magazzino & Il dipendente a capo del magazzino & -AO1 &
-    \begin{itemize}
-      \item{Registro spedizioni}
-      \item{Lista spedizioni odierne}
-      \item{Rubrica corrieri}
-    \end{itemize} \\
-    \hline
-    Direttore & Il responsabile generale, si occupa principalmente di contabilità & -AO1 &
-    \begin{itemize}
-      \item{Registro pagamenti}
-    \end{itemize} \\
-    \hline
-    Magazziniere & Uno dei dipendenti addetto alla sezione magazzino & -AO1 &
-    \begin{itemize}
-      \item{Lista spedizioni odierne}
-      \item{Inventario}
-    \end{itemize} \\
-    \hline
-    Corriere & Un ente esterno che si occupa di gestire la corrispondenza verso zone non sotto la competenza di OPCal & -AO1 & \\
-    \hline
+      Portalettere & Uno dei dipendenti che lavora nella sezione corrispondenze & -LE1 & $\bullet$ Rubrica degli indirizzi \\ 
+      \hline
+      Responsabile recapito & Il dipendente a capo del recapito & -AO1 &
+      \begin{itemize}
+        \item{Registro spedizioni}
+        \item{Lista spedizioni odierne}
+        \item{Rubrica corrieri}
+      \end{itemize} \\
+      \hline
+      Direttore & Il responsabile generale, si occupa principalmente di contabilità & -AO1 &
+      \begin{itemize}
+        \item{Registro pagamenti}
+      \end{itemize} \\
+      \hline
+      Magazziniere & Uno dei dipendenti addetto alla sezione magazzino & -AO1 &
+      \begin{itemize}
+        \item{Lista spedizioni odierne}
+        \item{Inventario}
+      \end{itemize} \\
+      \hline
+      Corriere & Un ente esterno che si occupa di gestire la corrispondenza verso zone non sotto la competenza di OPCal & -AO1 & \\
+      \hline
   \end{tabularx}
 \end{table}
 
@@ -336,7 +336,7 @@ Si riporta di seguito il dfd di livello 1:
     Registro spedizioni & Archivio in cui sono conservate le informazioni delle spedizioni accettate & -AO1 &
     \begin{itemize}
       \item{Sportellista}
-      \item{Responsabile magazzino}
+      \item{Responsabile recapito}
     \end{itemize} \\
     \hline
     Inventario & Archivio che testimonia lo stato del magazzino, conservando informazioni sugli articoli in esso presenti & -AO1 &
@@ -353,68 +353,68 @@ I gruppi funzionali che si è deciso di implementare sono quelli riguardanti la 
 
 \subsubsection{Gestione clienti}
 \begin{enumerate}
-	\item{(MUST)} Implementare una schermata di sign-in [Cliente];
-	\item{(MUST)} Inserimento dei propri dati anagrafici[Cliente];
-	\item{(MUST)} Modifica dei propri dati anagrafici[Cliente];
-	\item{(MUST)} Implementare la possibilità di poter registrare delle spedizioni[Cliente]; 
-	\item{(MUST)} Implementare la possibilità di poter tracciare le spedizioni[Cliente];
-	\item{(MUST)} Aggiungere una funzione per iniziare una procedura di reso[Cliente];
-	\item{(MUST)} Scaricare tutti i documenti da compilare per procedere con il reso[Cliente];
-	\item{(MUST)} Poter annullare o modificare una procedura di reso[Cliente];
-	\item{(MUST)} Introdurre di un sistema di sicurezza per il login nella piattaforma[Cliente, Sportellista];
-	\item{(MUST)} Dare la possibilità di avere uno storico delle consegne[Cliente];
-	\item{(MUST)} Introdurre un ordinamento per lo storico delle consegne[Cliente]:
-	\begin{enumerate}
-		\item Per data, dalla più alla meno recente (Default);
-		\item Per tipo di spedizione;
-		\item Per numero di ordine;
-		\item In ordine alfabetico.
-	\end{enumerate} 
-	\item{(MUST)} Visualizzare le fatture a proprio carico[Cliente];
-	\item {(MUST)} Ordinare la lista delle fatture a proprio carico[Cliente]:
-	\begin{enumerate}
-		\item Per stato del pagamento (Default);
-		\item Per data del pagamento;
-		\item In ordine alfabetico;
-	\end{enumerate}
-	\item{(MUST)} Visualizzare in tempo reale lo stato delle spedizioni di ogni cliente [Sportellista];
-	\item{(MUST)} Visualizzare in tempo reale lo stato dei pagamenti di ogni cliente [Sportellista];
-	\item{(MUST)} Accedere ai dati anagrafici dei clienti [Sportellista, Portalettere];
-	\item{(MUST)} Modificare i dati anagrafici dei clienti [Sportellista];
-	\item{(MUST)} Accedere ai dati delle spedizioni dei clienti [Sportellista, Portalettere];
-	\item{(MUST)} Modificare i dati in merito alle spedizioni dei clienti [Sportellista, Portalettere];
-	\item {(MUST)}  Implementare un sistema di mailing [Sportellista]:
+  \item{(MUST)} Implementare una schermata di sign-in [Cliente];
+  \item{(MUST)} Inserimento dei propri dati anagrafici[Cliente];
+  \item{(MUST)} Modifica dei propri dati anagrafici[Cliente];
+  \item{(MUST)} Implementare la possibilità di poter registrare delle spedizioni[Cliente]; 
+  \item{(MUST)} Implementare la possibilità di poter tracciare le spedizioni[Cliente];
+  \item{(MUST)} Aggiungere una funzione per iniziare una procedura di reso[Cliente];
+  \item{(MUST)} Scaricare tutti i documenti da compilare per procedere con il reso[Cliente];
+  \item{(MUST)} Poter annullare o modificare una procedura di reso[Cliente];
+  \item{(MUST)} Introdurre di un sistema di sicurezza per il login nella piattaforma[Cliente, Sportellista];
+  \item{(MUST)} Dare la possibilità di avere uno storico delle consegne[Cliente];
+  \item{(MUST)} Introdurre un ordinamento per lo storico delle consegne[Cliente]:
+    \begin{enumerate}
+      \item Per data, dalla più alla meno recente (Default);
+      \item Per tipo di spedizione;
+      \item Per numero di ordine;
+      \item In ordine alfabetico.
+    \end{enumerate} 
+  \item{(MUST)} Visualizzare le fatture a proprio carico[Cliente];
+  \item {(MUST)} Ordinare la lista delle fatture a proprio carico[Cliente]:
+    \begin{enumerate}
+      \item Per stato del pagamento (Default);
+      \item Per data del pagamento;
+      \item In ordine alfabetico;
+    \end{enumerate}
+  \item{(MUST)} Visualizzare in tempo reale lo stato delle spedizioni di ogni cliente [Sportellista];
+  \item{(MUST)} Visualizzare in tempo reale lo stato dei pagamenti di ogni cliente [Sportellista];
+  \item{(MUST)} Accedere ai dati anagrafici dei clienti [Sportellista, Portalettere];
+  \item{(MUST)} Modificare i dati anagrafici dei clienti [Sportellista];
+  \item{(MUST)} Accedere ai dati delle spedizioni dei clienti [Sportellista, Portalettere];
+  \item{(MUST)} Modificare i dati in merito alle spedizioni dei clienti [Sportellista, Portalettere];
+  \item {(MUST)}  Implementare un sistema di mailing [Sportellista]:
 \end{enumerate}
 
 Per il \textbf{Requisito 20, Implementare un sistema di mailing}, si riporta di seguito una descrizione dettagliata: \\
- Attore Principale: Sportellista \\
- Descrizione dello scenario principale:  
- \begin{enumerate}
- \item Un cliente si registra all'interno della piattaforma;
- \item Inserisce nel campo e-mail il suo indirizzo;
- \item Viene creata una \textit{mailing list} e viene inserito all'interno questo cliente;
- \item Comincia una pratica di reso, richiede una spedizione oppure un'appuntamento in sede;
- \item Quando ci sono aggiornamenti su un qualcosa che concerne l'utente viene inviata una e-mail in materia;
- \item Nel caso in cui ci siano informazioni sui servizi dell'organizzazione possono essere mandati aggiornamenti tramite le \textit{newsletter}.
+Attore Principale: Sportellista \\
+Descrizione dello scenario principale:  
+\begin{enumerate}
+  \item Un cliente si registra all'interno della piattaforma;
+  \item Inserisce nel campo e-mail il suo indirizzo;
+  \item Viene creata una \textit{mailing list} e viene inserito all'interno questo cliente;
+  \item Comincia una pratica di reso, richiede una spedizione oppure un'appuntamento in sede;
+  \item Quando ci sono aggiornamenti su un qualcosa che concerne l'utente viene inviata una e-mail in materia;
+  \item Nel caso in cui ci siano informazioni sui servizi dell'organizzazione possono essere mandati aggiornamenti tramite le \textit{newsletter}.
 \end{enumerate}
 
 Descrizione di scenari alternativi: \\
 SA1 (Non arriva l'email di aggiornamento): 
- \begin{enumerate}
- 	\item Viene mandata una seconda e-mail;
- 	\item Se il problema persiste si prova a sostituire l'indirizzo dell'utente o a creare una nuova mailing list.
- \end{enumerate} 
+\begin{enumerate}
+  \item Viene mandata una seconda e-mail;
+  \item Se il problema persiste si prova a sostituire l'indirizzo dell'utente o a creare una nuova mailing list.
+\end{enumerate} 
 Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzionale 1: Gestione clienti}, per semplificare la lettura è diviso in due :
 
 \begin{figure}[H]
-\centering
-\includegraphics[width=11cm]{assets/usecase_clienti.png}
-\caption{Diagramma Casi d'Uso 1}
+  \centering
+  \includegraphics[width=11cm]{assets/usecase_clienti.png}
+  \caption{Diagramma Casi d'Uso 1}
 \end{figure}
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=11cm]{assets/usecase_clienti_2.png}
-	\caption{Diagramma Casi d'Uso 2}
+  \centering
+  \includegraphics[width=11cm]{assets/usecase_clienti_2.png}
+  \caption{Diagramma Casi d'Uso 2}
 \end{figure}
 
 \clearpage
@@ -456,10 +456,10 @@ Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzional
     \end{enumerate}
   \item{(MUST)} Assegnare ad ogni spedizione un codice univoco [magazziniere, portalettere];
   \item{(MUST)} Identificare una spedizione solo tramite il suo codice [magazziniere, portalettere];
-  \item{(MUST)} Visualizzare la lista dei corrieri esterni [responsabile magazzino];
-  \item{(MAY)}  Aggiornare la lista dei corrieri con i prezzi automaticamente aggiornati [responsabile magazzino];
-  \item{(MUST)} Calcolare un preventivo per il corriere esterno selezionato [responsabile magazzino];
-  \item{(MUST)} Prenotare il ritiro da parte di un corriere [responsabile magazzino];
+  \item{(MUST)} Visualizzare la lista dei corrieri esterni [responsabile recapito];
+  \item{(MAY)}  Aggiornare la lista dei corrieri con i prezzi automaticamente aggiornati [responsabile recapito];
+  \item{(MUST)} Calcolare un preventivo per il corriere esterno selezionato [responsabile recapito];
+  \item{(MUST)} Prenotare il ritiro da parte di un corriere [responsabile recapito];
   \item{(MUST)} Registrare il pagamento al corriere [direttore]
 \end{enumerate}
 
@@ -472,26 +472,62 @@ Per il \textbf{caso d'uso 5 (Creare una spedizione)} segue descrizione dettaglia
 Una spedizione può essere creata da due attori separati:
 \begin{enumerate}
   \item{Sportellista}: nel caso in cui un cliente si rechi in sede per effettuare una spedizione, l'intera operazione viene effettuata dallo sportellista;
-  \item{Cliente}: il cliente può creare la spedizione tramite l'interfaccia offerta. In questo caso la spedizione effettuata verrà considerata come \textit{prenotata}
-    e il cliente dovrà attendere il ritiro alla prima data utile.
-  
+  \item{Cliente}: il cliente può creare la spedizione tramite l'interfaccia offerta. Vedi 2.2.1.4;
+
 \end{enumerate}
 Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzionale 2: Gestione recapito} :
 \begin{figure}[H]
-\centering
-\includegraphics[width=10cm]{assets/usecase_recapito_1.png}
+  \centering
+  \includegraphics[width=10cm]{assets/usecase_recapito_1.png}
 \end{figure}
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=10cm]{assets/usecase_recapito_2.png}
+  \centering
+  \includegraphics[width=10cm]{assets/usecase_recapito_2.png}
 \end{figure}
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=10cm]{assets/usecase_recapito_3.png}
+  \centering
+  \includegraphics[width=10cm]{assets/usecase_recapito_3.png}
 \end{figure}
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=10cm]{assets/usecase_recapito_4.png}
-	\caption{Diagramma Casi d'Uso Recapito}
+  \centering
+  \includegraphics[width=10cm]{assets/usecase_recapito_4.png}
+  \caption{Diagramma Casi d'Uso Recapito}
 \end{figure}
+
+\subsection{Requisiti non funzionali}
+Il sistema sarà inizialmente implementato tramite una propria applicazione per pc, che potrà essere utilizzata sia dal personale
+che dalla clientela, differenziando i due casi tramite un sistema di autorizzazioni.
+
+Il sistema dovrà avere le seguenti caratteristiche:
+\begin{itemize}
+  \item{\textbf{Multiutente}}: Diversi utenti, con permessi e livelli di autorità differenti dovranno potersi connettere e visualizzare dati
+    contemporaneamente;
+  \item{\textbf{Multi postazione}}: Il sistema dovrà consentire l'accesso a tutte le postazioni presenti in sede contemporaneamente;
+  \item{\textbf{Indipendenza}}: Il sistema dovrà essere pronto all'utilizzo dopo un'unica installazione, soprattutto nel caso delle funzionalità offerte ai clienti;
+  \item{\textbf{Piattaforma}}: Il sistema deve essere disponibile per il sistema operativo utilizzato in sede (Windows);
+  \item{\textbf{Backup}}: Il sistema eseguirà un backup dei dati a cadenza settimanale;
+\end{itemize} 
+\begin{table}
+  \newcolumntype{Y}{>{\centering\arraybackslash}m{\dimexpr\linewidth/3-2\tabcolsep - 4\arrayrulewidth}}
+
+  \begin{tabularx}{\dimexpr\textwidth-7\arrayrulewidth}{|*{3}{Y|}} % altra stregoneria per cui vuole solo 7
+    \hline
+  \textbf{Utente/Ruolo} & \textbf{Funzioni a cui ha accesso} & \textbf{Requisito funzionale(numero)} \\ 
+  \hline
+  Amministratore & tutte, inclusa la possibilità di aggiungere e/o rimuovere permessi & tutti \\ 
+  \hline
+  Responsabile magazzino & può visualizzare tutto, ma può modificare solo le informazioni relative al magazzino & non implementati\\
+  \hline
+  Responsabile recapito & può visualizzare tutto, ma può modificare solo le informazioni relative al recapito & 2.2.1.7, 10, 14, 15, 16, 18, e quelli elencati in 2.2.2 \\
+  \hline
+  Responsabile sportello & può visualizzare tutto, ma può modificare solo le informazioni relative allo sportello & 2.2.2.2, 3, 4, 11, 12 \\
+  \hline
+  Dipendente & può visualizzare e modificare solo le informazioni relative al proprio reparto & \\
+  \hline
+  Cliente & può accedere solo ad un set prestabilito di funzioni & tutti quelli compresi tra 2.2.1.1 e 2.2.1.13\\
+  \hline
+
+\end{tabularx}
+\end{table}
+
 \end{document}
