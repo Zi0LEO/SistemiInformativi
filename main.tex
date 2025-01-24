@@ -17,7 +17,7 @@
 \usepackage{graphicx}
 \usepackage{titling}
 \usepackage{fancyhdr}
-%\usepackage{cmbright}
+\usepackage{cmbright}
 
 \hypersetup{
   colorlinks=true,
@@ -36,12 +36,12 @@
 }
 
 \author{Umberto Frega, Leonardo Napoli}
-\setlength{\headheight}{14.49998pt}
-\setlength{\footskip}{47.26675pt}
+\setlength{\headheight}{15pt}
+\setlength{\footskip}{47.5pt}
 \addtolength{\topmargin}{-0.49998pt}
 
 \fancyhf{}
-\fancyfoot[R]{\includegraphics[width=1.5cm]{assets/logo.png}}
+\fancyfoot[r]{\includegraphics[width=1.5cm]{assets/logo.png}}
 \fancyhead[L]{OPCal}
 \fancyhead[R]{\theauthor}
 
@@ -462,7 +462,6 @@ Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzional
   \item{(MUST)} Prenotare il ritiro da parte di un corriere [responsabile recapito];
   \item{(MUST)} Registrare il pagamento al corriere [direttore]
 \end{enumerate}
-
 \textbf{N.B.} \\
 Tenere a mente la distinzione tra \textbf{ciclo di vita} e \textbf{stato} di una spedizione. Il \textbf{ciclo di vita} si riferisce
 alla situazione della spedizione(prenotata, in corso, effettuata). Per ognuna di queste, la spedizione verrà catalogata in basi di dati differenti.
@@ -496,8 +495,7 @@ Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzional
 
 \subsection{Requisiti non funzionali}
 Il sistema sarà inizialmente implementato tramite una propria applicazione per pc, che potrà essere utilizzata sia dal personale
-che dalla clientela, differenziando i due casi tramite un sistema di autorizzazioni.
-
+che dalla clientela, differenziando i due casi tramite un sistema di autorizzazioni.\\\\
 Il sistema dovrà avere le seguenti caratteristiche:
 \begin{itemize}
   \item{\textbf{Multiutente}}: Diversi utenti, con permessi e livelli di autorità differenti dovranno potersi connettere e visualizzare dati
@@ -506,28 +504,35 @@ Il sistema dovrà avere le seguenti caratteristiche:
   \item{\textbf{Indipendenza}}: Il sistema dovrà essere pronto all'utilizzo dopo un'unica installazione, soprattutto nel caso delle funzionalità offerte ai clienti;
   \item{\textbf{Piattaforma}}: Il sistema deve essere disponibile per il sistema operativo utilizzato in sede (Windows);
   \item{\textbf{Backup}}: Il sistema eseguirà un backup dei dati a cadenza settimanale;
+  \item{\textbf{Sicurezza}}: Il sistema renderà sicura la gestione degli utenti, rendendo le alcune aree del programma accessibili solo dagli utenti con i permessi.
 \end{itemize} 
-\begin{table}
+\begin{table}[H]
   \newcolumntype{Y}{>{\centering\arraybackslash}m{\dimexpr\linewidth/3-2\tabcolsep - 4\arrayrulewidth}}
 
   \begin{tabularx}{\dimexpr\textwidth-7\arrayrulewidth}{|*{3}{Y|}} % altra stregoneria per cui vuole solo 7
     \hline
   \textbf{Utente/Ruolo} & \textbf{Funzioni a cui ha accesso} & \textbf{Requisito funzionale(numero)} \\ 
   \hline
-  Amministratore & tutte, inclusa la possibilità di aggiungere e/o rimuovere permessi & tutti \\ 
+  Amministratore & Tutte, inclusa la possibilità di aggiungere e/o rimuovere permessi & tutti \\ 
   \hline
-  Responsabile magazzino & può visualizzare tutto, ma può modificare solo le informazioni relative al magazzino & non implementati\\
+  Responsabile magazzino & Può visualizzare tutto, ma può modificare solo le informazioni relative al magazzino & non implementati\\
   \hline
-  Responsabile recapito & può visualizzare tutto, ma può modificare solo le informazioni relative al recapito & 2.2.1.7, 10, 14, 15, 16, 18, e quelli elencati in 2.2.2 \\
+  Responsabile recapito & Può visualizzare tutto, ma può modificare solo le informazioni relative al recapito & 2.2.1.7, 10, 14, 15, 16, 18, e quelli elencati in 2.2.2 \\
   \hline
-  Responsabile sportello & può visualizzare tutto, ma può modificare solo le informazioni relative allo sportello & 2.2.2.2, 3, 4, 11, 12 \\
+  Responsabile sportello & Può visualizzare tutto, ma può modificare solo le informazioni relative allo sportello & 2.2.2.2, 3, 4, 11, 12 \\
   \hline
-  Dipendente & può visualizzare e modificare solo le informazioni relative al proprio reparto & \\
+  Dipendente & Può visualizzare e modificare solo le informazioni relative al proprio reparto & \\
   \hline
-  Cliente & può accedere solo ad un set prestabilito di funzioni & tutti quelli compresi tra 2.2.1.1 e 2.2.1.13\\
+  Cliente & Può accedere solo ad un set prestabilito di funzioni & tutti quelli compresi tra 2.2.1.1 e 2.2.1.13\\
   \hline
-
 \end{tabularx}
 \end{table}
+Di seguito è riportato un diagramma che raffigura la gerarchia tra gli utenti del sistema: 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=4cm]{assets/diagramma_privilegi.png}
+	\caption{Diagramma dei privilegi}
+\end{figure}
+
 
 \end{document}
