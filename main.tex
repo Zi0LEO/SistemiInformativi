@@ -251,9 +251,9 @@ senza che il cliente vada in sede e senza che lo sportellista lo inserisca manua
 \newpage
 \subsubsection{Invio corrispondenza}
 \textbf{Nome processo} (identificativo): Invio corrispondenza (AO1) \\
-\textbf{Attori coinvolti}: Responsabile magazzino, Magazziniere, Corriere \\
+\textbf{Attori coinvolti}: Responsabile recapito, Magazziniere, Corriere \\
 \textbf{Archivi coinvolti}: Registro spedizioni, Inventario, Rubrica corrieri, Lista spedizioni odierne, Registro pagamenti \\
-\textbf{Descrizione del processo}: Quando notificato da LE6, il \textbf{responsabile magazzino} controlla nel \underline{registro spedizioni} il numero di articoli
+\textbf{Descrizione del processo}: Quando notificato da LE6, il \textbf{responsabile recapito} controlla nel \underline{registro spedizioni} il numero di articoli
 da spedire verso l'esterno. Sceglie un sottoinsieme di articoli (si veda AO4) e compila la \underline{lista spedizioni odierne}, 
 nella quale va ad inserire gli articoli da spedire in giornata. Una volta compilata la lista, consulta la \underline{rubrica corrieri} al fine
 di trovare quello più conveniente alle condizioni specifiche. Una volta effettuata una stima, inizia a contattare le sedi di corrieri, a partire dalla più 
@@ -298,7 +298,7 @@ Si riporta di seguito il dfd di livello 1:
       \hline 
       Portalettere & Uno dei dipendenti che lavora nella sezione corrispondenze & -LE1 & $\bullet$ Rubrica degli indirizzi \\ 
       \hline
-      Responsabile magazzino & Il dipendente a capo del magazzino & -AO1 &
+      Responsabile recapito & Il dipendente a capo del recapito & -AO1 &
       \begin{itemize}
         \item{Registro spedizioni}
         \item{Lista spedizioni odierne}
@@ -336,7 +336,7 @@ Si riporta di seguito il dfd di livello 1:
     Registro spedizioni & Archivio in cui sono conservate le informazioni delle spedizioni accettate & -AO1 &
     \begin{itemize}
       \item{Sportellista}
-      \item{Responsabile magazzino}
+      \item{Responsabile recapito}
     \end{itemize} \\
     \hline
     Inventario & Archivio che testimonia lo stato del magazzino, conservando informazioni sugli articoli in esso presenti & -AO1 &
@@ -456,10 +456,10 @@ Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzional
     \end{enumerate}
   \item{(MUST)} Assegnare ad ogni spedizione un codice univoco [magazziniere, portalettere];
   \item{(MUST)} Identificare una spedizione solo tramite il suo codice [magazziniere, portalettere];
-  \item{(MUST)} Visualizzare la lista dei corrieri esterni [responsabile magazzino];
-  \item{(MAY)}  Aggiornare la lista dei corrieri con i prezzi automaticamente aggiornati [responsabile magazzino];
-  \item{(MUST)} Calcolare un preventivo per il corriere esterno selezionato [responsabile magazzino];
-  \item{(MUST)} Prenotare il ritiro da parte di un corriere [responsabile magazzino];
+  \item{(MUST)} Visualizzare la lista dei corrieri esterni [responsabile recapito];
+  \item{(MAY)}  Aggiornare la lista dei corrieri con i prezzi automaticamente aggiornati [responsabile recapito];
+  \item{(MUST)} Calcolare un preventivo per il corriere esterno selezionato [responsabile recapito];
+  \item{(MUST)} Prenotare il ritiro da parte di un corriere [responsabile recapito];
   \item{(MUST)} Registrare il pagamento al corriere [direttore]
 \end{enumerate}
 
