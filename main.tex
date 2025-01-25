@@ -534,5 +534,25 @@ Di seguito è riportato un diagramma che raffigura la gerarchia tra gli utenti d
 	\caption{Diagramma dei privilegi}
 \end{figure}
 
+\newpage
+\section{Progettazione}
+\subsection{Modellazione della base di dati}
+Il requisito \textbf{2.2.2.11} ci guida verso la rappresentazione dei dati relativi agli indirizzi, che dovranno quindi includere codice fiscale(identificativo), comune,
+indirizzo, orario preferito. \\ \\
+Dai requisiti \textbf{2.2.2.8} si evince inoltre la necessità di rappresentare ogni ciclo di vita in una tabella a se stante:
+\begin{itemize}
+  \item Quando \textit{prenotata}, una spedizione sarà caratterizzata da nome e cognome emittente, data di prenotazione, indirizzo di ritiro, data prevista di ritiro,
+    nome e cognome destinatario, indirizzo di consegna. Tenere a mente che uno stesso emittente non può prenotare più di una spedizione lo stesso giorno per lo 
+    stesso destinatario.
+
+  \item Una volta ritirata, la spedizione verrà riferita come \textit{in corso} e sarà caratterizzata da nome e cognome emittente, data di spedizione, peso, prezzo,
+    nome e cognome destinatario, data prevista di consegna e stato. Tenere a mente che uno stesso emittente non può effettuare più di una spedizione lo stesso giorno 
+    per lo stesso destinatario.
+
+  \item Una volta consegnata, la spedizione sarà \textit{effettuata} e sarà caratterizzata da codice fiscale emittente, data di spedizione, data di consegna, codice fiscale
+    destinatario, prezzo.
+\end{itemize}  
+Dal requisito \textbf{2.2.2.15} si evince la necessità di una rubrica corrieri. Ogni corriere sarà caratterizzato da nome, partita iva(identificativa), numero di telefono, sito web,
+prezzo per 1kg, prezzo per 10kg, prezzo per 100kg.
 
 \end{document}
