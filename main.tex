@@ -537,6 +537,14 @@ Di seguito è riportato un diagramma che raffigura la gerarchia tra gli utenti d
 \newpage
 \section{Progettazione}
 \subsection{Modellazione della base di dati}
+Dai requisiti \textbf{2.2.1.1-3}, \textbf{2.2.1.16-17} si può dedurre che all'interno della base di dati dovranno essere rappresentati i dati riguardanti i \textit{clienti}, specificatamente ogni utente sarà caratterizzato da nome, cognome, indirizzo ed e-mail, essendo che l'indirizzo e-mail è univoco esso è utilizzato come identificatore. 
+\\\\
+%TODO: Dai requisiti \textbf{2.2.1.5}, \textbf{2.2.1.18-19} e praticamente l'intero requisito funzionale \textbf{2.2.2} si evince che è importante descrivere i dati relativi alle \textit{spedizioni}, caratterizzate da, esse poi si dividono in due tipi di spedizioni, interne ed esterne \\\\
+Da \textbf{2.2.1.6-8} il cliente può far partire delle procedure di \textit{reso}, caratterizzate dal cliente che le ha fatte partire, la data in cui sono iniziate e la spedizione di cui è stata fatta partire la procedura.
+\\\\
+Dai requisiti \textbf{2.2.1.10-11} si evince che il cliente deve avere associato la lista delle \textit{consegne} a proprio carico, esse sono un tipo di \textit{spedizione esterna}, ogni cliente può avere molte consegne o nessuna.
+\\\\
+I requisiti \textbf{2.2.1.12-13} ci dicono che ogni cliente deve avere a se relazionato la lista delle \textit{fatture} a proprio carico, identificate dal cliente che le possiede.
 Il requisito \textbf{2.2.2.11} ci guida verso la rappresentazione dei dati relativi agli indirizzi, che dovranno quindi includere codice fiscale(identificativo), comune,
 indirizzo, orario preferito. \\ \\
 Dai requisiti \textbf{2.2.2.8} si evince inoltre la necessità di rappresentare ogni ciclo di vita in una tabella a se stante:
