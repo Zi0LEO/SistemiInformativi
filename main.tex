@@ -537,34 +537,30 @@ Di seguito è riportato un diagramma che raffigura la gerarchia tra gli utenti d
 \newpage
 \section{Progettazione}
 \subsection{Modellazione della base di dati}
-Dai requisiti \textbf{2.2.1.1-3}, \textbf{2.2.1.16-17} si può dedurre che all'interno della base di dati dovranno essere rappresentati
+Dai \textbf{requisiti} \textbf{2.2.1.1-3}, \textbf{2.2.1.16-17} si può dedurre che all'interno della base di dati dovranno essere rappresentati
 i dati riguardanti i \textit{clienti}, specificatamente ogni utente sarà caratterizzato da nome, cognome, indirizzo ed e-mail, essendo 
 che l'indirizzo e-mail è univoco esso è utilizzato come identificatore. 
 \\\\
-%TODO: Dai requisiti \textbf{2.2.1.5}, \textbf{2.2.1.18-19} e praticamente l'intero requisito funzionale \textbf{2.2.2} si evince che è importante descrivere i dati relativi alle \textit{spedizioni}, caratterizzate da, esse poi si dividono in due tipi di spedizioni, interne ed esterne \\\\
-Da \textbf{2.2.1.6-8} il cliente può far partire delle procedure di \textit{reso}, caratterizzate dal cliente che le ha fatte partire, 
-la data in cui sono iniziate e la spedizione di cui è stata fatta partire la procedura.
-\\\\
-Dai requisiti \textbf{2.2.1.10-11} si evince che il cliente deve avere associato la lista delle \textit{consegne} a proprio carico, 
-esse sono un tipo di \textit{spedizione esterna}, ogni cliente può avere molte consegne o nessuna.
-\\\\
-I requisiti \textbf{2.2.1.12-13} ci dicono che ogni cliente deve avere a se relazionato la lista delle \textit{fatture} a proprio carico, 
-identificate dal cliente che le possiede.
-\\\\
-Il requisito \textbf{2.2.2.11} ci guida verso la rappresentazione dei dati relativi agli indirizzi, che dovranno quindi includere 
-email(identificativo), comune, orario preferito. \\ \\
-Dai requisiti \textbf{2.2.2.8} si evince inoltre la necessità di rappresentare ogni ciclo di vita in una tabella a se stante:
+Dai \textbf{requisiti} \textbf{2.2.1.5}, \textbf{2.2.1.18-19} e praticamente l'intero \textbf{requisito funzionale }\textbf{2.2.2} si evince che è importante descrivere i dati relativi alle \textit{spedizioni}, caratterizzate dal peso dal prezzo e dal codice, che le identifica anche. Inoltre specificatamente dai \textbf{requisiti} \textbf{2.2.2.8} si evince la necessità di rappresentare ogni ciclo di vita in una tabella a se stante:
 \begin{itemize}
-  \item Quando \textit{prenotata}, una spedizione sarà caratterizzata da un cliente emittente, data di prenotazione, 
-    indirizzo di ritiro, data prevista di ritiro, cliente destinatario, peso e prezzo.
-
-  \item Una volta ritirata, la spedizione verrà riferita come \textit{in corso} e sarà caratterizzata da nome e cognome emittente, 
-    codice identificativo, data di spedizione, peso, prezzo, nome e cognome destinatario, data prevista di consegna e stato.
-
-  \item Una volta consegnata, la spedizione sarà \textit{effettuata} e sarà caratterizzata da cliente emittente, codice identificativo, 
-    data di spedizione, data di consegna, cliente destinatario, prezzo, peso.
+	\item Quando \textit{prenotata}, una spedizione sarà caratterizzata da un cliente emittente, data di prenotazione, 
+	indirizzo di ritiro, data prevista di ritiro, cliente destinatario, peso e prezzo.
+	
+	\item Una volta ritirata, la spedizione verrà riferita come \textit{in corso} e sarà caratterizzata da nome e cognome emittente, 
+	codice identificativo, data di spedizione, peso, prezzo, nome e cognome destinatario, data prevista di consegna e stato.
+	
+	\item Una volta consegnata, la spedizione sarà \textit{effettuata} e sarà caratterizzata da cliente emittente, codice identificativo, 
+	data di spedizione, data di consegna, cliente destinatario, prezzo, peso.
 \end{itemize}  
-Dal requisito \textbf{2.2.2.15} si evince la necessità di una rubrica corrieri. Ogni corriere sarà caratterizzato da nome, 
+Dai \textbf{requisiti} \textbf{2.2.1.6-8} il cliente può far partire delle procedure di \textit{reso}, caratterizzate dal cliente che le ha fatte partire, la data in cui sono iniziate e la spedizione per cui è stata fatta partire. Un cliente può iniziare più resi, ma un reso è collegato a un unico cliente.
+\\\\
+Dai \textbf{requisiti} \textbf{2.2.1.10-11} si evince che il cliente deve avere associato la lista delle \textit{consegne} a proprio carico,  esse sono un tipo di \textit{spedizione}, ogni cliente può avere molte consegne o nessuna, ma una consegna può essere assegnata ad un unico cliente.
+\\\\
+I \textbf{requisiti} \textbf{2.2.1.12-13} ci dicono che ogni cliente deve avere a se relazionato la lista delle \textit{fatture} a proprio carico, identificate dal numero della fattura e caratterizzata dalla data di emissione e dallo stato del pagamento, inoltre le fatture sono connesse alla spedizione di tipo prenotata che hanno pagato, senza un pagamento una spedizione non verrà presa a carico da un corriere.Ogni fattura può avere un cliente, ma un cliente può averne molte come una consegna può avere una fattura e una fattura è per una sola consegna.
+\\\\
+Il \textbf{requisito} \textbf{2.2.2.11} ci guida verso la rappresentazione dei dati relativi agli indirizzi, che dovranno quindi includere 
+email(identificativo), comune, orario preferito. \\ \\
+Dal \textbf{requisito} \textbf{2.2.2.15} si evince la necessità di una rubrica corrieri. Ogni corriere sarà caratterizzato da nome, 
 partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezzo per 10kg, prezzo per 100kg.
 
 \subsection{Modello concettuale}
@@ -573,4 +569,68 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
   \includegraphics[width=\textwidth]{assets/ER_diagram.jpg}
   \caption{Diagramma E-R}
 \end{figure}
+\subsubsection{Vincoli d'integrità}
+\begin{enumerate}
+	\item Il valore dell'attributo \textit{stato} all'interno del'entità \textit{reso} potrà essere solo: richiesto, processato, terminato;
+	\item Il valore dell'attributo \textit{data} all'interno dell'entità \textit{reso} deve essere posteriore al valore \textit{data} all'interno dell'entità \textit{Effettuata};
+	\item Il valore dell'attributo \textit{codice} di \textit{Spedizione} deve avere una formattazione del tipo S12345;
+	\item Il valore dell'attributo \textit{stato} dell'entità \textit{fattura} può essere: pagamento confermato, non regolarizzata. 
+\end{enumerate}
+\subsubsection{Regole di derivazione}
+\begin{enumerate}
+	\item L'attributo \textit{prezzo 10kg} dell'entità \textit{Corriere} è l'attributo \textit{prezzo 1kg}$*10$;
+	\item L'attributo \textit{prezzo 100kg} dell'entità \textit{Corriere} è l'attributo \textit{prezzo 10kg}$*10$.
+\end{enumerate}
+\subsubsection{Dizionario dei concetti per entità}
+\begin{table}[H]
+	\centering
+	\newcolumntype{Y}{>{\centering\arraybackslash}m{\dimexpr\linewidth/4-2\tabcolsep - 5\arrayrulewidth}}
+	\begin{tabularx}{\dimexpr\textwidth-15\arrayrulewidth}{|*{4}{Y|}} %sempre 15 manco io so perché
+		\hline
+		\textbf{Entità} & \textbf{Descrizione} & \textbf{Attributi} & \textbf{Identificatore} \\ \hline
+		 Reso & Rappresenta i resi iniziati dai clienti & Data,stato, cliente associiato & Cliente associato \\
+		 \hline
+		 Cliente & Rappresenta i clienti dell'organizzazione & Nome, cognome, e-mail & E-mail \\
+		\hline 
+		Indirizzo & Rappresenta l'indirizzo di spedizione dei clienti & Comune, indirizzo, orario preferito & Comune, indirizzo \\ 
+		\hline
+		Fattura & Rappresenta le fatture delle spedizioni dei clienti & Codice, stato, importo, data & Codice\\
+		\hline
+		Spedizione & Rappresenta le spedizioni & Codice, peso, prezzo & Codice \\ 
+		\hline
+		Effettuata & Rappresenta le spedizioni effettuate & Quelle dell'entità madre, data di cosegna, data di spedizione & Codice entità madre \\
+		\hline
+		In corso & Rappresenta le spedizioni in corso & Quelle dell'entità madre, data di spedizione, stato & Codice entità madre \\
+		\hline
+		Prenotata & Rappresenta le spedizioni prenotate & Quelle dell'entità madre, data di prenotazione & Codice entità madre \\
+		\hline
+		Corrirere & Rappresenta i corrieri dell'organizzazione & Partita IVA, sito web, nome, telefono, prezzo 1kg, prezzo 10kg, prezzo 100kg & Partita IVA \\
+		\hline 
+	\end{tabularx}
+\end{table}
+
+\subsection{Dizionario dei concetti per relazione}
+\begin{table}[H]
+	\centering
+	\newcolumntype{Y}{>{\centering\arraybackslash}m{\dimexpr\linewidth/4-2\tabcolsep - 5\arrayrulewidth}}
+	\begin{tabularx}{\dimexpr\textwidth-15\arrayrulewidth}{|*{4}{Y|}} %sempre 15 manco io so perché
+		\hline
+		\textbf{Relazione} & \textbf{Descrizione} & \textbf{Entità coinvolte} & \textbf{Attributi} \\ \hline
+		$R_{rs}$ & Associa i resi ai clienti & Reso, Cliente & \\ 
+		\hline
+		$R_{ci}$ & Associa i clienti ai loro indirizzi & Cliente, Indirizzo & \\ 
+	    \hline
+	    $R_{fc}$ & Associa i clienti alle loro fatture & Fattura, Cliente & \\
+	    \hline
+	    Manda & Associa il cliente alla spedizione che fa spedire & Cliente, Spedizione & \\
+	    \hline 
+	    Riceve & Associa il cliente alla spedizione che riceve & Cliente, Spedizione & \\
+	    \hline
+	    Ritiro & Associa la spedizione di tipo prenotata all'indirizzo in cui verrà ritirata & Prenotata, Indirizzo & Data \\
+	    \hline 
+	    $R_{re}$ & Associa il reso alla spedizione di tipo effettuata su cui è stato effettuato & Reso, Effettuata & \\ \hline 
+	\end{tabularx}
+\end{table}
+\section{Modello relazionale }
+
 \end{document}
