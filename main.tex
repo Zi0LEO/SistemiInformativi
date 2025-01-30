@@ -42,7 +42,7 @@
 
 \fancyhf{}
 \fancyfoot[r]{\includegraphics[width=1.5cm]{assets/logo.png}}
-\fancyfoot[L]{Pagina \thepage}
+\fancyfoot[L]{\thepage}
 \fancyhead[L]{OPCal}
 \fancyhead[R]{\theauthor}
 
@@ -111,8 +111,9 @@ Le macro-funzionalità fornite dal sistema infomativo sono le seguenti:
       \item Il sistema avrà la funzionalità di mantenere, organizzare e visualizzare le informazioni riguardanti i clienti, 
         quali \textit{spedizioni a carico}, \textit{saldo corrente} e \textit{pacchi in arrivo}.
       \item Ogni cliente avrà la possibilità di visualizzare i suoi dati, prenotarsi allo sportello e prenotare una spedizione 
-        tramite l'apposito sito web oppure l'applicativo per dispositivi mobile.
+        tramite le interfacce offerte.
       \item L'utente potrà gestire il proprio saldo corrente e decidere come utilizzarlo.
+      \item Il sistema sarà inizialmente disponibile esclusivamente come applicazione per pc.
     \end{itemize}
   \item \textbf{Gestione dei Dipendenti} \begin{itemize}
       \item Il sistema terrà traccia dei vari dipendenti e delle operazioni che svolgono durante il giorno, nonchè dei loro 
@@ -287,8 +288,10 @@ Si riporta di seguito il dfd di livello 1:
 \subsubsection{Attori e archivi}
 \begin{table}[H]
   \centering
-  \newcolumntype{Y}{>{\centering\arraybackslash}m{\dimexpr\linewidth/4-2\tabcolsep - 5\arrayrulewidth}}
-  \begin{tabularx}{\dimexpr\textwidth-15\arrayrulewidth}{|*{4}{Y|}} %non so perchè ma vuole proprio 15
+  \begin{tabular}{|>{\centering\arraybackslash}m{0.20\textwidth}|
+                  >{\centering\arraybackslash}m{0.24\textwidth}|
+                  >{\centering\arraybackslash}m{0.12\textwidth}|
+                  >{\centering\arraybackslash}m{0.33\textwidth}|}
     \hline
     \textbf{Attore} & \textbf{Descrizione} & \textbf{Processi in cui è coinvolto} & \textbf{Archivi a cui accede} \\ 
     \hline
@@ -319,20 +322,25 @@ Si riporta di seguito il dfd di livello 1:
       \hline
       Corriere & Un ente esterno che si occupa di gestire la corrispondenza verso zone non sotto la competenza di OPCal & -AO1 & \\
       \hline
-  \end{tabularx}
+  \end{tabular}
 \end{table}
 
 \begin{table}
   \centering
-  \newcolumntype{Y}{>{\centering\arraybackslash}m{\dimexpr\linewidth/4-2\tabcolsep - 5\arrayrulewidth}}
-
-  \begin{tabularx}{\dimexpr\textwidth-15\arrayrulewidth}{|*{4}{Y|}} %non so perchè ma vuole proprio 15
+  \begin{tabular}{|>{\centering\arraybackslash}m{0.20\textwidth}|
+                  >{\centering\arraybackslash}m{0.24\textwidth}|
+                  >{\centering\arraybackslash}m{0.12\textwidth}|
+                  >{\centering\arraybackslash}m{0.33\textwidth}|}
     \hline
     \textbf{Archivio} & \textbf{Descrizione} & \textbf{Processi in cui è coinvolto} & \textbf{Attori che vi accedono} \\ \hline
-    Lista degli utenti & Archivio in cui sono scritte le informazioni su ogni utente, quali nome, cognome, codice fiscale, e-mail & -LE1 & $\bullet$ Sportellista \\ 
+    Lista degli utenti & Archivio in cui sono scritte le informazioni su ogni utente, quali nome, cognome, codice fiscale, e-mail & -LE1 & \begin{itemize}
+      \item Sportellista
+    \end{itemize} \\ 
     \hline 
     Rubrica degli indirizzi & Archivio in cui sono scritte informazioni sugli utenti specifiche per i portalettere, queste sono nome, cognome, numero di telefono,
-    indirizzo & -LE1 & $\bullet$ Portalettere \\ 
+    indirizzo & -LE1 & \begin{itemize}
+      \item Portalettere
+    \end{itemize} \\ 
     \hline
     Registro spedizioni & Archivio in cui sono conservate le informazioni delle spedizioni accettate & -AO1 &
     \begin{itemize}
@@ -345,7 +353,7 @@ Si riporta di seguito il dfd di livello 1:
       \item{Magazziniere}
     \end{itemize} \\
     \hline
-  \end{tabularx}
+  \end{tabular}
 \end{table}
 
 \newpage
@@ -578,10 +586,6 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 	\item Il valore dell'attributo \textit{stato} dell'entità \textit{fattura} può essere: pagamento confermato, non regolarizzata. 
 \end{enumerate}
 \subsubsection{Regole di derivazione}
-\begin{enumerate}
-	\item L'attributo \textit{prezzo 10kg} dell'entità \textit{Corriere} è l'attributo \textit{prezzo 1kg}$*10$;
-	\item L'attributo \textit{prezzo 100kg} dell'entità \textit{Corriere} è l'attributo \textit{prezzo 10kg}$*10$.
-\end{enumerate}
 \subsubsection{Dizionario dei concetti per entità}
 \begin{table}[H]
 	\centering
