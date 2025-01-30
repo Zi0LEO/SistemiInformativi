@@ -17,6 +17,7 @@
 \usepackage{graphicx}
 \usepackage{titling}
 \usepackage{fancyhdr}
+\usepackage{minted}
 \usepackage{cmbright}
 
 \hypersetup{
@@ -667,6 +668,22 @@ Il modello relazionale sarà il seguente:
   \item \textbf{Prenotata}(\underline{Codice}, Peso, Prezzo, DataRitiro, DataSpedizione, EmailCliente) \\ \textbf{Prenotata}(Codice, EmailCliente) $\subseteq _{FK}$ \textbf{Spedizione}(Codice, EmailCliente);
   \item \textbf{Corriere}(\underline{IVA}, Nome, Sito, Telefono, Prezzo1, Prezzo10, Prezzo100);
   \item \textbf{Reso}(\underline{EmailCliente}, Data, Stato)\\ \textbf{Reso}(EmailCliente) $\subseteq _{FK}$ \textbf{Cliente}(Email);
-
 \end{itemize}
+\subsubsection{Triggers}
+\begin{minted}[]{sql}
+	SELECT name, age
+	FROM users
+	WHERE age > 18;
+\end{minted}
+
+
+
+
+
+
+
+
+
+
+
 \end{document}
