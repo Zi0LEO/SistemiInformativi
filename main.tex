@@ -595,11 +595,11 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 	\begin{tabularx}{\dimexpr\textwidth-15\arrayrulewidth}{|*{4}{Y|}} %sempre 15 manco io so perché
 		\hline
 		\textbf{Entità} & \textbf{Descrizione} & \textbf{Attributi} & \textbf{Identificatore} \\ \hline
-		 Reso & Rappresenta i resi iniziati dai clienti & Data,stato, cliente associiato & Cliente associato \\
+		 Reso & Rappresenta i resi iniziati dai clienti & Data,stato, cliente associato & Cliente associato \\
 		 \hline
 		 Cliente & Rappresenta i clienti dell'organizzazione & Nome, cognome, e-mail & E-mail \\
 		\hline 
-		Indirizzo & Rappresenta l'indirizzo di spedizione dei clienti & Comune, indirizzo, orario preferito & Comune, indirizzo \\ 
+		Indirizzo & Rappresenta l'indirizzo di spedizione dei clienti & Comune, Via, Civico, EmailCliente, Orario & Comune, Via, Civico \\ 
 		\hline
 		Fattura & Rappresenta le fatture delle spedizioni dei clienti & Codice, stato, importo, data & Codice\\
 		\hline
@@ -626,20 +626,48 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 		$R_{rs}$ & Associa i resi ai clienti & Reso, Cliente & \\ 
 		\hline
 		$R_{ci}$ & Associa i clienti ai loro indirizzi & Cliente, Indirizzo & \\ 
-	    \hline
-	    $R_{fc}$ & Associa i clienti alle loro fatture & Fattura, Cliente & \\
-	    \hline
-	    Manda & Associa il cliente alla spedizione che fa spedire & Cliente, Spedizione & \\
-	    \hline 
-	    Riceve & Associa il cliente alla spedizione che riceve & Cliente, Spedizione & \\
-	    \hline
-      Ritiro & Associa la spedizione di tipo prenotata all'indirizzo in cui verrà ritirata & Prenotata, Indirizzo & \\
-	    \hline 
-	    $R_{re}$ & Associa il reso alla spedizione di tipo effettuata su cui è stato effettuato & Reso, Effettuata & \\ \hline 
+    \hline
+    $R_{fc}$ & Associa i clienti alle loro fatture & Fattura, Cliente & \\
+    \hline
+    Manda & Associa il cliente alla spedizione che fa spedire & Cliente, Spedizione & \\
+    \hline 
+    Riceve & Associa il cliente alla spedizione che riceve & Cliente, Spedizione & \\
+    \hline
+    Ritiro & Associa la spedizione di tipo prenotata all'indirizzo in cui verrà ritirata & Prenotata, Indirizzo & \\
+    \hline 
+    $R_{re}$ & Associa il reso alla spedizione di tipo effettuata su cui è stato effettuato & Reso, Effettuata & \\ \hline 
 	\end{tabularx}
 \end{table}
 
 \subsection{Modello relazionale}
-La sintassi utilizzata t
+La sintassi utilizzata nel modello relazionale è la seguente:
+\begin{itemize}
+  \item Per ogni schema di relazione, il nome viene indicato in grassetto, mentre i suoi attributi sono espressi tra parentesi, ad esempio \textbf{Relazione}(attributo1,.., attributoN)
+  \item Negli schemi di relazione, vengono indicati i vincoli di chiave primaria sottolineando gli attributi parte della chiave, ad esempio \textbf{Relazione}(\underline{attributo1, attributo2},.., attributoN)
+  \item Eventuali altri chiavi verranno specificate al di sotto della relazione con la keyword "Unique" in corsivo, ad esempio \\ \textbf{Relazione}(\underline{chiave}, attributo)\\ \textit{Unique}(attributo)
+  \item Eventuali vincoli di integrità referenziale saranno descritti al di sotto della relazione a cui appartengono, nella forma \textbf{R1}(a1) $\subseteq _{FK}$ \textbf{R2}(a1)
+\end{itemize}
 
+I tipi di dato utilizzati per gli attributi sono i seguenti:
+\begin{itemize}
+  \item INT: quantità intere;
+  \item FLOAT: prezzi, pesi;
+  \item DATE: rappresenta le date nel formato gg/mm/aaaa;
+  \item VAR\_CHAR: stringhe di testo, codici alfanumerici;
+\end{itemize}
+
+Il modello relazionale sarà il seguente:
+\begin{itemize}
+  \item \textbf{Cliente}(\underline{Email}, Nome, Cognome, Comune, Via, Civico)\\ \textbf{Cliente}(Comune, Via, Civico)$\subseteq _{FK}$\textbf{Indirizzo}(Comune, Via, Civico)
+  \item \textbf{Indirizzo}(\underline{Comune, Via, Civico}, Orario); 
+  \item \textbf{Fattura}(\underline{Codice}, Stato, Importo, Data);
+  \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, EmailEmittente, EmailDestinatario) \\ \textbf{Spedizione}(EmailCliente) $\subseteq _{FK}$ \textbf{Cliente}(Email);
+  \item \textbf{Effettuata}(\underline{Codice}, Peso, Prezzo, DataConsegna, DataSpedizione, EmailCliente) \\ \textbf{Effettuata}(Codice, EmailCliente) $\subseteq _{FK}$ \textbf{Spedizione}(Codice, EmailCliente);
+  \item \textbf{InCorso}(\underline{Codice}, Peso, Prezzo, DataSpedizione, Stato, EmailCliente) \\ \textbf{InCorso}(Codice, EmailCliente) $\subseteq _{FK}$ \textbf{Spedizione}(Codice, EmailCliente);
+  \item \textbf{Prenotata}(\underline{Codice}, Peso, Prezzo, DataRitiro, DataSpedizione, EmailCliente) \\ \textbf{Prenotata}(Codice, EmailCliente) $\subseteq _{FK}$ \textbf{Spedizione}(Codice, EmailCliente);
+  \item \textbf{Corriere}(\underline{IVA}, Nome, Sito, Telefono, Prezzo1, Prezzo10, Prezzo100);
+  \item \textbf{Reso}(\underline{EmailCliente}, Data, Stato)\\ \textbf{Reso}(EmailCliente) $\subseteq _{FK}$ \textbf{Cliente}(Email);
+    
+  
+\end{itemize}
 \end{document}
