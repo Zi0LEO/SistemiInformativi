@@ -580,12 +580,14 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 \end{figure}
 \subsubsection{Vincoli d'integrità}
 \begin{enumerate}
+  \item Il valore dell'attributo \textit{stato} all'interno dell'entità \textit{effettuata} potrà essere solo: presa in carico, spedita, arrivata alla filiale, in consegna, consegnata, in attesa di ritiro;
+  \item L'entità \textit{prenotata} avrà una relazione \textit{ritiro} solo se l'indirizzo di ritiro è diverso dall'indirizzo dell'emittente;
+  \item Gli attributi \textit{data di ritiro} e \textit{data consegna} devono sempre essere successivi rispettivamente a \textit{data prenotazione} e \textit{data spedizione};
 	\item Il valore dell'attributo \textit{stato} all'interno del'entità \textit{reso} potrà essere solo: richiesto, processato, terminato;
 	\item Il valore dell'attributo \textit{data} all'interno dell'entità \textit{reso} deve essere posteriore al valore \textit{data} all'interno dell'entità \textit{Effettuata};
 	\item Il valore dell'attributo \textit{codice} di \textit{Spedizione} deve avere una formattazione del tipo S12345;
 	\item Il valore dell'attributo \textit{stato} dell'entità \textit{fattura} può essere: pagamento confermato, non regolarizzata. 
 \end{enumerate}
-\subsubsection{Regole di derivazione}
 \subsubsection{Dizionario dei concetti per entità}
 \begin{table}[H]
 	\centering
@@ -607,9 +609,9 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 		\hline
 		In corso & Rappresenta le spedizioni in corso & Quelle dell'entità madre, data di spedizione, stato & Codice entità madre \\
 		\hline
-		Prenotata & Rappresenta le spedizioni prenotate & Quelle dell'entità madre, data di prenotazione & Codice entità madre \\
+		Prenotata & Rappresenta le spedizioni prenotate & Quelle dell'entità madre, data di prenotazione, data di ritiro & Codice entità madre \\
 		\hline
-		Corrirere & Rappresenta i corrieri dell'organizzazione & Partita IVA, sito web, nome, telefono, prezzo 1kg, prezzo 10kg, prezzo 100kg & Partita IVA \\
+		Corriere & Rappresenta i corrieri associati all'organizzazione & Partita IVA, sito web, nome, telefono, prezzo 1kg, prezzo 10kg, prezzo 100kg & Partita IVA \\
 		\hline 
 	\end{tabularx}
 \end{table}
@@ -631,11 +633,13 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 	    \hline 
 	    Riceve & Associa il cliente alla spedizione che riceve & Cliente, Spedizione & \\
 	    \hline
-	    Ritiro & Associa la spedizione di tipo prenotata all'indirizzo in cui verrà ritirata & Prenotata, Indirizzo & Data \\
+      Ritiro & Associa la spedizione di tipo prenotata all'indirizzo in cui verrà ritirata & Prenotata, Indirizzo & \\
 	    \hline 
 	    $R_{re}$ & Associa il reso alla spedizione di tipo effettuata su cui è stato effettuato & Reso, Effettuata & \\ \hline 
 	\end{tabularx}
 \end{table}
-\section{Modello relazionale }
+
+\subsection{Modello relazionale}
+La sintassi utilizzata t
 
 \end{document}
