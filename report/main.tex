@@ -17,6 +17,7 @@
 \usepackage{graphicx}
 \usepackage{titling}
 \usepackage{fancyhdr}
+\usepackage{minted}
 \usepackage{cmbright}
 
 \hypersetup{
@@ -586,6 +587,12 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 	\item Il valore dell'attributo \textit{data} all'interno dell'entità \textit{reso} deve essere posteriore al valore \textit{data} all'interno dell'entità \textit{Effettuata};
 	\item Il valore dell'attributo \textit{codice} di \textit{Spedizione} deve avere una formattazione del tipo S12345;
 	\item Il valore dell'attributo \textit{stato} dell'entità \textit{fattura} può essere: pagamento confermato, non regolarizzata. 
+	\item Il valore dell'attributo \textit{stato} all'interno dell'entità \textit{in corso} potrà essere solo: presa in carico, spedita, arrivata alla filiale, in consegna, consegnata, in attesa di ritiro;
+	\item L'entità \textit{prenotata} avrà una relazione \textit{ritiro} solo se l'indirizzo di ritiro è diverso dall'indirizzo dell'emittente;
+	\item Gli attributi \textit{data di ritiro} e \textit{data consegna} devono sempre essere successivi rispettivamente a \textit{data prenotazione} e \textit{data spedizione};
+	\item Il valore dell'attributo \textit{stato} all'interno del'entità \textit{reso} potrà essere solo: richiesto, processato, terminato;
+	\item Il valore dell'attributo \textit{codice} di \textit{Spedizione} deve avere una formattazione del tipo S12345;
+	
 \end{enumerate}
 
 \subsubsection*{Regole di derivazione}
@@ -676,4 +683,71 @@ Il modello relazionale sarà il seguente:
   \item \textbf{Reso}(\underline{IdMittente}, Data, Stato)\\ \textbf{Reso}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id);
 
 \end{itemize}
+\subsubsection{Triggers}
+In merito al \textit{vincolo di integrità} 1 che tratta lo schema di relazione \textbf{Reso}(\underline{EmailCliente}, Data, Stato) ed \textbf{Effettuata}(Codice, EmailCliente), nel momento in cui all'interno dell'attributo data dell'entità \textbf{reso} si vuole inserire una nuova tupla bisogna controllare che la condizione per cui la \textit{data} che si sta cercando di inserire nel \textbf{reso} sia maggiore (posteriore) a quella che è attualmente all'interno di \textit{data consegna }di \textbf{effettuata}.
+\begin{minted}[linenos]{sql}
+DELIMITER //
+CREATE TRIGGER 'vincoli_date_insert'
+BEFORE INSERT ON Reso
+FOR EACH ROW BEGIN
+IF (EXISTS 
+	(SELECT *
+	FROM Effettuata
+	WHERE NEW.data > dataCosegna))
+THEN SIGNAL SQLSTATE '45000'
+	SET MESSAGE_TEXT = 'Vincolo di integrità su Reso non rispettato';
+END IF;
+END //
+DELIMITER;
+\end{minted}
+Di seguito è anche riportata la versione analoga per gli aggiornamenti nella tupla.
+\begin{minted}[linenos]{sql}
+DELIMITER //
+CREATE TRIGGER 'vincoli_date_update' 
+BEFORE UPDATE ON Reso
+FOR EACH ROW BEGIN
+IF (EXISTS 
+	(SELECT *
+	FROM Effettuata
+	WHERE NEW.data > dataCosegna))
+THEN SIGNAL SQLSTATE '45000'
+	SET MESSAGE_TEXT = 'Vincolo di integrità su Reso non rispettato';
+END IF;
+END //
+DELIMITER;
+\end{minted}
+ Un altro vincolo d'integrità è quello per valore dell'attributo \textit{stato} all'interno di \textbf{fattura}, nel caso in cui si vuole inserire un bisogna controllare che sia all'interno dell'insieme degli stati ammissibili.
+ \begin{minted}[linenos]{sql}
+ DELIMITER //
+ CREATE TRIGGER 'vincoli_fatture_insert'
+ BEFORE INSERT ON Fattura
+ FOR EACH ROW BEGIN 
+IF (NEW.stato NOT IN ('pagamento confermato', 'non regolarizzata'))
+ THEN SIGNAL SQLSTATE '4500'
+ 	SET MESSAGE_TEXT ='Vincolo di integrità su Fattura non rispettato';
+ END IF;
+ END //
+ DELIMETER;
+ \end{minted}
+Segue la versione analoga per gli update.
+\begin{minted}[linenos]{sql}
+DELIMITER //
+CREATE TRIGGER 'vincoli_fatture_insert'
+BEFORE UPDATE ON Fattura
+FOR EACH ROW BEGIN 
+IF (NEW.stato NOT IN ('pagamento confermato', 'non regolarizzata'))
+THEN SIGNAL SQLSTATE '4500'
+	SET MESSAGE_TEXT ='Vincolo di integrità su Fattura non rispettato';
+END IF;
+END //
+DELIMETER;
+\end{minted}
+
+
+
+
+
+
+
+
 \end{document}
