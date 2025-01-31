@@ -547,19 +547,18 @@ Di seguito è riportato un diagramma che raffigura la gerarchia tra gli utenti d
 \section{Progettazione}
 \subsection{Modellazione della base di dati}
 Dai \textbf{requisiti} \textbf{2.2.1.1-3}, \textbf{2.2.1.16-17} si può dedurre che all'interno della base di dati dovranno essere rappresentati
-i dati riguardanti i \textit{clienti}, specificatamente ogni utente sarà caratterizzato da nome, cognome, indirizzo ed e-mail, essendo 
-che l'indirizzo e-mail è univoco esso è utilizzato come identificatore. 
+i dati riguardanti i \textit{clienti}, specificatamente ogni utente sarà caratterizzato da id, nome, cognome, indirizzo ed e-mail. 
 \\\\
 Dai \textbf{requisiti} \textbf{2.2.1.5}, \textbf{2.2.1.18-19} e praticamente l'intero \textbf{requisito funzionale }\textbf{2.2.2} si evince che è importante descrivere i dati relativi alle \textit{spedizioni}, caratterizzate dal peso dal prezzo e dal codice, che le identifica anche. Inoltre specificatamente dai \textbf{requisiti} \textbf{2.2.2.8} si evince la necessità di rappresentare ogni ciclo di vita in una tabella a se stante:
 \begin{itemize}
 	\item Quando \textit{prenotata}, una spedizione sarà caratterizzata da un cliente emittente, data di prenotazione, 
 	indirizzo di ritiro, data prevista di ritiro, cliente destinatario, peso e prezzo.
 	
-	\item Una volta ritirata, la spedizione verrà riferita come \textit{in corso} e sarà caratterizzata da nome e cognome emittente, 
-	codice identificativo, data di spedizione, peso, prezzo, nome e cognome destinatario, data prevista di consegna e stato.
+	\item Una volta ritirata, la spedizione verrà riferita come \textit{in corso} e sarà caratterizzata da emittente, 
+	codice identificativo, data di spedizione, peso, prezzo, destinatario, data prevista di consegna e stato.
 	
-	\item Una volta consegnata, la spedizione sarà \textit{effettuata} e sarà caratterizzata da cliente emittente, codice identificativo, 
-	data di spedizione, data di consegna, cliente destinatario, prezzo, peso.
+	\item Una volta consegnata, la spedizione sarà \textit{effettuata} e sarà caratterizzata da emittente, codice identificativo, 
+	data di spedizione, data di consegna, destinatario, prezzo, peso.
 \end{itemize}  
 Dai \textbf{requisiti} \textbf{2.2.1.6-8} il cliente può far partire delle procedure di \textit{reso}, caratterizzate dal cliente che le ha fatte partire, la data in cui sono iniziate e la spedizione per cui è stata fatta partire. Un cliente può iniziare più resi, ma un reso è collegato a un unico cliente.
 \\\\
@@ -578,16 +577,23 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
   \includegraphics[width=\textwidth]{assets/ER_diagram.jpg}
   \caption{Diagramma E-R}
 \end{figure}
-\subsubsection{Vincoli d'integrità}
+\subsubsection*{Vincoli d'integrità}
 \begin{enumerate}
   \item Il valore dell'attributo \textit{stato} all'interno dell'entità \textit{effettuata} potrà essere solo: presa in carico, spedita, arrivata alla filiale, in consegna, consegnata, in attesa di ritiro;
   \item L'entità \textit{prenotata} avrà una relazione \textit{ritiro} solo se l'indirizzo di ritiro è diverso dall'indirizzo dell'emittente;
-  \item Gli attributi \textit{data di ritiro} e \textit{data consegna} devono sempre essere successivi rispettivamente a \textit{data prenotazione} e \textit{data spedizione};
+  \item Gli attributi \textit{data ritiro} e \textit{data consegna} devono sempre essere successivi rispettivamente a \textit{data prenotazione} e \textit{data spedizione};
 	\item Il valore dell'attributo \textit{stato} all'interno del'entità \textit{reso} potrà essere solo: richiesto, processato, terminato;
 	\item Il valore dell'attributo \textit{data} all'interno dell'entità \textit{reso} deve essere posteriore al valore \textit{data} all'interno dell'entità \textit{Effettuata};
 	\item Il valore dell'attributo \textit{codice} di \textit{Spedizione} deve avere una formattazione del tipo S12345;
 	\item Il valore dell'attributo \textit{stato} dell'entità \textit{fattura} può essere: pagamento confermato, non regolarizzata. 
 \end{enumerate}
+
+\subsubsection*{Regole di derivazione}
+Alcuni attributi devono essere derivati automaticamente dal sistema:
+\begin{itemize}
+  \item L'attributo id della relazione cliente è un numero progressivo che identifica univocamente il cliente;
+  
+\end{itemize}
 \subsubsection{Dizionario dei concetti per entità}
 \begin{table}[H]
 	\centering
@@ -597,9 +603,9 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 		\textbf{Entità} & \textbf{Descrizione} & \textbf{Attributi} & \textbf{Identificatore} \\ \hline
 		 Reso & Rappresenta i resi iniziati dai clienti & Data,stato, cliente associato & Cliente associato \\
 		 \hline
-		 Cliente & Rappresenta i clienti dell'organizzazione & Nome, cognome, e-mail & E-mail \\
+		 Cliente & Rappresenta i clienti dell'organizzazione & Nome, cognome, id, e-mail & ID \\
 		\hline 
-		Indirizzo & Rappresenta l'indirizzo di spedizione dei clienti & Comune, Via, Civico, EmailCliente, Orario & Comune, Via, Civico \\ 
+		Indirizzo & Rappresenta l'indirizzo di spedizione dei clienti & Comune, Via, Civico, Orario, Cliente & Comune, Via, Civico \\ 
 		\hline
 		Fattura & Rappresenta le fatture delle spedizioni dei clienti & Codice, stato, importo, data & Codice\\
 		\hline
@@ -645,7 +651,8 @@ La sintassi utilizzata nel modello relazionale è la seguente:
   \item Per ogni schema di relazione, il nome viene indicato in grassetto, mentre i suoi attributi sono espressi tra parentesi, ad esempio \textbf{Relazione}(attributo1,.., attributoN)
   \item Negli schemi di relazione, vengono indicati i vincoli di chiave primaria sottolineando gli attributi parte della chiave, ad esempio \textbf{Relazione}(\underline{attributo1, attributo2},.., attributoN)
   \item Eventuali altri chiavi verranno specificate al di sotto della relazione con la keyword "Unique" in corsivo, ad esempio \\ \textbf{Relazione}(\underline{chiave}, attributo)\\ \textit{Unique}(attributo)
-  \item Eventuali vincoli di integrità referenziale saranno descritti al di sotto della relazione a cui appartengono, nella forma \textbf{R1}(a1) $\subseteq _{FK}$ \textbf{R2}(a1)
+  \item Eventuali vincoli di integrità referenziale saranno descritti al di sotto della relazione a cui appartengono, nella forma \textbf{R1}(a1) $\subseteq _{FK}$ \textbf{R2}(a1);
+  \item Per indicare che un attributo può essere NULL, viene indicato al pedice dell'attributo la dicitura NULL, ad esempio \textbf{R}(\underline{k}, A1$_{NULL}$, A2) indica che l'attributo A1 potrebbe essere NULL;
 \end{itemize}
 
 I tipi di dato utilizzati per gli attributi sono i seguenti:
@@ -658,15 +665,15 @@ I tipi di dato utilizzati per gli attributi sono i seguenti:
 
 Il modello relazionale sarà il seguente:
 \begin{itemize}
-  \item \textbf{Cliente}(\underline{Email}, Nome, Cognome, Comune, Via, Civico)\\ \textbf{Cliente}(Comune, Via, Civico)$\subseteq _{FK}$\textbf{Indirizzo}(Comune, Via, Civico)
-  \item \textbf{Indirizzo}(\underline{Comune, Via, Civico}, Orario); 
+  \item \textbf{Cliente}(\underline{ID}, Nome, Cognome, Email);
+  \item \textbf{Indirizzo}(\underline{Comune, Via, Civico}, Orario, IdCliente) \\ \textbf{Indirizzo}(IdCliente) $\subseteq _{FK}$ \textbf{Cliente}(ID); 
   \item \textbf{Fattura}(\underline{Codice}, Stato, Importo, Data);
-  \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, EmailEmittente, EmailDestinatario) \\ \textbf{Spedizione}(EmailCliente) $\subseteq _{FK}$ \textbf{Cliente}(Email);
-  \item \textbf{Effettuata}(\underline{Codice}, Peso, Prezzo, DataConsegna, DataSpedizione, EmailCliente) \\ \textbf{Effettuata}(Codice, EmailCliente) $\subseteq _{FK}$ \textbf{Spedizione}(Codice, EmailCliente);
-  \item \textbf{InCorso}(\underline{Codice}, Peso, Prezzo, DataSpedizione, Stato, EmailCliente) \\ \textbf{InCorso}(Codice, EmailCliente) $\subseteq _{FK}$ \textbf{Spedizione}(Codice, EmailCliente);
-  \item \textbf{Prenotata}(\underline{Codice}, Peso, Prezzo, DataRitiro, DataSpedizione, EmailCliente) \\ \textbf{Prenotata}(Codice, EmailCliente) $\subseteq _{FK}$ \textbf{Spedizione}(Codice, EmailCliente);
+  \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, IdMittente, IdDestinatario) \\ \textbf{Spedizione}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id) \\ \textbf{Spedizione}(IdDestinatario) $\subseteq _{FK}$ \textbf{Cliente}(Id);
+  \item \textbf{Effettuata}(\underline{Codice}, Peso, Prezzo, DataConsegna, DataSpedizione, IdMittente, IdDestinatario) \\ \textbf{Effettuata}(Codice, IdMittente, IdDestinatario) $\subseteq _{FK}$ \textbf{Spedizione}(Codice, IdMittente, IdDestinatario);
+  \item \textbf{InCorso}(\underline{Codice}, Peso, Prezzo, DataSpedizione, Stato, IdMittente, IdDestinatario) \\ \textbf{InCorso}(Codice, IdMittente, IdDestinatario) $\subseteq _{FK}$ \textbf{Spedizione}(Codice, IdMittente, IdDestinatario);
+  \item \textbf{Prenotata}(\underline{Codice}, Peso, Prezzo, DataRitiro, DataSpedizione, IdMittente, IdDestinatario) \\ \textbf{Prenotata}(Codice, IdMittente, IdDestinatario) $\subseteq _{FK}$ \textbf{Spedizione}(Codice, IdMittente, IdDestinatario);
   \item \textbf{Corriere}(\underline{IVA}, Nome, Sito, Telefono, Prezzo1, Prezzo10, Prezzo100);
-  \item \textbf{Reso}(\underline{EmailCliente}, Data, Stato)\\ \textbf{Reso}(EmailCliente) $\subseteq _{FK}$ \textbf{Cliente}(Email);
+  \item \textbf{Reso}(\underline{IdMittente}, Data, Stato)\\ \textbf{Reso}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id);
 
 \end{itemize}
 \end{document}
