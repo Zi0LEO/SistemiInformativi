@@ -545,7 +545,6 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 \subsubsection*{Vincoli d'integrità}
 \begin{enumerate}
   \item Il valore dell'attributo \textit{stato} all'interno dell'entità \textit{effettuata} potrà essere solo: presa in carico, spedita, arrivata alla filiale, in consegna, consegnata, in attesa di ritiro;
-  \item L'entità \textit{prenotata} avrà una relazione \textit{ritiro} solo se l'indirizzo di ritiro è diverso dall'indirizzo dell'emittente;
   \item Gli attributi \textit{data ritiro} e \textit{data consegna} devono sempre essere successivi rispettivamente a \textit{data prenotazione} e \textit{data spedizione};
 	\item Il valore dell'attributo \textit{stato} all'interno del'entità \textit{reso} potrà essere solo: richiesto, processato, terminato;
 	\item Il valore dell'attributo \textit{data} all'interno dell'entità \textit{reso} deve essere posteriore al valore \textit{data} all'interno dell'entità \textit{Effettuata};
@@ -640,15 +639,15 @@ Il modello relazionale sarà il seguente:
   \item \textbf{Indirizzo}(\underline{Comune, Via, Civico}, Orario, IdCliente) \\ \textbf{Indirizzo}(IdCliente) $\subseteq _{FK}$ \textbf{Cliente}(ID); 
   \item \textbf{Fattura}(\underline{Codice}, Stato, Importo, Data);
   \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, IdMittente, IdDestinatario) \\ \textbf{Spedizione}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id) \\ \textbf{Spedizione}(IdDestinatario) $\subseteq _{FK}$ \textbf{Cliente}(Id);
-  \item \textbf{Effettuata}(\underline{Codice}, Peso, Prezzo, DataConsegna, DataSpedizione, IdMittente, IdDestinatario) \\ \textbf{Effettuata}(Codice, IdMittente, IdDestinatario) $\subseteq _{FK}$ \textbf{Spedizione}(Codice, IdMittente, IdDestinatario);
-  \item \textbf{InCorso}(\underline{Codice}, Peso, Prezzo, DataSpedizione, Stato, IdMittente, IdDestinatario) \\ \textbf{InCorso}(Codice, IdMittente, IdDestinatario) $\subseteq _{FK}$ \textbf{Spedizione}(Codice, IdMittente, IdDestinatario);
-  \item \textbf{Prenotata}(\underline{Codice},Peso, Prezzo, DataRitiro, DataSpedizione, IdMittente, IdDestinatario) \\\textbf{Prenotata}(Codice, IdMittente, IdDestinatario)$\subseteq _{FK}$\textbf{Spedizione}(Codice, IdMittente, IdDestinatario);
+  \item \textbf{Effettuata}(\underline{Codice}, Peso, Prezzo, DataConsegna, DataSpedizione, IdMittente, IdDestinatario)\\\textbf{Effettuata}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice);
+  \item \textbf{InCorso}(\underline{Codice}, Peso, Prezzo, DataSpedizione, Stato, IdMittente, IdDestinatario) \\ \textbf{InCorso}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice);
+  \item \textbf{Prenotata}(\underline{Codice}, Peso, Prezzo, DataRitiro, DataSpedizione, IdMittente, \\IdDestinatario) \\\textbf{Prenotata}(Codice)$\subseteq _{FK}$\textbf{Spedizione}(Codice);
   \item \textbf{Corriere}(\underline{IVA}, Nome, Sito, Telefono, Prezzo1, Prezzo10, Prezzo100);
   \item \textbf{Reso}(\underline{IdMittente}, Data, Stato)\\ \textbf{Reso}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id);
 
 \end{itemize}
 \subsubsection{Triggers}
-In merito al \textit{vincolo di integrità} 5 che tratta lo schema di relazione \textbf{Reso}(\underline{IdMittente}, Data, Stato) ed \textbf{Effettuata}(Codice, IdMittente), nel momento in cui all'interno dell'attributo data dell'entità \textbf{Reso} si vuole inserire una nuova tupla bisogna controllare che la condizione per cui la \textit{Data} che si sta cercando di inserire nel \textbf{Reso} sia maggiore (posteriore) a quella che è attualmente all'interno di \textit{DataConsegna }di \textbf{Effettuata}.
+In merito al \textit{vincolo di integrità} 4 che tratta lo schema di relazione \textbf{Reso}(\underline{IdMittente}, Data, Stato) ed \textbf{Effettuata}(Codice, IdMittente), nel momento in cui all'interno dell'attributo data dell'entità \textbf{Reso} si vuole inserire una nuova tupla bisogna controllare che la condizione per cui la \textit{Data} che si sta cercando di inserire nel \textbf{Reso} sia maggiore (posteriore) a quella che è attualmente all'interno di \textit{DataConsegna }di \textbf{Effettuata}.
 \begin{minted}[linenos]{sql}
 DELIMITER //
 CREATE TRIGGER 'vincoli_date_insert'
