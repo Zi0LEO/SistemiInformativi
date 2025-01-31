@@ -20,6 +20,8 @@
 \usepackage{minted}
 \usepackage{cmbright}
 
+\renewcommand{\ttdefault}{lmtt} % papagpt dice che questo rimuove dei warning. Lo fa.
+
 \hypersetup{
   colorlinks=true,
   linkcolor=blue,
@@ -678,13 +680,13 @@ Il modello relazionale sarà il seguente:
   \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, IdMittente, IdDestinatario) \\ \textbf{Spedizione}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id) \\ \textbf{Spedizione}(IdDestinatario) $\subseteq _{FK}$ \textbf{Cliente}(Id);
   \item \textbf{Effettuata}(\underline{Codice}, Peso, Prezzo, DataConsegna, DataSpedizione, IdMittente, IdDestinatario) \\ \textbf{Effettuata}(Codice, IdMittente, IdDestinatario) $\subseteq _{FK}$ \textbf{Spedizione}(Codice, IdMittente, IdDestinatario);
   \item \textbf{InCorso}(\underline{Codice}, Peso, Prezzo, DataSpedizione, Stato, IdMittente, IdDestinatario) \\ \textbf{InCorso}(Codice, IdMittente, IdDestinatario) $\subseteq _{FK}$ \textbf{Spedizione}(Codice, IdMittente, IdDestinatario);
-  \item \textbf{Prenotata}(\underline{Codice}, Peso, Prezzo, DataRitiro, DataSpedizione, IdMittente, IdDestinatario) \\ \textbf{Prenotata}(Codice, IdMittente, IdDestinatario) $\subseteq _{FK}$ \textbf{Spedizione}(Codice, IdMittente, IdDestinatario);
+  \item \textbf{Prenotata}(\underline{Codice},Peso, Prezzo, DataRitiro, DataSpedizione, IdMittente, IdDestinatario) \\\textbf{Prenotata}(Codice, IdMittente, IdDestinatario)$\subseteq _{FK}$\textbf{Spedizione}(Codice, IdMittente, IdDestinatario);
   \item \textbf{Corriere}(\underline{IVA}, Nome, Sito, Telefono, Prezzo1, Prezzo10, Prezzo100);
   \item \textbf{Reso}(\underline{IdMittente}, Data, Stato)\\ \textbf{Reso}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id);
 
 \end{itemize}
 \subsubsection{Triggers}
-In merito al \textit{vincolo di integrità} 1 che tratta lo schema di relazione \textbf{Reso}(\underline{EmailCliente}, Data, Stato) ed \textbf{Effettuata}(Codice, EmailCliente), nel momento in cui all'interno dell'attributo data dell'entità \textbf{reso} si vuole inserire una nuova tupla bisogna controllare che la condizione per cui la \textit{data} che si sta cercando di inserire nel \textbf{reso} sia maggiore (posteriore) a quella che è attualmente all'interno di \textit{data consegna }di \textbf{effettuata}.
+In merito al \textit{vincolo di integrità} 5 che tratta lo schema di relazione \textbf{Reso}(\underline{IdMittente}, Data, Stato) ed \textbf{Effettuata}(Codice, IdMittente), nel momento in cui all'interno dell'attributo data dell'entità \textbf{Reso} si vuole inserire una nuova tupla bisogna controllare che la condizione per cui la \textit{Data} che si sta cercando di inserire nel \textbf{Reso} sia maggiore (posteriore) a quella che è attualmente all'interno di \textit{DataConsegna }di \textbf{Effettuata}.
 \begin{minted}[linenos]{sql}
 DELIMITER //
 CREATE TRIGGER 'vincoli_date_insert'
@@ -716,7 +718,7 @@ END IF;
 END //
 DELIMITER;
 \end{minted}
- Un altro vincolo d'integrità è quello per valore dell'attributo \textit{stato} all'interno di \textbf{fattura}, nel caso in cui si vuole inserire un bisogna controllare che sia all'interno dell'insieme degli stati ammissibili.
+ Un altro vincolo d'integrità è quello per valore dell'attributo \textit{Stato} all'interno di \textbf{Fattura}, quando si va ad inserire bisogna infatti controllare che sia all'interno dell'insieme degli stati ammissibili.
  \begin{minted}[linenos]{sql}
  DELIMITER //
  CREATE TRIGGER 'vincoli_fatture_insert'
@@ -742,12 +744,4 @@ END IF;
 END //
 DELIMETER;
 \end{minted}
-
-
-
-
-
-
-
-
 \end{document}
