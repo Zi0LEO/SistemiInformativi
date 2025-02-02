@@ -322,10 +322,11 @@ Si riporta di seguito il dfd di livello 1:
 \end{table}
 
 \newpage
-\subsection{Requisiti funzionali}
+\subsection{Specifica dei requisiti}
+\subsubsection{Requisiti funzionali}
 I gruppi funzionali che si è deciso di implementare sono quelli riguardanti la \textbf{gestione dei clienti} e la \textbf{gestione dei recapiti}.
 
-\subsubsection{Gestione clienti}
+\subsubsection*{Gestione clienti}
 \begin{enumerate}
   \item{(MUST)} Implementare una schermata di sign-in [Cliente];
   \item{(MUST)} Inserimento dei propri dati anagrafici[Cliente];
@@ -392,7 +393,7 @@ Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzional
 \end{figure}
 
 \clearpage
-\subsubsection{Gestione recapiti}
+\subsubsection*{Gestione recapiti}
 \begin{enumerate}
   \item{(MUST)} Associare un cliente ai suoi dati rilevanti [sportellista, portalettere];
   \item{(MUST)} Visualizzare gli indirizzi dei clienti [portalettere];
@@ -467,7 +468,7 @@ Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzional
   \caption{Diagramma Casi d'Uso Recapito}
 \end{figure}
 
-\subsection{Requisiti non funzionali}
+\subsubsection{Requisiti non funzionali}
 Il sistema sarà inizialmente implementato tramite una propria applicazione per pc, che potrà essere utilizzata sia dal personale
 che dalla clientela, differenziando i due casi tramite un sistema di autorizzazioni.\\\\
 Il sistema dovrà avere le seguenti caratteristiche:
@@ -536,7 +537,7 @@ email(identificativo), comune, orario preferito. \\ \\
 Dal \textbf{requisito} \textbf{2.2.2.15} si evince la necessità di una rubrica corrieri. Ogni corriere sarà caratterizzato da nome, 
 partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezzo per 10kg, prezzo per 100kg.
 
-\subsection{Modello concettuale}
+\subsubsection{Modello concettuale}
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{assets/ER_diagram.jpg}
@@ -564,7 +565,7 @@ Alcuni attributi devono essere derivati automaticamente dal sistema:
   \item L'attributo id della relazione cliente è un numero progressivo che identifica univocamente il cliente;
   
 \end{itemize}
-\subsubsection{Dizionario dei concetti per entità}
+\subsubsection*{Dizionario dei concetti per entità}
 \begin{table}[H]
 	\centering
 	\newcolumntype{Y}{>{\centering\arraybackslash}m{\dimexpr\linewidth/4-2\tabcolsep - 5\arrayrulewidth}}
@@ -592,7 +593,7 @@ Alcuni attributi devono essere derivati automaticamente dal sistema:
 	\end{tabularx}
 \end{table}
 
-\subsection{Dizionario dei concetti per relazione}
+\subsubsection*{Dizionario dei concetti per relazione}
 \begin{table}[H]
 	\centering
 	\newcolumntype{Y}{>{\centering\arraybackslash}m{\dimexpr\linewidth/4-2\tabcolsep - 5\arrayrulewidth}}
@@ -615,7 +616,7 @@ Alcuni attributi devono essere derivati automaticamente dal sistema:
 	\end{tabularx}
 \end{table}
 
-\subsection{Modello relazionale}
+\subsubsection{Modello relazionale}
 La sintassi utilizzata nel modello relazionale è la seguente:
 \begin{itemize}
   \item Per ogni schema di relazione, il nome viene indicato in grassetto, mentre i suoi attributi sono espressi tra parentesi, ad esempio \textbf{Relazione}(attributo1,.., attributoN)
@@ -639,14 +640,14 @@ Il modello relazionale sarà il seguente:
   \item \textbf{Indirizzo}(\underline{Comune, Via, Civico}, Orario, IdCliente) \\ \textbf{Indirizzo}(IdCliente) $\subseteq _{FK}$ \textbf{Cliente}(ID); 
   \item \textbf{Fattura}(\underline{Codice}, Stato, Importo, Data);
   \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, IdMittente, IdDestinatario) \\ \textbf{Spedizione}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id) \\ \textbf{Spedizione}(IdDestinatario) $\subseteq _{FK}$ \textbf{Cliente}(Id);
-  \item \textbf{Effettuata}(\underline{Codice}, Peso, Prezzo, DataConsegna, DataSpedizione, IdMittente, IdDestinatario)\\\textbf{Effettuata}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice);
+  \item \textbf{Effettuata}(\underline{Codice}, Peso, Prezzo, DataConsegna, DataSpedizione, IdMittente, IdDestinatario)\\\textbf{Effettuata}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice) \\ Lo schema di dati \textbf{Effettuata} di fatto funge da storico delle spedizioni;
   \item \textbf{InCorso}(\underline{Codice}, Peso, Prezzo, DataSpedizione, Stato, IdMittente, IdDestinatario) \\ \textbf{InCorso}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice);
   \item \textbf{Prenotata}(\underline{Codice}, Peso, Prezzo, DataRitiro, DataSpedizione, IdMittente, \\IdDestinatario) \\\textbf{Prenotata}(Codice)$\subseteq _{FK}$\textbf{Spedizione}(Codice);
   \item \textbf{Corriere}(\underline{IVA}, Nome, Sito, Telefono, Prezzo1, Prezzo10, Prezzo100);
   \item \textbf{Reso}(\underline{IdMittente}, Data, Stato)\\ \textbf{Reso}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id);
-
 \end{itemize}
-\subsubsection{Triggers}
+
+\subsubsection*{Triggers}
 In merito al \textit{vincolo di integrità} 4 che tratta lo schema di relazione \textbf{Reso}(\underline{IdMittente}, Data, Stato) ed \textbf{Effettuata}(Codice, IdMittente), nel momento in cui all'interno dell'attributo data dell'entità \textbf{Reso} si vuole inserire una nuova tupla bisogna controllare che la condizione per cui la \textit{Data} che si sta cercando di inserire nel \textbf{Reso} sia maggiore (posteriore) a quella che è attualmente all'interno di \textit{DataConsegna }di \textbf{Effettuata}.
 \begin{minted}[linenos]{sql}
 DELIMITER //
@@ -705,4 +706,10 @@ END IF;
 END //
 DELIMETER;
 \end{minted}
+
+\subsection{Modellazione della logica di business}
+\subsection{Modellazione delle interfacce}
+
+\section{Implementazione}
+
 \end{document}
