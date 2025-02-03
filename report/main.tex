@@ -345,8 +345,8 @@ I gruppi funzionali che si è deciso di implementare sono quelli riguardanti la 
       \item Per numero di ordine;
       \item In ordine alfabetico.
     \end{enumerate} 
-  \item{(MUST)} Visualizzare le fatture a proprio carico[Cliente];
-  \item {(MUST)} Ordinare la lista delle fatture a proprio carico[Cliente]:
+  \item{(MUST)} Visualizzare le ricevute a proprio carico[Cliente];
+  \item {(MUST)} Ordinare la lista delle ricevute a proprio carico[Cliente]:
     \begin{enumerate}
       \item Per stato del pagamento (Default);
       \item Per data del pagamento;
@@ -530,7 +530,7 @@ Dai \textbf{requisiti} \textbf{2.2.1.6-8} il cliente può far partire delle proc
 \\\\
 Dai \textbf{requisiti} \textbf{2.2.1.10-11} si evince che il cliente deve avere associato la lista delle \textit{consegne} a proprio carico,  esse sono un tipo di \textit{spedizione}, ogni cliente può avere molte consegne o nessuna, ma una consegna può essere assegnata ad un unico cliente.
 \\\\
-I \textbf{requisiti} \textbf{2.2.1.12-13} ci dicono che ogni cliente deve avere a se relazionato la lista delle \textit{fatture} a proprio carico, identificate dal numero della fattura e caratterizzata dalla data di emissione e dallo stato del pagamento, inoltre le fatture sono connesse alla spedizione di tipo prenotata che hanno pagato, senza un pagamento una spedizione non verrà presa a carico da un corriere.Ogni fattura può avere un cliente, ma un cliente può averne molte come una consegna può avere una fattura e una fattura è per una sola consegna.
+I \textbf{requisiti} \textbf{2.2.1.12-13} ci dicono che ogni cliente deve avere a se relazionato la lista delle \textit{ricevute} a proprio carico, identificate dal numero della ricevuta e caratterizzata dalla data di emissione e dallo stato del pagamento, inoltre le ricevute sono connesse alla spedizione di tipo prenotata che hanno pagato, senza un pagamento una spedizione non verrà presa a carico da un corriere.Ogni ricevuta può avere un cliente, ma un cliente può averne molte come una consegna può avere una ricevuta e una ricevuta è per una sola consegna.
 \\\\
 Il \textbf{requisito} \textbf{2.2.2.11} ci guida verso la rappresentazione dei dati relativi agli indirizzi, che dovranno quindi includere 
 email(identificativo), comune, orario preferito. \\ \\
@@ -550,7 +550,7 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 	\item Il valore dell'attributo \textit{stato} all'interno del'entità \textit{reso} potrà essere solo: richiesto, processato, terminato;
 	\item Il valore dell'attributo \textit{data} all'interno dell'entità \textit{reso} deve essere posteriore al valore \textit{data} all'interno dell'entità \textit{Effettuata};
 	\item Il valore dell'attributo \textit{codice} di \textit{Spedizione} deve avere una formattazione del tipo S12345;
-	\item Il valore dell'attributo \textit{stato} dell'entità \textit{fattura} può essere: pagamento confermato, non regolarizzata. 
+	\item Il valore dell'attributo \textit{stato} dell'entità \textit{ricevuta} può essere: pagamento confermato, non regolarizzata. 
 	\item Il valore dell'attributo \textit{stato} all'interno dell'entità \textit{in corso} potrà essere solo: presa in carico, spedita, arrivata alla filiale, in consegna, consegnata, in attesa di ritiro;
 	\item L'entità \textit{prenotata} avrà una relazione \textit{ritiro} solo se l'indirizzo di ritiro è diverso dall'indirizzo dell'emittente;
 	\item Gli attributi \textit{data di ritiro} e \textit{data consegna} devono sempre essere successivi rispettivamente a \textit{data prenotazione} e \textit{data spedizione};
@@ -578,7 +578,7 @@ Alcuni attributi devono essere derivati automaticamente dal sistema:
 		\hline 
 		Indirizzo & Rappresenta l'indirizzo di spedizione dei clienti & Comune, Via, Civico, Orario, Cliente & Comune, Via, Civico \\ 
 		\hline
-		Fattura & Rappresenta le fatture delle spedizioni dei clienti & Codice, stato, importo, data & Codice\\
+		Ricevuta & Rappresenta le ricevute delle spedizioni dei clienti & Codice, stato, importo, data & Codice\\
 		\hline
 		Spedizione & Rappresenta le spedizioni & Codice, peso, prezzo & Codice \\ 
 		\hline
@@ -604,7 +604,7 @@ Alcuni attributi devono essere derivati automaticamente dal sistema:
 		\hline
 		$R_{ci}$ & Associa i clienti ai loro indirizzi & Cliente, Indirizzo & \\ 
     \hline
-    $R_{fc}$ & Associa i clienti alle loro fatture & Fattura, Cliente & \\
+    $R_{fc}$ & Associa i clienti alle loro ricevute & Ricevuta, Cliente & \\
     \hline
     Manda & Associa il cliente alla spedizione che fa spedire & Cliente, Spedizione & \\
     \hline 
@@ -638,7 +638,7 @@ Il modello relazionale sarà il seguente:
 \begin{itemize}
   \item \textbf{Cliente}(\underline{ID}, Nome, Cognome, Email);
   \item \textbf{Indirizzo}(\underline{Comune, Via, Civico}, Orario, IdCliente) \\ \textbf{Indirizzo}(IdCliente) $\subseteq _{FK}$ \textbf{Cliente}(ID); 
-  \item \textbf{Fattura}(\underline{Codice}, Stato, Importo, Data);
+  \item \textbf{Ricevuta}(\underline{Codice}, Stato, Importo, Data);
   \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, IdMittente, IdDestinatario) \\ \textbf{Spedizione}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id) \\ \textbf{Spedizione}(IdDestinatario) $\subseteq _{FK}$ \textbf{Cliente}(Id);
   \item \textbf{Effettuata}(\underline{Codice}, DataConsegna, DataSpedizione)\\\textbf{Effettuata}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice) \\ Lo schema di dati \textbf{Effettuata} di fatto funge da storico delle spedizioni;
   \item \textbf{InCorso}(\underline{Codice}, DataSpedizione, Stato) \\ \textbf{InCorso}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice);
@@ -680,15 +680,15 @@ END IF;
 END //
 DELIMITER;
 \end{minted}
- Un altro vincolo d'integrità è quello per valore dell'attributo \textit{Stato} all'interno di \textbf{Fattura}, quando si va ad inserire bisogna infatti controllare che sia all'interno dell'insieme degli stati ammissibili.
+ Un altro vincolo d'integrità è quello per valore dell'attributo \textit{Stato} all'interno di \textbf{Ricevuta}, quando si va ad inserire bisogna infatti controllare che sia all'interno dell'insieme degli stati ammissibili.
  \begin{minted}[linenos]{sql}
  DELIMITER //
- CREATE TRIGGER 'vincoli_fatture_insert'
- BEFORE INSERT ON Fattura
+ CREATE TRIGGER 'vincoli_ricevute_insert'
+ BEFORE INSERT ON Ricevuta
  FOR EACH ROW BEGIN 
 IF (NEW.stato NOT IN ('pagamento confermato', 'non regolarizzata'))
  THEN SIGNAL SQLSTATE '4500'
- 	SET MESSAGE_TEXT ='Vincolo di integrità su Fattura non rispettato';
+ 	SET MESSAGE_TEXT ='Vincolo di integrità su Ricevuta non rispettato';
  END IF;
  END //
  DELIMETER;
@@ -696,12 +696,12 @@ IF (NEW.stato NOT IN ('pagamento confermato', 'non regolarizzata'))
 Segue la versione analoga per gli update.
 \begin{minted}[linenos]{sql}
 DELIMITER //
-CREATE TRIGGER 'vincoli_fatture_insert'
-BEFORE UPDATE ON Fattura
+CREATE TRIGGER 'vincoli_ricevute_insert'
+BEFORE UPDATE ON Ricevuta
 FOR EACH ROW BEGIN 
 IF (NEW.stato NOT IN ('pagamento confermato', 'non regolarizzata'))
 THEN SIGNAL SQLSTATE '4500'
-	SET MESSAGE_TEXT ='Vincolo di integrità su Fattura non rispettato';
+	SET MESSAGE_TEXT ='Vincolo di integrità su Ricevuta non rispettato';
 END IF;
 END //
 DELIMETER;
