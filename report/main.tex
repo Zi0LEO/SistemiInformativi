@@ -545,14 +545,12 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 \end{figure}
 \subsubsection*{Vincoli d'integrità}
 \begin{enumerate}
-  \item Il valore dell'attributo \textit{stato} all'interno dell'entità \textit{effettuata} potrà essere solo: presa in carico, spedita, arrivata alla filiale, in consegna, consegnata, in attesa di ritiro;
   \item Gli attributi \textit{data ritiro} e \textit{data consegna} devono sempre essere successivi rispettivamente a \textit{data prenotazione} e \textit{data spedizione};
 	\item Il valore dell'attributo \textit{stato} all'interno del'entità \textit{reso} potrà essere solo: richiesto, processato, terminato;
-	\item Il valore dell'attributo \textit{data} all'interno dell'entità \textit{reso} deve essere posteriore al valore \textit{data} all'interno dell'entità \textit{Effettuata};
+	\item Il valore dell'attributo \textit{data} all'interno dell'entità \textit{reso} deve essere posteriore al valore \textit{data consegna} all'interno dell'entità \textit{Effettuata};
 	\item Il valore dell'attributo \textit{codice} di \textit{Spedizione} deve avere una formattazione del tipo S12345;
 	\item Il valore dell'attributo \textit{stato} dell'entità \textit{ricevuta} può essere: pagamento confermato, non regolarizzata. 
 	\item Il valore dell'attributo \textit{stato} all'interno dell'entità \textit{in corso} potrà essere solo: presa in carico, spedita, arrivata alla filiale, in consegna, consegnata, in attesa di ritiro;
-	\item L'entità \textit{prenotata} avrà una relazione \textit{ritiro} solo se l'indirizzo di ritiro è diverso dall'indirizzo dell'emittente;
 	\item Gli attributi \textit{data di ritiro} e \textit{data consegna} devono sempre essere successivi rispettivamente a \textit{data prenotazione} e \textit{data spedizione};
 	\item Il valore dell'attributo \textit{stato} all'interno del'entità \textit{reso} potrà essere solo: richiesto, processato, terminato;
 	\item Il valore dell'attributo \textit{codice} di \textit{Spedizione} deve avere una formattazione del tipo S12345;
@@ -638,13 +636,13 @@ Il modello relazionale sarà il seguente:
 \begin{itemize}
   \item \textbf{Cliente}(\underline{ID}, Nome, Cognome, Email);
   \item \textbf{Indirizzo}(\underline{Comune, Via, Civico}, Orario, IdCliente) \\ \textbf{Indirizzo}(IdCliente) $\subseteq _{FK}$ \textbf{Cliente}(ID); 
-  \item \textbf{Ricevuta}(\underline{Codice}, Stato, Importo, Data);
+  \item \textbf{Ricevuta}(\underline{Codice}, Stato, Data)\\ \textbf{Ricevuta}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice);
   \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, IdMittente, IdDestinatario) \\ \textbf{Spedizione}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id) \\ \textbf{Spedizione}(IdDestinatario) $\subseteq _{FK}$ \textbf{Cliente}(Id);
   \item \textbf{Effettuata}(\underline{Codice}, DataConsegna, DataSpedizione)\\\textbf{Effettuata}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice) \\ Lo schema di dati \textbf{Effettuata} di fatto funge da storico delle spedizioni;
   \item \textbf{InCorso}(\underline{Codice}, DataSpedizione, Stato) \\ \textbf{InCorso}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice);
-  \item \textbf{Prenotata}(\underline{Codice}, DataRitiro, DataSpedizione) \\\textbf{Prenotata}(Codice)$\subseteq _{FK}$\textbf{Spedizione}(Codice);
+  \item \textbf{Prenotata}(\underline{Codice}, DataRitiro, DataPrenotazione) \\\textbf{Prenotata}(Codice)$\subseteq _{FK}$\textbf{Spedizione}(Codice);
   \item \textbf{Corriere}(\underline{IVA}, Nome, Sito, Telefono, Prezzo1, Prezzo10, Prezzo100);
-  \item \textbf{Reso}(\underline{IdMittente}, Data, Stato)\\ \textbf{Reso}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id);
+  \item \textbf{Reso}(\underline{Codice}, Data, Stato)\\ \textbf{Reso}(Codice) $\subseteq _{FK}$ \textbf{Effettuata}(Codice);
 \end{itemize}
 
 \subsubsection*{Triggers}
