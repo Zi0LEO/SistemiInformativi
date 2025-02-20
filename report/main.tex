@@ -552,7 +552,6 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 	\item Il valore dell'attributo \textit{stato} dell'entità \textit{ricevuta} può essere: pagamento confermato, non regolarizzata. 
 	\item Il valore dell'attributo \textit{stato} all'interno dell'entità \textit{in corso} potrà essere solo: presa in carico, spedita, arrivata alla filiale, in consegna, consegnata, in attesa di ritiro;
 	\item Gli attributi \textit{data di ritiro} e \textit{data consegna} devono sempre essere successivi rispettivamente a \textit{data prenotazione} e \textit{data spedizione};
-	\item Il valore dell'attributo \textit{stato} all'interno del'entità \textit{reso} potrà essere solo: richiesto, processato, terminato;
 	\item Il valore dell'attributo \textit{codice} di \textit{Spedizione} deve avere una formattazione del tipo S12345;
 	
 \end{enumerate}
@@ -640,7 +639,7 @@ Il modello relazionale sarà il seguente:
   \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, IdMittente, IdDestinatario) \\ \textbf{Spedizione}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id) \\ \textbf{Spedizione}(IdDestinatario) $\subseteq _{FK}$ \textbf{Cliente}(Id);
   \item \textbf{Effettuata}(\underline{Codice}, DataConsegna, DataSpedizione)\\\textbf{Effettuata}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice) \\ Lo schema di dati \textbf{Effettuata} di fatto funge da storico delle spedizioni;
   \item \textbf{InCorso}(\underline{Codice}, DataSpedizione, Stato) \\ \textbf{InCorso}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice);
-  \item \textbf{Prenotata}(\underline{Codice}, DataRitiro, DataPrenotazione) \\\textbf{Prenotata}(Codice)$\subseteq _{FK}$\textbf{Spedizione}(Codice);
+  \item \textbf{Prenotata}(\underline{Codice}, DataRitiro, DataPrenotazipagamenoone) \\\textbf{Prenotata}(Codice)$\subseteq _{FK}$\textbf{Spedizione}(Codice);
   \item \textbf{Corriere}(\underline{IVA}, Nome, Sito, Telefono, Prezzo1, Prezzo10, Prezzo100);
   \item \textbf{Reso}(\underline{Codice}, Data, Stato)\\ \textbf{Reso}(Codice) $\subseteq _{FK}$ \textbf{Effettuata}(Codice);
 \end{itemize}
