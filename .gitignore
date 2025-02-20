@@ -1,5 +1,6 @@
 ## Plugin specific files
 .tasks
+.env
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
