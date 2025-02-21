@@ -93,7 +93,7 @@
       type="DATE"
       size="255"
       description="Data del pagamento"/>
-    <foreign-key foreignTable="Spedizione">
+    <foreign-key foreignTable="spedizione">
       <reference
         local="codice"
         foreign="codice"/>
@@ -291,7 +291,7 @@
       type="DATE"
       size="255"
       description="Data di richiesta del reso"/>
-    <foreign-key foreignTable="Spedizione">
+    <foreign-key foreignTable="spedizione">
       <reference
         local="codice"
         foreign="codice"/>
