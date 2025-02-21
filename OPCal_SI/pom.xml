@@ -8,12 +8,18 @@
     <artifactId>OPCal_SI</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
-        <maven.compiler.source>23</maven.compiler.source>
-        <maven.compiler.target>23</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
+        <!-- Dotenv handling -->
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>dotenv-java</artifactId>
+            <version>3.1.0</version>
+        </dependency>
         <!-- Torque runtime -->
         <dependency>
             <groupId>org.apache.torque</groupId>
@@ -89,35 +95,13 @@
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-                <version>1.2.1</version>
-                <executions>
-                    <execution>
-                        <phase>
-                            initialize
-                        </phase>
-                        <goals>
-                            <goal>
-                                read-project-properties
-                            </goal>
-                        </goals>
-                        <configuration>
-                            <files>
-                                <file>${basedir}/.env</file>
-                            </files>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
                 <artifactId>sql-maven-plugin</artifactId>
                 <version>1.5</version>
                 <configuration>
                     <driver>com.mysql.cj.jdbc.Driver</driver>
-                    <url>${DB_URL}</url>
-                    <username>${DB_USERNAME}</username>
-                    <password>${DB_PASSWORD}</password>
+                    <url>${settingsKey}</url>
+                    <username>${settingsKey}</username>
+                    <password>${settingsKey}</password>
                     <onError>continue</onError>
                     <autocommit>true</autocommit>
                     <fileset>
