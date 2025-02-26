@@ -1,6 +1,7 @@
 ## Plugin specific files
 .tasks
 .env
+*/torque.properties
 
 ## Maven
 target/
