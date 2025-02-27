@@ -597,8 +597,6 @@ Alcuni attributi devono essere derivati automaticamente dal sistema:
 	\begin{tabularx}{\dimexpr\textwidth-15\arrayrulewidth}{|*{4}{Y|}} %sempre 15 manco io so perché
 		\hline
 		\textbf{Relazione} & \textbf{Descrizione} & \textbf{Entità coinvolte} & \textbf{Attributi} \\ \hline
-		$R_{rs}$ & Associa i resi ai clienti & Reso, Cliente & \\ 
-		\hline
 		$R_{ci}$ & Associa i clienti ai loro indirizzi & Cliente, Indirizzo & \\ 
     \hline
     $R_{fc}$ & Associa i clienti alle loro ricevute & Ricevuta, Cliente & \\
@@ -645,7 +643,7 @@ Il modello relazionale sarà il seguente:
 \end{itemize}
 
 \subsubsection*{Triggers}
-In merito al \textit{vincolo di integrità} 4 che tratta lo schema di relazione \textbf{Reso}(\underline{IdMittente}, Data, Stato) ed \textbf{Effettuata}(Codice, IdMittente), nel momento in cui all'interno dell'attributo data dell'entità \textbf{Reso} si vuole inserire una nuova tupla bisogna controllare che la condizione per cui la \textit{Data} che si sta cercando di inserire nel \textbf{Reso} sia maggiore (posteriore) a quella che è attualmente all'interno di \textit{DataConsegna }di \textbf{Effettuata}.
+In merito al \textit{vincolo di integrità} 4 che tratta lo schema di relazione \textbf{Reso}(\underline{Codice}, Data, Stato) ed \textbf{Effettuata}(Codice, DataConsegna, DataSpedizione), nel momento in cui all'interno dell'attributo data dell'entità \textbf{Reso} si vuole inserire una nuova tupla bisogna controllare che la condizione per cui la \textit{Data} che si sta cercando di inserire nel \textbf{Reso} sia maggiore (posteriore) a quella che è attualmente all'interno di \textit{DataConsegna }di \textbf{Effettuata}.
 \begin{minted}[linenos]{sql}
 DELIMITER //
 CREATE TRIGGER 'vincoli_date_insert'
