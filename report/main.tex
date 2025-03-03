@@ -323,10 +323,10 @@ Si riporta di seguito il dfd di livello 1:
 
 \newpage
 \subsection{Specifica dei requisiti}
-\subsubsection{Requisiti funzionali}
+\subsubsection*{Requisiti funzionali}
 I gruppi funzionali che si è deciso di implementare sono quelli riguardanti la \textbf{gestione dei clienti} e la \textbf{gestione dei recapiti}.
 
-\subsubsection*{Gestione clienti}
+\subsubsection{Gestione clienti}
 \begin{enumerate}
   \item{(MUST)} Implementare una schermata di sign-in [Cliente];
   \item{(MUST)} Inserimento dei propri dati anagrafici[Cliente];
@@ -393,14 +393,14 @@ Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzional
 \end{figure}
 
 \clearpage
-\subsubsection*{Gestione recapiti}
+\subsubsection{Gestione recapiti}
 \begin{enumerate}
   \item{(MUST)} Associare un cliente ai suoi dati rilevanti [sportellista, portalettere];
   \item{(MUST)} Visualizzare gli indirizzi dei clienti [portalettere];
   \item{(MUST)} Visualizzare le spedizioni in arrivo ad un indirizzo [portalettere];
   \item{(MUST)} Visualizzare le spedizioni da ritirare [portalettere];
   \item{(MUST)} Creare una spedizione [sportellista, cliente];
-  \item{(MUST)} Distinguere tra spedizioni interne e spedizioni verso l'esterno [magazziniere];
+  \item{(MUST)} Visualizzare l'orario di consegna preferito [portalettere];
   \item{(MUST)} Tenere traccia delle spedizioni prenotate, in corso ed effettuate [responsabile recapiti];
   \item{(MUST)} Modificare il ciclo di vita di una spedizione(prenotata, in corso, effettuata);
   \item{(MUST)} Prendere in carico una spedizione [sportellista, portalettere];
@@ -468,7 +468,7 @@ Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzional
   \caption{Diagramma Casi d'Uso Recapito}
 \end{figure}
 
-\subsubsection{Requisiti non funzionali}
+\subsubsection*{Requisiti non funzionali}
 Il sistema sarà inizialmente implementato tramite una propria applicazione per pc, che potrà essere utilizzata sia dal personale
 che dalla clientela, differenziando i due casi tramite un sistema di autorizzazioni.\\\\
 Il sistema dovrà avere le seguenti caratteristiche:
@@ -490,13 +490,11 @@ Il sistema dovrà avere le seguenti caratteristiche:
   \hline
   Amministratore & Tutte, inclusa la possibilità di aggiungere e/o rimuovere permessi & tutti \\ 
   \hline
-  Responsabile magazzino & Può visualizzare tutto, ma può modificare solo le informazioni relative al magazzino & non implementati\\
+  Sportellista & Può visualizzare e modificare solo le informazioni relative al proprio reparto & da 2.2.1.14 a 2.2.1.20, da 2.2.2.1 a 2.2.2.9, 2.2.2.11, 2.2.2.12\\
   \hline
-  Responsabile recapito & Può visualizzare tutto, ma può modificare solo le informazioni relative al recapito & 2.2.1.7, 10, 14, 15, 16, 18, e quelli elencati in 2.2.2 \\
+  Magazziniere & Può visualizzare e modificare solo le informazioni relative al proprio reparto & 2.2.2.10 \\
   \hline
-  Responsabile sportello & Può visualizzare tutto, ma può modificare solo le informazioni relative allo sportello & 2.2.2.2, 3, 4, 11, 12 \\
-  \hline
-  Dipendente & Può visualizzare e modificare solo le informazioni relative al proprio reparto & \\
+  Portalettere & Può visualizzare e modificare solo le informazioni relative al proprio reparto & 2.2.1.16, da 2.2.2.1 a 2.2.2.14\\
   \hline
   Cliente & Può accedere solo ad un set prestabilito di funzioni & tutti quelli compresi tra 2.2.1.1 e 2.2.1.13\\
   \hline
@@ -505,7 +503,7 @@ Il sistema dovrà avere le seguenti caratteristiche:
 Di seguito è riportato un diagramma che raffigura la gerarchia tra gli utenti del sistema: 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=4cm]{assets/diagramma_privilegi.png}
+  \includegraphics[width=10cm]{assets/diagramma_privilegi.png}
 	\caption{Diagramma dei privilegi}
 \end{figure}
 
@@ -540,7 +538,7 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 \subsubsection{Modello concettuale}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{assets/ER_diagram.jpg}
+  \includegraphics[width=\textwidth]{assets/ER_diagram.png}
   \caption{Diagramma E-R}
 \end{figure}
 \subsubsection*{Vincoli d'integrità}
@@ -559,7 +557,7 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 \subsubsection*{Regole di derivazione}
 Alcuni attributi devono essere derivati automaticamente dal sistema:
 \begin{itemize}
-  \item L'attributo id della relazione cliente è un numero progressivo che identifica univocamente il cliente;
+  \item L'attributo id della relazione utente è un numero progressivo che identifica univocamente l'utente;
   
 \end{itemize}
 \subsubsection*{Dizionario dei concetti per entità}
@@ -568,22 +566,29 @@ Alcuni attributi devono essere derivati automaticamente dal sistema:
 	\newcolumntype{Y}{>{\centering\arraybackslash}m{\dimexpr\linewidth/4-2\tabcolsep - 5\arrayrulewidth}}
 	\begin{tabularx}{\dimexpr\textwidth-15\arrayrulewidth}{|*{4}{Y|}} %sempre 15 manco io so perché
 		\hline
-		\textbf{Entità} & \textbf{Descrizione} & \textbf{Attributi} & \textbf{Identificatore} \\ \hline
-		 Reso & Rappresenta i resi iniziati dai clienti & Data,stato, cliente associato & Cliente associato \\
-		 \hline
-		 Cliente & Rappresenta i clienti dell'organizzazione & Nome, cognome, id, e-mail & ID \\
+		\textbf{Entità} & \textbf{Descrizione} & \textbf{Attributi} & \textbf{Identificatore} \\ 
+    \hline
+     Utente & Rappresenta ogni utente del sistema & Nome, cognome, id, e-mail, password & ID \\
+    \hline
+     Amministratore & Rappresenta gli utenti con ogni permesso & Quelli dell'entità madre & ID entità madre \\
+    \hline
+     Dipendente & Rappresenta ogni dipendente con accesso al sistema & Quelli dell'entità madre, permessi & ID entità mad \\
+    \hline
+		 Cliente & Rappresenta i clienti dell'organizzazione & Quelli dell'entità madre & ID \\
 		\hline 
+		 Reso & Rappresenta i resi iniziati dai clienti & Data,stato, cliente associato & Cliente associato \\
+		\hline
 		Indirizzo & Rappresenta l'indirizzo di spedizione dei clienti & Comune, Via, Civico, Orario, Cliente & Comune, Via, Civico \\ 
 		\hline
 		Ricevuta & Rappresenta le ricevute delle spedizioni dei clienti & Codice, stato, importo, data & Codice\\
 		\hline
 		Spedizione & Rappresenta le spedizioni & Codice, peso, prezzo & Codice \\ 
 		\hline
-		Effettuata & Rappresenta le spedizioni effettuate & Quelle dell'entità madre, data di cosegna, data di spedizione & Codice entità madre \\
+		Effettuata & Rappresenta le spedizioni effettuate & Quelli dell'entità madre, data di cosegna, data di spedizione & Codice entità madre \\
 		\hline
-		In corso & Rappresenta le spedizioni in corso & Quelle dell'entità madre, data di spedizione, stato & Codice entità madre \\
+		In corso & Rappresenta le spedizioni in corso & Quelli dell'entità madre, data di spedizione, stato & Codice entità madre \\
 		\hline
-		Prenotata & Rappresenta le spedizioni prenotate & Quelle dell'entità madre, data di prenotazione, data di ritiro & Codice entità madre \\
+		Prenotata & Rappresenta le spedizioni prenotate & Quelli dell'entità madre, data di prenotazione, data di ritiro & Codice entità madre \\
 		\hline
 		Corriere & Rappresenta i corrieri associati all'organizzazione & Partita IVA, sito web, nome, telefono, prezzo 1kg, prezzo 10kg, prezzo 100kg & Partita IVA \\
 		\hline 
@@ -637,7 +642,7 @@ Il modello relazionale sarà il seguente:
   \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, IdMittente, IdDestinatario) \\ \textbf{Spedizione}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id) \\ \textbf{Spedizione}(IdDestinatario) $\subseteq _{FK}$ \textbf{Cliente}(Id);
   \item \textbf{Effettuata}(\underline{Codice}, DataConsegna, DataSpedizione)\\\textbf{Effettuata}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice) \\ Lo schema di dati \textbf{Effettuata} di fatto funge da storico delle spedizioni;
   \item \textbf{InCorso}(\underline{Codice}, DataSpedizione, Stato) \\ \textbf{InCorso}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice);
-  \item \textbf{Prenotata}(\underline{Codice}, DataRitiro, DataPrenotazipagamenoone) \\\textbf{Prenotata}(Codice)$\subseteq _{FK}$\textbf{Spedizione}(Codice);
+  \item \textbf{Prenotata}(\underline{Codice}, DataRitiro, DataPrenotazione) \\\textbf{Prenotata}(Codice)$\subseteq _{FK}$\textbf{Spedizione}(Codice);
   \item \textbf{Corriere}(\underline{IVA}, Nome, Sito, Telefono, Prezzo1, Prezzo10, Prezzo100);
   \item \textbf{Reso}(\underline{Codice}, Data, Stato)\\ \textbf{Reso}(Codice) $\subseteq _{FK}$ \textbf{Effettuata}(Codice);
 \end{itemize}
