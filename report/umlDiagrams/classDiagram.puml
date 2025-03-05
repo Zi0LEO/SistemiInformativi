@@ -2,6 +2,7 @@
 class GestoreRecapiti {
   - recapitiGestiti: int
   {static}{method} + creaSpedizione(Cliente mittente, Cliente destinatario)
+  {static}{method} + creaRitiro(Cliente destinatario)
   {static}{method} + visualizzaIndirizzo(): List<Indirizzo>
   {static}{method} + visualizzaIndirizzo(Cliente cliente): Indirizzo
   {static}{method} + visualizzaIndirizzi(int criterio): List<Indirizzo>

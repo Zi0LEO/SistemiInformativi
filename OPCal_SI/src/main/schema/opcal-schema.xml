@@ -155,7 +155,7 @@
     <column
       name="id_cliente"
       required="true"
-      type="int"
+      type="INTEGER"
       size="255"
       description="Cliente a cui la ricevuta è a carico"/>
 
