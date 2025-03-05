@@ -558,7 +558,7 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 \subsubsection*{Regole di derivazione}
 Alcuni attributi devono essere derivati automaticamente dal sistema:
 \begin{itemize}
-  \item L'attributo id della relazione utente è un numero progressivo che identifica univocamente l'utente;
+  \item L'attributo prezzo dell'entità Spedizione è calcolato tramite una tabella di prezzi basata ai pesi.
   
 \end{itemize}
 \subsubsection*{Dizionario dei concetti per entità}
@@ -569,13 +569,13 @@ Alcuni attributi devono essere derivati automaticamente dal sistema:
 		\hline
 		\textbf{Entità} & \textbf{Descrizione} & \textbf{Attributi} & \textbf{Identificatore} \\ 
     \hline
-     Utente & Rappresenta ogni utente del sistema & Nome, cognome, id, e-mail, password & ID \\
+     Utente & Rappresenta ogni utente del sistema & Nome, cognome, e-mail, password & E-mail\\
     \hline
-     Amministratore & Rappresenta gli utenti con ogni permesso & Quelli dell'entità madre & ID entità madre \\
+     Amministratore & Rappresenta gli utenti con ogni permesso & Quelli dell'entità madre & E-mail entità madre \\
     \hline
-     Dipendente & Rappresenta ogni dipendente con accesso al sistema & Quelli dell'entità madre, permessi & ID entità mad \\
+     Dipendente & Rappresenta ogni dipendente con accesso al sistema & Quelli dell'entità madre, permessi & E-mail entità madre\\
     \hline
-		 Cliente & Rappresenta i clienti dell'organizzazione & Quelli dell'entità madre & ID \\
+		 Cliente & Rappresenta i clienti dell'organizzazione & Quelli dell'entità madre & E-mail \\
 		\hline 
 		 Reso & Rappresenta i resi iniziati dai clienti & Data,stato, cliente associato & Cliente associato \\
 		\hline
@@ -637,10 +637,10 @@ I tipi di dato utilizzati per gli attributi sono i seguenti:
 
 Il modello relazionale sarà il seguente:
 \begin{itemize}
-  \item \textbf{Cliente}(\underline{ID}, Nome, Cognome, Email);
-  \item \textbf{Indirizzo}(\underline{Comune, Via, Civico}, Orario, IdCliente) \\ \textbf{Indirizzo}(IdCliente) $\subseteq _{FK}$ \textbf{Cliente}(ID); 
+  \item \textbf{Cliente}(\underline{E-mail}, Nome, Cognome,);
+  \item \textbf{Indirizzo}(\underline{Comune, Via, Civico}, Orario, EmailCliente) \\ \textbf{Indirizzo}(EmailCliente) $\subseteq _{FK}$ \textbf{Cliente}(E-mail); 
   \item \textbf{Ricevuta}(\underline{Codice}, Stato, Data)\\ \textbf{Ricevuta}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice);
-  \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, IdMittente, IdDestinatario) \\ \textbf{Spedizione}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id) \\ \textbf{Spedizione}(IdDestinatario) $\subseteq _{FK}$ \textbf{Cliente}(Id);
+  \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, EmailMittente, EmailDestinatario) \\ \textbf{Spedizione}(EmailMittente) $\subseteq _{FK}$ \textbf{Cliente}(E-mail) \\ \textbf{Spedizione}(EmailDestinatario) $\subseteq _{FK}$ \textbf{Cliente}(E-mail);
   \item \textbf{Effettuata}(\underline{Codice}, DataConsegna, DataSpedizione)\\\textbf{Effettuata}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice) \\ Lo schema di dati \textbf{Effettuata} di fatto funge da storico delle spedizioni;
   \item \textbf{InCorso}(\underline{Codice}, DataSpedizione, Stato) \\ \textbf{InCorso}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice);
   \item \textbf{Prenotata}(\underline{Codice}, DataRitiro, DataPrenotazione) \\\textbf{Prenotata}(Codice)$\subseteq _{FK}$\textbf{Spedizione}(Codice);

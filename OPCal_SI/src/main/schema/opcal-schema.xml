@@ -6,89 +6,26 @@
   name="opcal"
   defaultIdMethod="native">
 
-  <table name="utente">
-    <column
-      name="id"
-      required="true"
-      primaryKey="true"
-      type="INTEGER"
-      size="255"/>
+  <table name="cliente">
     <column
       name="nome"
       required="true"
       type="VARCHAR"
       size="255"
-      description="Nome utente"/>
-    <column
-      name="password"
-      required="true"
-      type="VARCHAR"
-      size="255"
-      description="password utente"/>
+      description="Nome del cliente"/>
     <column
       name="cognome"
       required="true"
       type="VARCHAR"
       size="255"
-      description="Cognome utente"/>
+      description="Cognome del cliente"/>
     <column
       name="email"
       required="true"
+      primaryKey="true"
       type="VARCHAR"
       size="255"
-      description="Email utente"/>
-  </table>
-
-  <table name="cliente">
-  <column
-    name="id"
-    primaryKey="true"
-    required="true"
-    type="INTEGER"
-    size="255"
-    description="Id cliente"/>
-  <foreign-key foreignTable="utente">
-    <reference
-      local="id"
-      foreign="id"/>
-  </foreign-key>
-  </table>
-
-  <table name="amministratore">
-    <column
-      name="id"
-      primaryKey="true"
-      required="true"
-      type="INTEGER"
-      size="255"
-      description="Id amministratore"/>
-    <foreign-key foreignTable="utente">
-      <reference
-        local="id"
-        foreign="id"/>
-    </foreign-key>
-  </table>
-
-  <table name="dipendente">
-    <column
-      name="id"
-      required="true"
-      primaryKey="true"
-      type="INTEGER"
-      size="255"
-      description="Id dipendente"/>
-
-    <column
-      name="permessi"
-      required="true"
-      type="INTEGER"
-      size="84"
-      description="permessi del dipendente"/>
-    <foreign-key foreignTable="utente">
-      <reference
-        local="id"
-        foreign="id"/>
-    </foreign-key>
+      description="Email del cliente"/>
   </table>
 
   <table name="indirizzo">
@@ -120,15 +57,15 @@
       size="16"
       description="orario preferito di consegna/ritiro"/>
     <column
-      name="id_cliente"
+      name="email_cliente"
       required="true"
-      type="INTEGER"
+      type="VARCHAR"
       size="255"
       description="cliente associato all'indirizzo"/>
     <foreign-key foreignTable="cliente">
       <reference
-        local="id_cliente"
-        foreign="id"/>
+        local="email_cliente"
+        foreign="email"/>
     </foreign-key>
   </table>
   
@@ -147,24 +84,11 @@
       size="64"
       description="Stato del pagamento"/>
     <column
-      name="data"
+      name="Data"
       required="true"
       type="DATE"
       size="255"
       description="Data del pagamento"/>
-    <column
-      name="id_cliente"
-      required="true"
-      type="INTEGER"
-      size="255"
-      description="Cliente a cui la ricevuta è a carico"/>
-
-    <foreign-key foreignTable="cliente">
-      <reference
-        local="id_cliente"
-        foreign="id"/>
-    </foreign-key>
-
     <foreign-key foreignTable="spedizione">
       <reference
         local="codice"
@@ -193,37 +117,26 @@
       size="255"
       description="Prezzo della spedizione"/>
     <column
-      name="id_mittente"
+      name="email_mittente"
       required="true"
-      type="INTEGER"
+      type="VARCHAR"
       size="255"
       description="Mittente"/>
     <column
-      name="id_destinatario"
+      name="email_destinatario"
       required="true"
-      type="INTEGER"
-      size="255"
-      description="Destinatario"/>
-    <column
-      name="corriere"
-      required="false"
       type="VARCHAR"
       size="255"
-      description="Il corriere che si è occupato della spedizione"/>
-    <foreign-key foreignTable="corriere">
+      description="Destinatario"/>
+    <foreign-key foreignTable="cliente">
       <reference
-        local="corriere"
-        foreign="iva"/>
+        local="email_mittente"
+        foreign="email"/>
     </foreign-key>
     <foreign-key foreignTable="cliente">
       <reference
-        local="id_mittente"
-        foreign="id"/>
-    </foreign-key>
-    <foreign-key foreignTable="cliente">
-      <reference
-        local="id_destinatario"
-        foreign="id"/>
+        local="email_destinatario"
+        foreign="email"/>
     </foreign-key>
   </table>
 
