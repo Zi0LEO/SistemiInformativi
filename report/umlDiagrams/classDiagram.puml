@@ -1,0 +1,22 @@
+@startuml
+class GestoreRecapiti {
+  - recapitiGestiti: int
+  {static}{method} + creaSpedizione(Cliente mittente, Cliente destinatario)
+  {static}{method} + visualizzaIndirizzo(): List<Indirizzo>
+  {static}{method} + visualizzaIndirizzo(Cliente cliente): Indirizzo
+  {static}{method} + visualizzaIndirizzi(int criterio): List<Indirizzo>
+  {static}{method} + visualizzaSpedizioni(Indirizzo indirizzo): List<Spedizione>
+  {static}{method} + visualizzaSpedizioni(int criterio): List<Spedizione>
+  {static}{method} + visualizzaRitiri(): List<Spedizione>
+  {static}{method} + visualizzaOrario(Indirizzo indirizzo): int
+  {static}{method} + visualizzaSpedizione(int tipo): List<Spedizione>
+  {static}{method} + modificaSpedizione(int cicloVita): boolean
+  {static}{method} + aggiornaSpedizione(int stato): boolean
+  {static}{method} - assegnaCodice(): void
+  {static}{method} + visualizzaCorrieri(): List<Corriere>
+  {static}{method} + calcolaPreventivo(Spedizione spedizione, Corriere corriere): int prezzo
+  {static}{method} + prenotaCorriere(Spedizione spedizione, Corriere corriere): boolean
+  {static}{method} + registraPagamento(Corriere corriere): boolean
+}
+
+@enduml
