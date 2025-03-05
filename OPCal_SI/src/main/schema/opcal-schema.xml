@@ -147,11 +147,24 @@
       size="64"
       description="Stato del pagamento"/>
     <column
-      name="Data"
+      name="data"
       required="true"
       type="DATE"
       size="255"
       description="Data del pagamento"/>
+    <column
+      name="id_cliente"
+      required="true"
+      type="int"
+      size="255"
+      description="Cliente a cui la ricevuta è a carico"/>
+
+    <foreign-key foreignTable="cliente">
+      <reference
+        local="id_cliente"
+        foreign="id"/>
+    </foreign-key>
+
     <foreign-key foreignTable="spedizione">
       <reference
         local="codice"
