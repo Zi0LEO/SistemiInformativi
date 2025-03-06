@@ -16,6 +16,7 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 */libs/*.jar
+OPCal_SI/src/main/generated-java/org/apache/torque/om/*
 
 # Eclipse m2e generated files
 # Eclipse Core
