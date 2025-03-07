@@ -2,7 +2,7 @@ package com.opcal.model;
 
 import org.apache.torque.TorqueException;
 import org.apache.torque.om.Cliente;
-import org.apache.torque.om.ClientePeerImpl;
+import org.apache.torque.om.ClientePeer;
 import org.apache.torque.om.Indirizzo;
 
 public class GestoreClienti {
@@ -14,85 +14,37 @@ public class GestoreClienti {
      * @return true se l'operazione va a buon fine, <br> false altrimenti.
      */
     public boolean creaCliente(DatiCliente datoCliente, Indirizzo indirizzoCliente) throws CloneNotSupportedException{
-        if (!nonEsiste(datoCliente.getEmail())) throw new CloneNotSupportedException();
+        if (esiste(datoCliente.getEmail())) throw new CloneNotSupportedException("Il cliente è già esistente");
 
         Cliente cliente = new Cliente();
         try {
             cliente.addIndirizzo(indirizzoCliente);
+            cliente.setEmail(datoCliente.getEmail());
+            cliente.setNome(datoCliente.getNome());
+            cliente.setCognome(datoCliente.getCognome());
+            cliente.save();
         } catch (TorqueException e) {
             System.out.println(e.getMessage());
             return false;
         }
-        cliente.setEmail(datoCliente.getEmail());
-        cliente.setNome(datoCliente.getNome());
-        cliente.setCognome(datoCliente.getCognome());
-
-        try {
-            cliente.save();
-        } catch (TorqueException e) {
-            System.out.println(e.getMessage());
-        }
         return true;
     }
 
-    /**
-     * Permette di modificare il nome di un cliente già presente all'interno della base di dati.
-     *
-     * @throws ClassNotFoundException nel caso in cui il cliente che si cerca di modificare non esiste
-     * @param Cliente il cliente da modificare.
-     */
-    public void modificaNomeCliente(Cliente Cliente, String nome) throws ClassNotFoundException{
-        Cliente.setNome(nome);
-        try {
-            new ClientePeerImpl().retrieveByPK(Cliente.getEmail());
-        } catch (TorqueException e) {
-            throw new ClassNotFoundException();
-        }
-        try {
-            Cliente.save();
-        } catch (TorqueException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    /**
-     * Permette di modificare il cognome di un cliente già presente all'interno della base di dati.
-     * Nel caso in cui il cliente da modificare non esiste lo crea.
-     *
-     * @throws ClassNotFoundException nel caso in cui il cliente che si cerca di modificare non esiste
-     * @param Cliente il cliente da modificare.
-     */
-    public void modificaCognomeCliente(Cliente Cliente, String cognome) throws ClassNotFoundException{
-        try {
-            new ClientePeerImpl().retrieveByPK(Cliente.getEmail());
-        } catch (TorqueException e) {
-            throw new ClassNotFoundException();
-        }
-        Cliente.setNome(cognome);
-        try {
-            Cliente.save();
-        } catch (TorqueException e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
     /**
      * Permette di modificare il nome di un cliente già presente all'interno della base di dati.
      *
-     * @throws ClassNotFoundException nel caso in cui il cliente che si cerca di modificare non esiste
-     * @param email l'email del cliente da modificare,
+     * @param email L'email del cliente da modificare
+     * @param nome Il nuovo nome
+     * @throws ClassNotFoundException Nel caso in cui il cliente che si cerca di modificare non esiste
      */
     public void modificaNomeCliente(String email, String nome) throws ClassNotFoundException{
-        Cliente c;
         try {
-            c = new ClientePeerImpl().retrieveByPK(email);
-        } catch (TorqueException e) {
-            throw new ClassNotFoundException();
-        }
-        c.setNome(nome);
-        try {
+            Cliente c = ClientePeer.retrieveByPK(email);
+            c.setNome(nome);
             c.save();
         } catch (TorqueException e) {
-            System.out.println(e.getMessage());
+            throw new ClassNotFoundException("Il cliente non esiste");
         }
     }
 
@@ -103,24 +55,68 @@ public class GestoreClienti {
      * @param email l'email del cliente da modificare,
      */
     public void modificaCognomeCliente(String email, String cognome) throws ClassNotFoundException{
-        Cliente c;
         try {
-            c = new ClientePeerImpl().retrieveByPK(email);
-        } catch (TorqueException e) {
-            throw new ClassNotFoundException();
-        }
-        c.setCognome(cognome);
-        try {
+            Cliente c = ClientePeer.retrieveByPK(email);
+            c.setCognome(cognome);
             c.save();
         } catch (TorqueException e) {
-            System.out.println(e.getMessage());
+            throw new ClassNotFoundException("Il cliente non esiste");
         }
     }
 
-    private boolean nonEsiste(String email){
-        ClientePeerImpl clientePeer = new ClientePeerImpl();
+    /**
+     * Permette di modificare il nome di un cliente già presente all'interno della base di dati.
+     *
+     * @param cliente il cliente da modificare.
+     * @throws ClassNotFoundException nel caso in cui il cliente che si cerca di modificare non esiste
+     */
+    public void modificaNomeCliente(Cliente cliente, String nome) throws ClassNotFoundException{
+        modificaNomeCliente(cliente.getEmail(), nome);
+    }
+    /**
+     * Permette di modificare il cognome di un cliente già presente all'interno della base di dati.
+     * Nel caso in cui il cliente da modificare non esiste lo crea.
+     *
+     * @param cliente Il cliente da modificare.
+     * @param cognome Il nuovo cognome
+     * @throws ClassNotFoundException Nel caso in cui il cliente che si cerca di modificare non esiste
+     *
+     */
+    public void modificaCognomeCliente(Cliente cliente, String cognome) throws ClassNotFoundException{
+        modificaCognomeCliente(cliente.getEmail(), cognome);
+    }
+
+    /**
+     * Permette di cancellare un cliente già esistente all'interno della base di dati
+     *
+     * @param cliente L'oggetto di tipo cliente che dovrà essere eliminato
+     * @throws ClassNotFoundException Nel caso in cui il cliente non è presente nella classe
+     */
+    public void cancellaCliente(Cliente cliente) throws ClassNotFoundException {
         try {
-            clientePeer.retrieveByPK(email);
+            ClientePeer.doDelete(cliente);
+        } catch (TorqueException e) {
+            throw new ClassNotFoundException("Il cliente non è stato trovato");
+        }
+    }
+
+    /**
+     * Permette di cancellare un cliente già esistente all'interno della base di dati
+     *
+     * @param email L'identificatore del cliente che dovrà essere eliminato
+     * @throws ClassNotFoundException Nel caso in cui il cliente non è presente nella classe
+     */
+    public void cancellaCliente(String email) throws ClassNotFoundException {
+        try {
+            cancellaCliente(ClientePeer.retrieveByPK(email));
+        } catch (TorqueException e) {
+            throw new ClassNotFoundException("Il cliente non è stato trovato");
+        }
+    }
+
+    private boolean esiste(String email){
+        try {
+            ClientePeer.retrieveByPK(email);
         } catch (TorqueException e){
             return false;
         }
