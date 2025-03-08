@@ -30,7 +30,6 @@ public class GestoreClienti {
         return true;
     }
 
-
     /**
      * Permette di modificare il nome di un cliente già presente all'interno della base di dati.
      *

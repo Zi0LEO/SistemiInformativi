@@ -67,7 +67,7 @@ public class GestoreResi {
     }
 
     public void stampaEtichettaReso(Reso reso){
-
+        
     }
 
 
