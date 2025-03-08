@@ -2,6 +2,7 @@ package com.opcal.model;
 
 import com.itextpdf.layout.Document;
 import org.apache.torque.TorqueException;
+import org.apache.torque.om.ClientePeer;
 import org.apache.torque.om.Reso;
 import org.apache.torque.om.ResoPeer;
 
@@ -79,6 +80,21 @@ public class GestoreResi {
             return creaEtichetta(reso.getSpedizione());
         } catch (TorqueException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    /**Se un reso non è già stato processato o terminato permette di annullarlo
+     *
+     * @param reso Il reso da annullare
+     * @throws ClassNotFoundException Nel caso in cui il reso non è trovato nella base di dati
+     */
+    public void annullaReso(Reso reso) throws ClassNotFoundException{
+        if (reso.getStato().equals("PROCESSATO") | reso.getStato().equals("TERMINATO")) throw new IllegalArgumentException("Stato non valido");
+
+        try {
+            ResoPeer.doDelete(reso);
+        } catch (TorqueException e) {
+            throw new ClassNotFoundException("Il reso non è stato trovato");
         }
     }
 
