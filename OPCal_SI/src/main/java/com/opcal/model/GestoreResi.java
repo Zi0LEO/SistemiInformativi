@@ -1,12 +1,13 @@
 package com.opcal.model;
 
+import com.itextpdf.layout.Document;
 import org.apache.torque.TorqueException;
-import org.apache.torque.om.ClientePeer;
 import org.apache.torque.om.Reso;
 import org.apache.torque.om.ResoPeer;
 
 import java.util.Date;
 
+import static com.opcal.model.GeneratoreEtichette.creaEtichetta;
 import static com.opcal.model.StatoReso.statoPossibile;
 
 public class GestoreResi {
@@ -18,7 +19,7 @@ public class GestoreResi {
      * @param stato Lo stato del reso da inserire
      * @param data La data del reso da inserire
      * @return true se l'operazion va a buon fine <br> false se l'operazione ha incontrato degli errrori
-     * @throws CloneNotSupportedException
+     * @throws CloneNotSupportedException nel caso in cui il reso che si sta cercando di creare è gia presente all'interno della base di dati
      */
     public boolean creaReso(String codice, String stato, Date data) throws CloneNotSupportedException {
         if(esiste(codice)) throw new CloneNotSupportedException("Il reso è già esistente");
@@ -66,8 +67,19 @@ public class GestoreResi {
         }
     }
 
-    public void stampaEtichettaReso(Reso reso){
-        
+    /**Permette di creare un'etichetta di reso per la spedizione innserita nel parametro
+     *
+     *
+     *
+     * @param reso il reso di cui si deve creare l'etichetta
+     * @return Un'oggetto di tipo Document che è l'etichetta.
+     */
+    public Document stampaEtichettaReso(Reso reso){
+        try {
+            return creaEtichetta(reso.getSpedizione());
+        } catch (TorqueException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

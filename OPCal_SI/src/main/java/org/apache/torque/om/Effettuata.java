@@ -19,6 +19,4 @@ public  class Effettuata
     /** Serial version */
     private static final long serialVersionUID = 1740669787980L;
 
-
-
 }
