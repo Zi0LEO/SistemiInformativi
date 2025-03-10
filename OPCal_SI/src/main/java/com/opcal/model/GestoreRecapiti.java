@@ -5,76 +5,64 @@ import org.apache.torque.criteria.Criteria;
 import org.apache.torque.om.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GestoreRecapiti {
     private static int recapitiGestiti;
-    private static final int MILLS_IN_DAY = 24 * 60 * 60 * 1000;
 
     public static boolean creaSpedizione(Cliente mittente, Cliente destinatario, int peso){
         InCorso inCorso = new InCorso();
-        inCorso.setStato("Presa in carico");
-        inCorso.setDataSpedizione(new Date(System.currentTimeMillis()));
-        Spedizione spedizione = new Spedizione();
+        String codice = generaCodice();
+        Spedizione spedizione = new Spedizione(codice, mittente.getEmail(), destinatario.getEmail(), peso, calcolaPrezzo(peso));
         try {
             inCorso.save();
             spedizione.addInCorso(inCorso);
-        } catch (TorqueException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-        return creaOperazione(mittente, destinatario, peso, spedizione);
-    }
-
-    private static boolean creaOperazione(Cliente mittente, Cliente destinatario, int peso, Spedizione spedizione) {
-        spedizione.setCodice(Integer.valueOf(recapitiGestiti).toString());
-        recapitiGestiti++;
-        spedizione.setPeso(peso);
-        spedizione.setEmailMittente(mittente.getEmail());
-        spedizione.setEmailDestinatario(destinatario.getEmail());
-        spedizione.setPrezzo(calcolaPrezzo(peso));
-        try {
             spedizione.save();
+            creaRicevuta(spedizione);
         } catch (TorqueException e) {
             System.out.println(e.getMessage());
             return false;
         }
-        creaRicevuta(spedizione);
         return true;
     }
 
-    private static void creaRicevuta(Spedizione spedizione) {
+    public static boolean creaRitiro(Cliente mittente, Cliente destinatario, int peso){
+        Prenotata prenotata = new Prenotata();
+        String codice = generaCodice();
+        Spedizione spedizione = new Spedizione(codice, mittente.getEmail(), destinatario.getEmail(), peso, calcolaPrezzo(peso));
+        try {
+            prenotata.save();
+            spedizione.addPrenotata(prenotata);
+            spedizione.save();
+            creaRicevuta(spedizione);
+        } catch (TorqueException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    private synchronized static String generaCodice() {
+        recapitiGestiti++;
+        Integer recapiti = recapitiGestiti;
+        String ret = recapiti.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.repeat("0", 6 - ret.length());
+        sb.append(ret);
+        return sb.toString();
+    }
+
+    private static void creaRicevuta(Spedizione spedizione) throws TorqueException {
         Ricevuta ricevuta = new Ricevuta();
         ricevuta.setData(new Date(System.currentTimeMillis()));
         ricevuta.setSpedizione(spedizione);
-        try {
-            ricevuta.save();
-        } catch (TorqueException e) {
-            System.out.println(e.getMessage());
-        }
+        ricevuta.save();
     }
 
     //temporaneo
     private static int calcolaPrezzo(int peso) {
         return peso * 5;
-    }
-
-    public static boolean creaRitiro(Cliente mittente, Cliente destinatario, int peso){
-        Prenotata prenotata = new Prenotata();
-        prenotata.setDataPrenotazione(new Date(System.currentTimeMillis()));
-
-        //ritiro di default 7 giorni dopo, in real dovrebbe confrontarsi con il gestore magazzino
-        prenotata.setDataRitiro(new Date(System.currentTimeMillis()+MILLS_IN_DAY*7));
-
-        Spedizione spedizione = new Spedizione();
-        try {
-            prenotata.save();
-            spedizione.addPrenotata(prenotata);
-        } catch (TorqueException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-        return creaOperazione(mittente, destinatario, peso, spedizione);
     }
 
     public static Indirizzo visualizzaIndirizzo(Cliente cliente){
@@ -88,23 +76,26 @@ public class GestoreRecapiti {
         }
     }
 
-    public static List<Indirizzo> visualizzaIndirizzi(int criterio){
+    public static List<Indirizzo> visualizzaIndirizzi(int criterio, String options){
        Criteria criteria = new Criteria();
-       switch (criterio){
-           case 1: criteria.where()
-       }
-    }
-
-    public static List<Indirizzo> visualizzaIndirizzo(){
-        Criteria crit = new Criteria();
-        crit.addAscendingOrderByColumn(IndirizzoPeer.COMUNE);
-        crit.addAscendingOrderByColumn(IndirizzoPeer.VIA);
-        crit.addAscendingOrderByColumn(IndirizzoPeer.CIVICO);
         try {
-            List<Indirizzo> indirizzi = IndirizzoPeer.doSelect(crit);
+            switch (criterio){
+                case 1:
+                    criteria.where(IndirizzoPeer.COMUNE, options);
+                    break;
+                case 2:
+                    criteria.where(IndirizzoPeer.VIA, options);
+                    break;
+                case 3:
+                    criteria.where(IndirizzoPeer.ORARIO, Integer.valueOf(options));
+                    break;
+            }
+            return IndirizzoPeer.doSelect(criteria);
+
         } catch (TorqueException e) {
             System.out.println(e.getMessage());
-            return null;
+            return new ArrayList<Indirizzo>();
         }
     }
+
 }
