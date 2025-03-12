@@ -1,9 +1,12 @@
 package com.opcal.model;
 
 import org.apache.torque.TorqueException;
-import org.apache.torque.om.Cliente;
-import org.apache.torque.om.ClientePeer;
-import org.apache.torque.om.Indirizzo;
+import org.apache.torque.criteria.Criteria;
+import org.apache.torque.map.ColumnMap;
+import org.apache.torque.om.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GestoreClienti {
 
@@ -112,6 +115,56 @@ public class GestoreClienti {
             throw new ClassNotFoundException("Il cliente non è stato trovato");
         }
     }
+
+    /**Permette di ricevere la lista delle spedizioni a consegnate a un cliente
+     *
+     *
+     * @param cliente Il cliente che richiede le sue consegne
+     * @return La lista delle consegne in ordine alfabetico, è inizializzata come ArrayList.
+     */
+    public List<Spedizione> storicoConsegne(Cliente cliente){
+        return storicoConsegneImpl(cliente,new Criteria().addAscendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
+    }
+
+
+
+    /**Permette di ricevere la lista delle spedizioni a consegnate a un cliente
+     *
+     *
+     * @param cliente Il cliente che richiede le sue consegne
+     * @param tipo Un intero tra 0 e 3 che indica il tipo di ordinamento, <br> 0 ritorna l'ordinamento crescente per data, <br> 1 decrescente per data,
+     * <br> 2 crescente per codice, <br> 3 decrescente per codice.
+     * @return Un'oggetto di tipo List che è la lista delle spedizioni, è inizializzata come ArrayList.
+     */
+    public List<Spedizione> storicoConsegne(Cliente cliente,int tipo){
+
+        if(tipo == 0) return storicoConsegneImpl(cliente,new Criteria().addAscendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
+        if(tipo == 1) return storicoConsegneImpl(cliente,new Criteria().addDescendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
+        if(tipo == 2) return storicoConsegneImpl(cliente,new Criteria().addAscendingOrderByColumn(SpedizionePeer.CODICE));
+        if(tipo == 3) return storicoConsegneImpl(cliente,new Criteria().addDescendingOrderByColumn(SpedizionePeer.CODICE));
+
+        throw new IllegalArgumentException("Tipo non ammesso");
+    }
+
+
+    private List<Spedizione> storicoConsegneImpl(Cliente cliente,Criteria criteria){
+        //SELECT codice FROM spedizione s JOIN effettuata e ON s.codice=e.codice JOIN cliente c ON s.emailDestinatario=c.email
+        criteria.addJoin(SpedizionePeer.CODICE, EffettuataPeer.CODICE);
+        criteria.addJoin(SpedizionePeer.EMAIL_DESTINATARIO,ClientePeer.EMAIL);
+
+        criteria.addSelectColumn(SpedizionePeer.CODICE);
+
+        List<Spedizione> results = new ArrayList<>();
+
+        try {
+            results = SpedizionePeer.doSelect(criteria);
+        } catch (TorqueException e) {
+            System.out.println("Errore nella query");
+        }
+
+        return results;
+    }
+
 
     private boolean esiste(String email){
         try {

@@ -22,7 +22,7 @@ public class GeneratoreEtichette {
      * @param spedizione la spedizione di cui creare l'etichetta
      * @return Un'oggetto di tipo Document che è l'etichetta.
      */
-    protected static Document creaEtichetta(Spedizione spedizione) {
+    public static Document creaEtichetta(Spedizione spedizione) {
         String dest = "etichettaDiReso.pdf";
         Cliente[] cl = mittenteDestinatario(spedizione);
         PdfWriter writer;
