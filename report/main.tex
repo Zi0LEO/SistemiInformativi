@@ -413,18 +413,29 @@ Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzional
       \item{Da "in consegna" a "consegnata" [portalettere]};
       \item{Da "in consegna" a "tentato recapito" [portalettere]};
     \end{enumerate}
-  \item{(MUST)} Filtrare la lista degli indirizzi, di default ordinata per nome del cliente, secondo i seguenti criteri[portalettere]:
+  \item{(MUST)} Filtrare la lista degli indirizzi, la quale di default mostra tutti gli indirizzi, secondo i seguenti criteri[portalettere]:
     \begin{enumerate}
       \item{Comune di appartenenza};
       \item{Via di residenza}
       \item{Orario preferito per la consegna};
     \end{enumerate}
-  \item{(MUST)} Filtrare la lista delle spedizioni, di default ordinata per data, secondo i seguenti criteri:
+  \item{(MUST)} Ordinare la lista degli indirizzi, di default in ordine alfabetico, secondo i seguenti criteri[portalettere]:
     \begin{enumerate}
-      \item{Per soglia di pagamento};
+      \item{Nome del cliente};
+      \item{Numero di spedizioni ricevute};
+    \end{enumerate}
+  \item{(MUST)} Filtrare la lista delle spedizioni, la quale di default mostra tutte le spedizioni, secondo i seguenti criteri:
+    \begin{enumerate}
+      \item{Sopra o sotto una soglia di prezzo};
       \item{Per indirizzo di consegna};
       \item{Per indirizzo di partenza};
       \item{Per stato della spedizione};
+    \end{enumerate}
+  \item{(MUST)} Ordinare la lista delle spedizioni, di default ordinata in base al codice, secondo i seguenti criteri[portalettere]:
+    \begin{enumerate}
+      \item{Prezzo crescente o decrescente};
+      \item{Peso crescente o decrescente};
+      \item{Data crescente o decrescente};
     \end{enumerate}
   \item{(MUST)} Assegnare ad ogni spedizione un codice univoco [magazziniere, portalettere];
   \item{(MUST)} Identificare una spedizione solo tramite il suo codice [magazziniere, portalettere];
