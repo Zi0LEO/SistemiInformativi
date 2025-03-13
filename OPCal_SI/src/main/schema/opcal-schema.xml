@@ -1,296 +1,378 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <database xmlns="http://db.apache.org/torque/5.0/templates/database"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://db.apache.org/torque/5.0/templates/database
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://db.apache.org/torque/5.0/templates/database
         http://db.apache.org/torque/torque-5.0/documentation/orm-reference/database-5-0-strict.xsd"
-          name="opcal"
-          defaultIdMethod="native">
+  name="opcal"
+  defaultIdMethod="native">
 
-    <table name="cliente">
-        <column
-                name="nome"
-                required="true"
-                type="VARCHAR"
-                size="255"
-                description="Nome del cliente"/>
-        <column
-                name="cognome"
-                required="true"
-                type="VARCHAR"
-                size="255"
-                description="Cognome del cliente"/>
-        <column
-                name="email"
-                required="true"
-                primaryKey="true"
-                type="VARCHAR"
-                size="255"
-                description="Email del cliente"/>
-    </table>
+  <table name="utente">
+    <column
+      name="email"
+      primaryKey="true"
+      required="true"
+      type="VARCHAR"
+      size="255"
+      description="Email utente"/>
+    <column
+      name="nome"
+      required="true"
+      type="VARCHAR"
+      size="255"
+      description="Nome utente"/>
+    <column
+      name="password"
+      required="true"
+      type="VARCHAR"
+      size="255"
+      description="password utente"/>
+    <column
+      name="cognome"
+      required="true"
+      type="VARCHAR"
+      size="255"
+      description="Cognome utente"/>
+  </table>
 
-    <table name="indirizzo">
-        <column
-                name="comune"
-                required="true"
-                primaryKey="true"
-                type="VARCHAR"
-                size="255"
-                description="Comune dell'indirizzo"/>
-        <column
-                name="via"
-                required="true"
-                primaryKey="true"
-                type="VARCHAR"
-                size="255"
-                description="Via dell'indirizzo"/>
-        <column
-                name="civico"
-                required="true"
-                primaryKey="true"
-                type="VARCHAR"
-                size="64"
-                description="Civico dell'indirizzo"/>
-        <column
-                name="orario"
-                required="true"
-                type="INTEGER"
-                size="16"
-                description="orario preferito di consegna/ritiro"/>
-        <column
-                name="email_cliente"
-                required="true"
-                type="VARCHAR"
-                size="255"
-                description="cliente associato all'indirizzo"/>
-        <foreign-key foreignTable="cliente">
-            <reference
-                    local="email_cliente"
-                    foreign="email"/>
-        </foreign-key>
-    </table>
+  <table name="cliente">
+    <column
+      name="email"
+      primaryKey="true"
+      required="true"
+      type="VARCHAR"
+      size="255"
+      description="Email cliente"/>
+  <foreign-key foreignTable="utente">
+    <reference
+      local="email"
+      foreign="email"/>
+  </foreign-key>
+  </table>
 
-    <table name="ricevuta">
-        <column
-                name="codice"
-                required="true"
-                primaryKey="true"
-                type="VARCHAR"
-                size="255"
-                description="Codice della spedizione a cui la ricevuta si riferisce"/>
-        <column
-                name="stato"
-                required="true"
-                type="VARCHAR"
-                size="64"
-                description="Stato del pagamento"/>
-        <column
-                name="Data"
-                required="true"
-                type="DATE"
-                size="255"
-                description="Data del pagamento"/>
-        <foreign-key foreignTable="spedizione">
-            <reference
-                    local="codice"
-                    foreign="codice"/>
-        </foreign-key>
-    </table>
+  <table name="amministratore">
+    <column
+      name="email"
+      primaryKey="true"
+      required="true"
+      type="VARCHAR"
+      size="255"
+      description="Email amministratore"/>
+    <foreign-key foreignTable="utente">
+      <reference
+        local="email"
+        foreign="email"/>
+    </foreign-key>
+  </table>
 
-    <table name="spedizione">
-        <column
-                name="codice"
-                required="true"
-                primaryKey="true"
-                type="VARCHAR"
-                size="255"
-                description="Codice della spedizione"/>
-        <column
-                name="peso"
-                required="true"
-                type="INTEGER"
-                size="255"
-                description="Peso della spedizione"/>
-        <column
-                name="prezzo"
-                required="true"
-                type="INTEGER"
-                size="255"
-                description="Prezzo della spedizione"/>
-        <column
-                name="email_mittente"
-                required="true"
-                type="VARCHAR"
-                size="255"
-                description="Mittente"/>
-        <column
-                name="email_destinatario"
-                required="true"
-                type="VARCHAR"
-                size="255"
-                description="Destinatario"/>
-        <foreign-key foreignTable="cliente">
-            <reference
-                    local="email_mittente"
-                    foreign="email"/>
-        </foreign-key>
-        <foreign-key foreignTable="cliente">
-            <reference
-                    local="email_destinatario"
-                    foreign="email"/>
-        </foreign-key>
-    </table>
+  <table name="dipendente">
+    <column
+      name="email"
+      primaryKey="true"
+      required="true"
+      type="INTEGER"
+      size="255"
+      description="email dipendente"/>
 
-    <table name="prenotata" description="Spedizioni in attesa di ritiro">
-        <column
-                name="codice"
-                required="true"
-                primaryKey="true"
-                type="VARCHAR"
-                size="255"
-                description="Codice della spedizione"/>
-        <column
-                name="data_ritiro"
-                required="true"
-                type="DATE"
-                size="255"
-                description="Data prevista di ritiro"/>
-        <column
-                name="data_prenotazione"
-                required="true"
-                type="DATE"
-                size="255"
-                description="Data di prenotazione della spedizione"/>
-        <foreign-key foreignTable="spedizione">
-            <reference
-                    local="codice"
-                    foreign="codice"/>
-        </foreign-key>
-    </table>
+    <column
+      name="permessi"
+      required="true"
+      type="INTEGER"
+      size="84"
+      description="permessi del dipendente"/>
+    <foreign-key foreignTable="utente">
+      <reference
+        local="email"
+        foreign="email"/>
+    </foreign-key>
+  </table>
 
-    <table name="in_corso" description="Spedizioni in lavorazione">
-        <column
-                name="codice"
-                required="true"
-                primaryKey="true"
-                type="VARCHAR"
-                size="255"
-                description="Codice della spedizione"/>
-        <column
-                name="data_spedizione"
-                required="true"
-                type="DATE"
-                size="255"
-                description="Data di spedizione"/>
-        <column
-                name="stato"
-                required="true"
-                type="VARCHAR"
-                size="64"
-                description="Stato della lavorazione"/>
-        <foreign-key foreignTable="spedizione">
-            <reference
-                    local="codice"
-                    foreign="codice"/>
-        </foreign-key>
-    </table>
+  <table name="indirizzo">
+    <column
+      name="comune"
+      required="true"
+      primaryKey="true"
+      type="VARCHAR"
+      size="255"
+      description="Comune dell'indirizzo"/>
+    <column
+      name="via"
+      required="true"
+      primaryKey="true"
+      type="VARCHAR"
+      size="255"
+      description="Via dell'indirizzo"/>
+    <column
+      name="civico"
+      required="true"
+      primaryKey="true"
+      type="VARCHAR"
+      size="64"
+      description="Civico dell'indirizzo"/>
+    <column
+      name="orario"
+      required="true"
+      type="INTEGER"
+      size="16"
+      description="orario preferito di consegna/ritiro"/>
+    <column
+      name="email_cliente"
+      required="true"
+      type="INTEGER"
+      size="255"
+      description="cliente associato all'indirizzo"/>
+    <foreign-key foreignTable="cliente">
+      <reference
+        local="email_cliente"
+        foreign="email"/>
+    </foreign-key>
+  </table>
+  
+  <table name="ricevuta">
+    <column
+      name="codice"
+      required="true"
+      primaryKey="true"
+      type="VARCHAR"
+      size="255"
+      description="Codice della spedizione a cui la ricevuta si riferisce"/>
+    <column
+      name="stato"
+      required="true"
+      type="VARCHAR"
+      size="64"
+      description="Stato del pagamento"/>
+    <column
+      name="data"
+      required="true"
+      type="DATE"
+      size="255"
+      description="Data del pagamento"/>
+    <column
+      name="email_cliente"
+      required="true"
+      type="INTEGER"
+      size="255"
+      description="Cliente a cui la ricevuta è a carico"/>
 
-    <table name="effettuata" description="Storico delle spedizioni">
-        <column
-                name="codice"
-                required="true"
-                primaryKey="true"
-                type="VARCHAR"
-                size="255"
-                description="Codice della spedizione"/>
-        <column
-                name="data_spedizione"
-                required="true"
-                type="DATE"
-                size="255"
-                description="Data di spedizione"/>
-        <column
-                name="data_consegna"
-                required="true"
-                type="DATE"
-                size="255"
-                description="Data di consegna della spedizione"/>
-        <foreign-key foreignTable="spedizione">
-            <reference
-                    local="codice"
-                    foreign="codice"/>
-        </foreign-key>
-    </table>
+    <foreign-key foreignTable="cliente">
+      <reference
+        local="email_cliente"
+        foreign="email"/>
+    </foreign-key>
 
-    <table name="corriere" description="Rubrica corrieri">
-        <column
-                name="iva"
-                required="true"
-                primaryKey="true"
-                type="VARCHAR"
-                size="255"
-                description="Partita IVA del corriere"/>
-        <column
-                name="nome"
-                required="true"
-                type="VARCHAR"
-                size="255"
-                description="La ragione sociale del corriere"/>
-        <column
-                name="sito"
-                required="true"
-                type="VARCHAR"
-                size="255"
-                description="Il sito web del corriere"/>
-        <column
-                name="telefono"
-                required="true"
-                type="VARCHAR"
-                size="64"
-                description="Il numero di telefono del corriere"/>
-        <column
-                name="prezzo1"
-                required="true"
-                type="INTEGER"
-                size="64"
-                description="Il prezzo per spedire 1kg di merce"/>
-        <column
-                name="prezzo10"
-                required="true"
-                type="INTEGER"
-                size="64"
-                description="Il prezzo per spedire 10kg di merce"/>
-        <column
-                name="prezzo100"
-                required="true"
-                type="INTEGER"
-                size="64"
-                description="Il prezzo per spedire 100kg di merce"/>
-    </table>
+    <foreign-key foreignTable="spedizione">
+      <reference
+        local="codice"
+        foreign="codice"/>
+    </foreign-key>
+  </table>
+  
+  <table name="spedizione">
+    <column
+      name="codice"
+      required="true"
+      primaryKey="true"
+      type="VARCHAR"
+      size="255"
+      description="Codice della spedizione"/>
+    <column
+      name="peso"
+      required="true"
+      type="INTEGER"
+      size="255"
+      description="Peso della spedizione"/>
+    <column
+      name="prezzo"
+      required="true"
+      type="INTEGER"
+      size="255"
+      description="Prezzo della spedizione"/>
+    <column
+      name="email_mittente"
+      required="true"
+      type="INTEGER"
+      size="255"
+      description="Mittente"/>
+    <column
+      name="email_destinatario"
+      required="true"
+      type="INTEGER"
+      size="255"
+      description="Destinatario"/>
+    <column
+      name="corriere"
+      required="false"
+      type="VARCHAR"
+      size="255"
+      description="Il corriere che si è occupato della spedizione"/>
+    <foreign-key foreignTable="corriere">
+      <reference
+        local="corriere"
+        foreign="iva"/>
+    </foreign-key>
+    <foreign-key foreignTable="cliente">
+      <reference
+        local="email_mittente"
+        foreign="email"/>
+    </foreign-key>
+    <foreign-key foreignTable="cliente">
+      <reference
+        local="email_destinatario"
+        foreign="email"/>
+    </foreign-key>
+  </table>
 
-    <table name="reso">
-        <column
-                name="codice"
-                required="true"
-                primaryKey="true"
-                type="VARCHAR"
-                size="255"
-                description="Codice della spedizione a cui il reso si riferisce"/>
-        <column
-                name="stato"
-                required="true"
-                type="VARCHAR"
-                size="64"
-                description="Stato del reso"/>
-        <column
-                name="Data"
-                required="true"
-                type="DATE"
-                size="255"
-                description="Data di richiesta del reso"/>
-        <foreign-key foreignTable="spedizione">
-            <reference
-                    local="codice"
-                    foreign="codice"/>
-        </foreign-key>
-    </table>
+  <table name="prenotata" description="Spedizioni in attesa di ritiro">
+    <column
+      name="codice"
+      required="true"
+      primaryKey="true"
+      type="VARCHAR"
+      size="255"
+      description="Codice della spedizione"/>
+    <column
+      name="data_ritiro"
+      required="true"
+      type="DATE"
+      size="255"
+      description="Data prevista di ritiro"/>
+    <column
+      name="data_prenotazione"
+      required="true"
+      type="DATE"
+      size="255"
+      description="Data di prenotazione della spedizione"/>
+    <foreign-key foreignTable="spedizione">
+      <reference
+        local="codice"
+        foreign="codice"/>
+    </foreign-key>
+  </table>
+
+  <table name="in_corso" description="Spedizioni in lavorazione">
+    <column
+      name="codice"
+      required="true"
+      primaryKey="true"
+      type="VARCHAR"
+      size="255"
+      description="Codice della spedizione"/>
+    <column
+      name="data_spedizione"
+      required="true"
+      type="DATE"
+      size="255"
+      description="Data di spedizione"/>
+    <column
+      name="stato"
+      required="true"
+      type="VARCHAR"
+      size="64"
+      description="Stato della lavorazione"/>
+    <foreign-key foreignTable="spedizione">
+      <reference
+        local="codice"
+        foreign="codice"/>
+    </foreign-key>
+  </table>
+
+  <table name="effettuata" description="Storico delle spedizioni">
+    <column
+      name="codice"
+      required="true"
+      primaryKey="true"
+      type="VARCHAR"
+      size="255"
+      description="Codice della spedizione"/>
+    <column
+      name="data_spedizione"
+      required="true"
+      type="DATE"
+      size="255"
+      description="Data di spedizione"/>
+    <column
+      name="data_consegna"
+      required="true"
+      type="DATE"
+      size="255"
+      description="Data di consegna della spedizione"/>
+    <foreign-key foreignTable="spedizione">
+      <reference
+        local="codice"
+        foreign="codice"/>
+    </foreign-key>
+  </table>
+
+  <table name="corriere" description="Rubrica corrieri">
+    <column
+      name="iva"
+      required="true"
+      primaryKey="true"
+      type="VARCHAR"
+      size="255"
+      description="Partita IVA del corriere"/>
+    <column
+      name="nome"
+      required="true"
+      type="VARCHAR"
+      size="255"
+      description="La ragione sociale del corriere"/>
+    <column
+      name="sito"
+      required="true"
+      type="VARCHAR"
+      size="255"
+      description="Il sito web del corriere"/>
+    <column
+      name="telefono"
+      required="true"
+      type="VARCHAR"
+      size="64"
+      description="Il numero di telefono del corriere"/>
+    <column
+      name="prezzo1"
+      required="true"
+      type="INTEGER"
+      size="64"
+      description="Il prezzo per spedire 1kg di merce"/>
+    <column
+      name="prezzo10"
+      required="true"
+      type="INTEGER"
+      size="64"
+      description="Il prezzo per spedire 10kg di merce"/>
+    <column
+      name="prezzo100"
+      required="true"
+      type="INTEGER"
+      size="64"
+      description="Il prezzo per spedire 100kg di merce"/>
+  </table>
+  
+  <table name="reso">
+    <column
+      name="codice"
+      required="true"
+      primaryKey="true"
+      type="VARCHAR"
+      size="255"
+      description="Codice della spedizione a cui il reso si riferisce"/>
+    <column
+      name="stato"
+      required="true"
+      type="VARCHAR"
+      size="64"
+      description="Stato del reso"/>
+    <column
+      name="data"
+      required="true"
+      type="DATE"
+      size="255"
+      description="Data di richiesta del reso"/>
+    <foreign-key foreignTable="spedizione">
+      <reference
+        local="codice"
+        foreign="codice"/>
+    </foreign-key>
+  </table>
 </database>
