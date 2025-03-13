@@ -138,15 +138,19 @@ public class GestoreClienti {
      * @return Un'oggetto di tipo List che è la lista delle spedizioni, è inizializzata come ArrayList.
      */
     public List<Spedizione> storicoConsegne(Cliente cliente,int tipo){
-
-        if(tipo == 0) return storicoConsegneImpl(cliente,new Criteria().addAscendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
-        if(tipo == 1) return storicoConsegneImpl(cliente,new Criteria().addDescendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
-        if(tipo == 2) return storicoConsegneImpl(cliente,new Criteria().addAscendingOrderByColumn(SpedizionePeer.CODICE));
-        if(tipo == 3) return storicoConsegneImpl(cliente,new Criteria().addDescendingOrderByColumn(SpedizionePeer.CODICE));
-
-        throw new IllegalArgumentException("Tipo non ammesso");
+        switch (tipo) {
+            case 1 :
+                return storicoConsegneImpl(cliente,new Criteria().addAscendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
+            case 2 :
+                return storicoConsegneImpl(cliente,new Criteria().addDescendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
+            case 3 :
+                return storicoConsegneImpl(cliente,new Criteria().addAscendingOrderByColumn(SpedizionePeer.CODICE));
+            case 4 :
+                return storicoConsegneImpl(cliente,new Criteria().addDescendingOrderByColumn(SpedizionePeer.CODICE));
+            default :
+                throw new IllegalArgumentException("Tipo non ammesso");
+        }
     }
-
 
     private List<Spedizione> storicoConsegneImpl(Cliente cliente,Criteria criteria){
         //SELECT codice FROM spedizione s JOIN effettuata e ON s.codice=e.codice JOIN cliente c ON s.emailDestinatario=c.email
@@ -165,7 +169,6 @@ public class GestoreClienti {
 
         return results;
     }
-
 
     private boolean esiste(String email){
         try {
