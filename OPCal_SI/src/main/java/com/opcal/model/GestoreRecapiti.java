@@ -7,7 +7,6 @@ import org.apache.torque.util.Transaction;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -84,7 +83,7 @@ public class GestoreRecapiti {
     }
 
     public static List<Indirizzo> visualizzaIndirizzi(int criterio, String options){
-       Criteria criteria = new Criteria();
+        Criteria criteria = new Criteria();
         try {
             switch (criterio){
                 case 1:
@@ -101,7 +100,7 @@ public class GestoreRecapiti {
 
         } catch (TorqueException e) {
             System.out.println(e.getMessage());
-            return new ArrayList<>();
+            return null;
         }
     }
 
@@ -173,6 +172,15 @@ public class GestoreRecapiti {
             return false;
         }
         return true;
+    }
+
+    public static List<Indirizzo> ordinaIndirizzi(int criterio, boolean crescente){
+        try {
+            return IndirizzoPeer.ordinaIndirizzi(criterio, crescente);
+        }catch (TorqueException e){
+            return null;
+        }
+
     }
 
 }
