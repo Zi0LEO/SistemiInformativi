@@ -3,20 +3,19 @@ package org.apache.torque.om;
 import java.io.Serial;
 import java.sql.Date;
 
-public  class Prenotata
-    extends org.apache.torque.om.BasePrenotata
-{
-    @Serial
-    private static final long serialVersionUID = 1741196585703L;
-    private static final long MILLS_IN_WEEK = 1000 * 60 * 60 * 24 * 7;
+public class Prenotata
+    extends org.apache.torque.om.BasePrenotata {
+  @Serial
+  private static final long serialVersionUID = 1741196585703L;
+  private static final long MILLS_IN_WEEK = 1000 * 60 * 60 * 24 * 7;
 
-    public Prenotata(){
-        super();
-        setDataPrenotazione(new Date(System.currentTimeMillis()));
+  public Prenotata() {
+    super();
+    setDataPrenotazione(new Date(System.currentTimeMillis()));
 
-        //data di ritiro di default una settimana dopo la prenotazione
-        setDataRitiro(new Date(System.currentTimeMillis() + MILLS_IN_WEEK));
-    }
+    //data di ritiro di default una settimana dopo la prenotazione
+    setDataRitiro(new Date(System.currentTimeMillis() + MILLS_IN_WEEK));
+  }
 
 
 }
