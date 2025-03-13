@@ -4,6 +4,7 @@ import org.apache.torque.TorqueException;
 import org.apache.torque.criteria.Criteria;
 import org.apache.torque.map.ColumnMap;
 import org.apache.torque.om.*;
+import com.opcal.*;
 
 import java.util.ArrayList;
 import java.util.List;

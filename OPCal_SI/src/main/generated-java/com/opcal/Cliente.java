@@ -32,4 +32,16 @@ public class Cliente
 
   }
 
+  public void setNome(String nome) throws TorqueException {
+
+    this.getUtente().setNome(nome);
+
+  }
+
+  public void setCognome(String cognome) throws TorqueException {
+
+    this.getUtente().setCognome(cognome);
+
+  }
+
 }
