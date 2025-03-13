@@ -1,15 +1,13 @@
-package com.opcal.model;
+package main.java.com.opcal.model;
 
 import com.itextpdf.layout.Document;
 import org.apache.torque.TorqueException;
-import org.apache.torque.om.ClientePeer;
-import org.apache.torque.om.Reso;
-import org.apache.torque.om.ResoPeer;
+import com.opcal.*;
 
 import java.util.Date;
 
-import static com.opcal.model.GeneratoreEtichette.creaEtichetta;
-import static com.opcal.model.StatoReso.statoPossibile;
+import static main.java.com.opcal.model.GeneratoreEtichette.creaEtichetta;
+import static main.java.com.opcal.model.StatoReso.statoPossibile;
 
 public class GestoreResi {
 

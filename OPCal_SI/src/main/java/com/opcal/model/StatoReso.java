@@ -1,4 +1,4 @@
-package com.opcal.model;
+package main.java.com.opcal.model;
 
 public enum StatoReso {
         RICHIESTO,

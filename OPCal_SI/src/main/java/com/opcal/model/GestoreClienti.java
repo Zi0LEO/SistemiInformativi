@@ -1,4 +1,4 @@
-package com.opcal.model;
+package main.java.com.opcal.model;
 
 import org.apache.torque.TorqueException;
 import org.apache.torque.criteria.Criteria;

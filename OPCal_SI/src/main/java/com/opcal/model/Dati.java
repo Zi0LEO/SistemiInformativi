@@ -1,4 +1,4 @@
-package com.opcal.model;
+package main.java.com.opcal.model;
 
 public abstract class Dati {
   private int ID;
