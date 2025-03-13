@@ -1,5 +1,4 @@
 \input{preamble}
-
 \author{Umberto Frega, Leonardo Napoli}
 \setlength{\headheight}{15pt}
 \setlength{\footskip}{47.5pt}
@@ -399,7 +398,8 @@ Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzional
   \item{(MUST)} Visualizzare gli indirizzi dei clienti [portalettere];
   \item{(MUST)} Visualizzare le spedizioni in arrivo ad un indirizzo [portalettere];
   \item{(MUST)} Visualizzare le spedizioni da ritirare [portalettere];
-  \item{(MUST)} Creare una spedizione [sportellista, cliente];
+  \item{(MUST)} Creare una spedizione [sportellista];
+  \item{(MUST)} Prenotare un ritiro [cliente];
   \item{(MUST)} Visualizzare l'orario di consegna preferito [portalettere];
   \item{(MUST)} Tenere traccia delle spedizioni prenotate, in corso ed effettuate [responsabile recapiti];
   \item{(MUST)} Modificare il ciclo di vita di una spedizione(prenotata, in corso, effettuata);
@@ -413,21 +413,28 @@ Di seguito è riportato il diagramma dei casi d'uso per \textbf{l'Area Funzional
       \item{Da "in consegna" a "consegnata" [portalettere]};
       \item{Da "in consegna" a "tentato recapito" [portalettere]};
     \end{enumerate}
-  \item{(MUST)} Filtrare la lista degli indirizzi, di default ordinata per nome del cliente, secondo i seguenti criteri[portalettere]:
+  \item{(MUST)} Filtrare la lista degli indirizzi, la quale di default mostra tutti gli indirizzi, secondo i seguenti criteri[portalettere]:
     \begin{enumerate}
       \item{Comune di appartenenza};
+      \item{Via di residenza}
       \item{Orario preferito per la consegna};
-      \item{Numero di ordini ricevuti};
-      \item{Numero di ordini spediti};
-      \item{Per data ultimo ordine};
-      \item{Per data primo ordine};
     \end{enumerate}
-  \item{(MUST)} Filtrare la lista delle spedizioni, di default ordinata per data, secondo i seguenti criteri:
+  \item{(MUST)} Ordinare la lista degli indirizzi, di default in ordine alfabetico, secondo i seguenti criteri[portalettere]:
     \begin{enumerate}
-      \item{Per pagamento};
+      \item{Nome del cliente};
+    \end{enumerate}
+  \item{(MUST)} Filtrare la lista delle spedizioni, la quale di default mostra tutte le spedizioni, secondo i seguenti criteri:
+    \begin{enumerate}
+      \item{Sopra o sotto una soglia di prezzo};
       \item{Per indirizzo di consegna};
       \item{Per indirizzo di partenza};
       \item{Per stato della spedizione};
+    \end{enumerate}
+  \item{(MUST)} Ordinare la lista delle spedizioni, di default ordinata in base al codice, secondo i seguenti criteri[portalettere]:
+    \begin{enumerate}
+      \item{Prezzo crescente o decrescente};
+      \item{Peso crescente o decrescente};
+      \item{Data crescente o decrescente};
     \end{enumerate}
   \item{(MUST)} Assegnare ad ogni spedizione un codice univoco [magazziniere, portalettere];
   \item{(MUST)} Identificare una spedizione solo tramite il suo codice [magazziniere, portalettere];
@@ -557,7 +564,7 @@ partita iva(identificativa), numero di telefono, sito web, prezzo per 1kg, prezz
 \subsubsection*{Regole di derivazione}
 Alcuni attributi devono essere derivati automaticamente dal sistema:
 \begin{itemize}
-  \item L'attributo id della relazione utente è un numero progressivo che identifica univocamente l'utente;
+  \item L'attributo prezzo dell'entità Spedizione è calcolato tramite una tabella di prezzi basata ai pesi.
   
 \end{itemize}
 \subsubsection*{Dizionario dei concetti per entità}
@@ -568,13 +575,13 @@ Alcuni attributi devono essere derivati automaticamente dal sistema:
 		\hline
 		\textbf{Entità} & \textbf{Descrizione} & \textbf{Attributi} & \textbf{Identificatore} \\ 
     \hline
-     Utente & Rappresenta ogni utente del sistema & Nome, cognome, id, e-mail, password & ID \\
+     Utente & Rappresenta ogni utente del sistema & Nome, cognome, e-mail, password & E-mail\\
     \hline
-     Amministratore & Rappresenta gli utenti con ogni permesso & Quelli dell'entità madre & ID entità madre \\
+     Amministratore & Rappresenta gli utenti con ogni permesso & Quelli dell'entità madre & E-mail entità madre \\
     \hline
-     Dipendente & Rappresenta ogni dipendente con accesso al sistema & Quelli dell'entità madre, permessi & ID entità mad \\
+     Dipendente & Rappresenta ogni dipendente con accesso al sistema & Quelli dell'entità madre, permessi & E-mail entità madre\\
     \hline
-		 Cliente & Rappresenta i clienti dell'organizzazione & Quelli dell'entità madre & ID \\
+		 Cliente & Rappresenta i clienti dell'organizzazione & Quelli dell'entità madre & E-mail \\
 		\hline 
 		 Reso & Rappresenta i resi iniziati dai clienti & Data,stato, cliente associato & Cliente associato \\
 		\hline
@@ -636,10 +643,10 @@ I tipi di dato utilizzati per gli attributi sono i seguenti:
 
 Il modello relazionale sarà il seguente:
 \begin{itemize}
-  \item \textbf{Cliente}(\underline{ID}, Nome, Cognome, Email);
-  \item \textbf{Indirizzo}(\underline{Comune, Via, Civico}, Orario, IdCliente) \\ \textbf{Indirizzo}(IdCliente) $\subseteq _{FK}$ \textbf{Cliente}(ID); 
+  \item \textbf{Cliente}(\underline{E-mail}, Nome, Cognome,);
+  \item \textbf{Indirizzo}(\underline{Comune, Via, Civico}, Orario, EmailCliente) \\ \textbf{Indirizzo}(EmailCliente) $\subseteq _{FK}$ \textbf{Cliente}(E-mail); 
   \item \textbf{Ricevuta}(\underline{Codice}, Stato, Data)\\ \textbf{Ricevuta}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice);
-  \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, IdMittente, IdDestinatario) \\ \textbf{Spedizione}(IdMittente) $\subseteq _{FK}$ \textbf{Cliente}(Id) \\ \textbf{Spedizione}(IdDestinatario) $\subseteq _{FK}$ \textbf{Cliente}(Id);
+  \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, EmailMittente, EmailDestinatario) \\ \textbf{Spedizione}(EmailMittente) $\subseteq _{FK}$ \textbf{Cliente}(E-mail) \\ \textbf{Spedizione}(EmailDestinatario) $\subseteq _{FK}$ \textbf{Cliente}(E-mail);
   \item \textbf{Effettuata}(\underline{Codice}, DataConsegna, DataSpedizione)\\\textbf{Effettuata}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice) \\ Lo schema di dati \textbf{Effettuata} di fatto funge da storico delle spedizioni;
   \item \textbf{InCorso}(\underline{Codice}, DataSpedizione, Stato) \\ \textbf{InCorso}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice);
   \item \textbf{Prenotata}(\underline{Codice}, DataRitiro, DataPrenotazione) \\\textbf{Prenotata}(Codice)$\subseteq _{FK}$\textbf{Spedizione}(Codice);
