@@ -54,7 +54,7 @@
                             <configPackage>org.apache.torque.templates.om</configPackage>
                             <sourceDir>src/main/schema</sourceDir>
                             <options>
-                                <torque.om.package>org.apache.torque.om</torque.om.package>
+                                <torque.om.package>com.opcal</torque.om.package>
                                 <torque.database>mysql</torque.database>
                             </options>
                         </configuration>

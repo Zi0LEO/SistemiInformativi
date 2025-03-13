@@ -1,5 +1,6 @@
 package com.opcal.model;
 
+import com.opcal.*;
 import org.apache.torque.TorqueException;
 import org.apache.torque.criteria.Criteria;
 import org.apache.torque.om.*;
@@ -8,7 +9,6 @@ import org.apache.torque.util.Transaction;
 import java.sql.Connection;
 import java.sql.Date;
 import java.util.List;
-
 
 public class GestoreRecapiti {
   private static int recapitiGestiti;

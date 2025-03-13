@@ -69,7 +69,7 @@
       name="email"
       primaryKey="true"
       required="true"
-      type="INTEGER"
+      type="VARCHAR"
       size="255"
       description="email dipendente"/>
 
@@ -117,7 +117,7 @@
     <column
       name="email_cliente"
       required="true"
-      type="INTEGER"
+      type="VARCHAR"
       size="255"
       description="cliente associato all'indirizzo"/>
     <foreign-key foreignTable="cliente">
@@ -150,7 +150,7 @@
     <column
       name="email_cliente"
       required="true"
-      type="INTEGER"
+      type="VARCHAR"
       size="255"
       description="Cliente a cui la ricevuta è a carico"/>
 
@@ -190,24 +190,23 @@
     <column
       name="email_mittente"
       required="true"
-      type="INTEGER"
+      type="VARCHAR"
       size="255"
       description="Mittente"/>
     <column
       name="email_destinatario"
       required="true"
-      type="INTEGER"
+      type="VARCHAR"
       size="255"
       description="Destinatario"/>
     <column
-      name="corriere"
-      required="false"
+      name="iva_corriere"
       type="VARCHAR"
       size="255"
       description="Il corriere che si è occupato della spedizione"/>
     <foreign-key foreignTable="corriere">
       <reference
-        local="corriere"
+        local="iva_corriere"
         foreign="iva"/>
     </foreign-key>
     <foreign-key foreignTable="cliente">
