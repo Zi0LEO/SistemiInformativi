@@ -1,8 +1,9 @@
 package main.java.com.opcal.model;
 
 import com.itextpdf.layout.Document;
+import com.opcal.Reso;
+import com.opcal.ResoPeer;
 import org.apache.torque.TorqueException;
-import com.opcal.*;
 
 import java.util.Date;
 
@@ -11,18 +12,18 @@ import static main.java.com.opcal.model.StatoReso.statoPossibile;
 
 public class GestoreResi {
 
-    /** Permette di creare un'oggetto di tipo reso e inserirlo all'interno della base di dati
-     *
+    /**
+     * Permette di creare un'oggetto di tipo reso e inserirlo all'interno della base di dati
      *
      * @param codice Il codice del reso da inserire
-     * @param stato Lo stato del reso da inserire
-     * @param data La data del reso da inserire
+     * @param stato  Lo stato del reso da inserire
+     * @param data   La data del reso da inserire
      * @return true se l'operazion va a buon fine <br> false se l'operazione ha incontrato degli errrori
      * @throws CloneNotSupportedException nel caso in cui il reso che si sta cercando di creare è gia presente all'interno della base di dati
      */
     public boolean creaReso(String codice, String stato, Date data) throws CloneNotSupportedException {
-        if(esiste(codice)) throw new CloneNotSupportedException("Il reso è già esistente");
-        if(!statoPossibile(stato)) throw new IllegalArgumentException("Stato non valido");
+        if (esiste(codice)) throw new CloneNotSupportedException("Il reso è già esistente");
+        if (!statoPossibile(stato)) throw new IllegalArgumentException("Stato non valido");
 
         Reso r = new Reso();
         r.setCodice(codice);
@@ -37,20 +38,22 @@ public class GestoreResi {
         return true;
     }
 
-    /**Permette di modificare l'attributo stato di un reso già esistente all'interno della base di dati
+    /**
+     * Permette di modificare l'attributo stato di un reso già esistente all'interno della base di dati
      *
-     * @param reso Il reso a cui bisogna modificare lo stato
+     * @param reso     Il reso a cui bisogna modificare lo stato
      * @param newStato Il nuovo stato
      * @throws ClassNotFoundException Nel caso in cui non esiste il reso inserito
      */
     public void modificaStatoReso(Reso reso, String newStato) throws ClassNotFoundException {
-        modificaStatoReso(reso.getCodice(),newStato);
+        modificaStatoReso(reso.getCodice(), newStato);
     }
 
 
-    /**Permette di modificare l'attributo stato di un reso già esistente all'interno della base di dati
+    /**
+     * Permette di modificare l'attributo stato di un reso già esistente all'interno della base di dati
      *
-     * @param codice Il codice del reso a cui bisogna modificare lo stato
+     * @param codice   Il codice del reso a cui bisogna modificare lo stato
      * @param newStato Il nuovo stato
      * @throws ClassNotFoundException Nel caso in cui non esiste il reso inserito
      */
@@ -66,14 +69,13 @@ public class GestoreResi {
         }
     }
 
-    /**Permette di creare un'etichetta di reso per la spedizione innserita nel parametro
-     *
-     *
+    /**
+     * Permette di creare un'etichetta di reso per la spedizione innserita nel parametro
      *
      * @param reso il reso di cui si deve creare l'etichetta
      * @return Un'oggetto di tipo Document che è l'etichetta.
      */
-    public Document stampaEtichettaReso(Reso reso){
+    public Document stampaEtichettaReso(Reso reso) {
         try {
             return creaEtichetta(reso.getSpedizione());
         } catch (TorqueException e) {
@@ -81,13 +83,15 @@ public class GestoreResi {
         }
     }
 
-    /**Se un reso non è già stato processato o terminato permette di annullarlo
+    /**
+     * Se un reso non è già stato processato o terminato permette di annullarlo
      *
      * @param reso Il reso da annullare
      * @throws ClassNotFoundException Nel caso in cui il reso non è trovato nella base di dati
      */
-    public void annullaReso(Reso reso) throws ClassNotFoundException{
-        if (reso.getStato().equals("PROCESSATO") | reso.getStato().equals("TERMINATO")) throw new IllegalArgumentException("Stato non valido");
+    public void annullaReso(Reso reso) throws ClassNotFoundException {
+        if (reso.getStato().equals("PROCESSATO") | reso.getStato().equals("TERMINATO"))
+            throw new IllegalArgumentException("Stato non valido");
 
         try {
             ResoPeer.doDelete(reso);
@@ -97,10 +101,10 @@ public class GestoreResi {
     }
 
 
-    private boolean esiste(String codice){
+    private boolean esiste(String codice) {
         try {
             ResoPeer.retrieveByPK(codice);
-        } catch (TorqueException e){
+        } catch (TorqueException e) {
             return false;
         }
         return true;

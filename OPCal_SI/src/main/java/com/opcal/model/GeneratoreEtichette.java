@@ -1,21 +1,24 @@
 package main.java.com.opcal.model;
-import com.itextpdf.kernel.pdf.*;
-import com.itextpdf.layout.*;
-import com.itextpdf.layout.element.*;
-import com.itextpdf.barcodes.*;
-import com.itextpdf.kernel.geom.PageSize;
+
+import com.itextpdf.barcodes.Barcode128;
 import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.opcal.Cliente;
+import com.opcal.ClientePeer;
+import com.opcal.Spedizione;
 import org.apache.torque.TorqueException;
-import com.opcal.*;
 
 import java.io.IOException;
 
 public class GeneratoreEtichette {
 
-    /**Permette di creare un'etichetta di reso per la spedizione innserita nel parametro
-     *
-     *
+    /**
+     * Permette di creare un'etichetta di reso per la spedizione innserita nel parametro
      *
      * @param spedizione la spedizione di cui creare l'etichetta
      * @return Un'oggetto di tipo Document che è l'etichetta.
@@ -38,7 +41,7 @@ public class GeneratoreEtichette {
         try {
             document.add(new Paragraph("Mittente:" + cl[0].getNome() + cl[0].getCognome()));
             document.add(new Paragraph("Destinatario:" + cl[1].getNome() + cl[1].getCognome()));
-        } catch(TorqueException te){
+        } catch (TorqueException te) {
             System.out.println("Errore nella ricerca dell'anagradica");
         }
 
@@ -56,12 +59,12 @@ public class GeneratoreEtichette {
         return document;
     }
 
-    private static Cliente[] mittenteDestinatario(Spedizione s){
+    private static Cliente[] mittenteDestinatario(Spedizione s) {
         Cliente[] cl = new Cliente[1];
 
         try {
-        cl[0] = ClientePeer.retrieveByPK(s.getEmailDestinatario());
-        cl[1] = ClientePeer.retrieveByPK(s.getEmailMittente());
+            cl[0] = ClientePeer.retrieveByPK(s.getEmailDestinatario());
+            cl[1] = ClientePeer.retrieveByPK(s.getEmailMittente());
         } catch (TorqueException e) {
             throw new RuntimeException(e);
         }
