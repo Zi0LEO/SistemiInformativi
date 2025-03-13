@@ -1,22 +1,16 @@
 package com.opcal.model;
 
 public abstract class Dati {
-  private int ID;
   private String nome;
   private String cognome;
   private String email;
   private int passwd;
 
-  public Dati(int ID, String nome, String cognome, String email, String passwd) {
-    this.ID = ID;
+  public Dati(String nome, String cognome, String email, String passwd) {
     this.nome = nome;
     this.cognome = cognome;
     this.email = email;
     this.passwd = hash(passwd);
-  }
-
-  public int getID() {
-    return ID;
   }
 
   public String getNome() {
