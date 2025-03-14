@@ -1,5 +1,7 @@
 package com.opcal.view;
 
+import com.opcal.controller.RegistrazioneController;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,7 +14,7 @@ class RegistrationPage extends JPanel {
 
     JPanel formPanel = new JPanel(new GridBagLayout());
     formPanel.setBackground(new Color(100, 100, 105));
-    formPanel.setPreferredSize(new Dimension(500, 450)); // Più alto per i campi aggiuntivi
+    formPanel.setPreferredSize(new Dimension(500, 750)); // Più alto per i campi aggiuntivi
     formPanel.setBorder(BorderFactory.createLineBorder(new Color(120, 120, 130), 3, true));
 
     GridBagConstraints gbc = new GridBagConstraints();
@@ -47,6 +49,47 @@ class RegistrationPage extends JPanel {
     surnameField.setPreferredSize(new Dimension(250, 35));
     surnameField.setFont(new Font("Cantarell", Font.PLAIN, 18));
     formPanel.add(surnameField, gbc);
+    // Campo Comune
+    gbc.gridx = 0;
+    gbc.gridy++;
+    JLabel comuneLabel = new JLabel("Comune:");
+    comuneLabel.setForeground(Color.WHITE);
+    comuneLabel.setFont(new Font("Cantarell", Font.BOLD, 20));
+    formPanel.add(comuneLabel, gbc);
+
+    gbc.gridx = 1;
+    JTextField comuneField = new JTextField(15);
+    comuneField.setPreferredSize(new Dimension(250, 35));
+    comuneField.setFont(new Font("Cantarell", Font.PLAIN, 18));
+    formPanel.add(comuneField, gbc);
+
+    // Campo Via
+    gbc.gridx = 0;
+    gbc.gridy++;
+    JLabel viaLabel = new JLabel("Via:");
+    viaLabel.setForeground(Color.WHITE);
+    viaLabel.setFont(new Font("Cantarell", Font.BOLD, 20));
+    formPanel.add(viaLabel, gbc);
+
+    gbc.gridx = 1;
+    JTextField viaField = new JTextField(15);
+    viaField.setPreferredSize(new Dimension(250, 35));
+    viaField.setFont(new Font("Cantarell", Font.PLAIN, 18));
+    formPanel.add(viaField, gbc);
+
+    // Campo Civico
+    gbc.gridx = 0;
+    gbc.gridy++;
+    JLabel civicoLabel = new JLabel("Civico:");
+    civicoLabel.setForeground(Color.WHITE);
+    civicoLabel.setFont(new Font("Cantarell", Font.BOLD, 20));
+    formPanel.add(civicoLabel, gbc);
+
+    gbc.gridx = 1;
+    JTextField civicoField = new JTextField(15);
+    civicoField.setPreferredSize(new Dimension(250, 35));
+    civicoField.setFont(new Font("Cantarell", Font.PLAIN, 18));
+    formPanel.add(civicoField, gbc);
 
     // Campo Email
     gbc.gridx = 0;
@@ -91,8 +134,26 @@ class RegistrationPage extends JPanel {
       String cognome = surnameField.getText();
       String email = emailField.getText();
       String password = new String(passField.getPassword());
+      String comune = comuneField.getText();
+      String via = viaField.getText();
+      String civico = civicoField.getText();
 
-      JOptionPane.showMessageDialog(RegistrationPage.this, "Registrazione completata!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+      if (nome.isEmpty() || cognome.isEmpty() || email.isEmpty() || password.isEmpty() || comune.isEmpty() || via.isEmpty() || civico.isEmpty()) {
+        JOptionPane.showMessageDialog(RegistrationPage.this, "Completa tutti i campi!", "Errore", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+      if (!email.contains("@") || !email.contains(".")) {
+        JOptionPane.showMessageDialog(RegistrationPage.this, "Inserisci un email valida!", "Errore", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+      try{
+        RegistrazioneController.registrazione(nome, cognome, comune, via, civico, email, password);
+        JOptionPane.showMessageDialog(RegistrationPage.this, "Registrazione completata!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+      } catch (CloneNotSupportedException ex) {
+        JOptionPane.showMessageDialog(RegistrationPage.this, "Questo utente esiste già", "Errore", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+
       mainFrame.showPage("LOGIN"); // Torna al login dopo la registrazione
     });
     formPanel.add(registerButton, gbc);
