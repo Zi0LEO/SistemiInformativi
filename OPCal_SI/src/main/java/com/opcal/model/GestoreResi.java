@@ -21,7 +21,7 @@ public class GestoreResi {
      * @return true se l'operazion va a buon fine <br> false se l'operazione ha incontrato degli errrori
      * @throws CloneNotSupportedException nel caso in cui il reso che si sta cercando di creare è gia presente all'interno della base di dati
      */
-    public boolean creaReso(String codice, String stato, Date data) throws CloneNotSupportedException {
+    public static boolean creaReso(String codice, String stato, Date data) throws CloneNotSupportedException {
         if (esiste(codice)) throw new CloneNotSupportedException("Il reso è già esistente");
         if (!statoPossibile(stato)) throw new IllegalArgumentException("Stato non valido");
 
@@ -45,7 +45,7 @@ public class GestoreResi {
      * @param newStato Il nuovo stato
      * @throws ClassNotFoundException Nel caso in cui non esiste il reso inserito
      */
-    public void modificaStatoReso(Reso reso, String newStato) throws ClassNotFoundException {
+    public static void modificaStatoReso(Reso reso, String newStato) throws ClassNotFoundException {
         modificaStatoReso(reso.getCodice(), newStato);
     }
 
@@ -57,7 +57,7 @@ public class GestoreResi {
      * @param newStato Il nuovo stato
      * @throws ClassNotFoundException Nel caso in cui non esiste il reso inserito
      */
-    public void modificaStatoReso(String codice, String newStato) throws ClassNotFoundException {
+    public static void modificaStatoReso(String codice, String newStato) throws ClassNotFoundException {
         if (!statoPossibile(newStato)) throw new IllegalArgumentException("Stato non valido");
 
         try {
@@ -75,7 +75,7 @@ public class GestoreResi {
      * @param reso il reso di cui si deve creare l'etichetta
      * @return Un'oggetto di tipo Document che è l'etichetta.
      */
-    public Document stampaEtichettaReso(Reso reso) {
+    public static Document stampaEtichettaReso(Reso reso) {
         try {
             return creaEtichetta(reso.getSpedizione());
         } catch (TorqueException e) {
@@ -89,7 +89,7 @@ public class GestoreResi {
      * @param reso Il reso da annullare
      * @throws ClassNotFoundException Nel caso in cui il reso non è trovato nella base di dati
      */
-    public void annullaReso(Reso reso) throws ClassNotFoundException {
+    public static void annullaReso(Reso reso) throws ClassNotFoundException {
         if (reso.getStato().equals("PROCESSATO") | reso.getStato().equals("TERMINATO"))
             throw new IllegalArgumentException("Stato non valido");
 
@@ -101,7 +101,7 @@ public class GestoreResi {
     }
 
 
-    private boolean esiste(String codice) {
+    private static boolean esiste(String codice) {
         try {
             ResoPeer.retrieveByPK(codice);
         } catch (TorqueException e) {

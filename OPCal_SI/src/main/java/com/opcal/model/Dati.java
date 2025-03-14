@@ -1,14 +1,12 @@
 package main.java.com.opcal.model;
 
 public abstract class Dati {
-    private final int ID;
     private final String nome;
     private final String cognome;
     private final String email;
     private final int passwd;
 
-    public Dati(int ID, String nome, String cognome, String email, String passwd) {
-        this.ID = ID;
+    public Dati(String nome, String cognome, String email, String passwd) {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
@@ -17,10 +15,6 @@ public abstract class Dati {
 
     private static int hash(String passwd) {
         return passwd.hashCode();
-    }
-
-    public int getID() {
-        return ID;
     }
 
     public String getNome() {
