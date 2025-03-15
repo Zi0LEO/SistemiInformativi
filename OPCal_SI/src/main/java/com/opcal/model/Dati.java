@@ -24,4 +24,8 @@ public abstract class Dati {
     public String getEmail() {
         return email;
     }
+
+    public String getPassword() {
+        return passwd;
+    }
 }
