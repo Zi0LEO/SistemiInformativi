@@ -20,6 +20,15 @@ public class Cliente
    */
   private static final long serialVersionUID = 1741196585640L;
 
+  public Cliente() {
+    super();
+  }
+
+  public Cliente(String email){
+    super();
+    this.setEmail(email);
+  }
+
   public String getNome() throws TorqueException {
 
     return this.getUtente().getNome();
@@ -42,6 +51,10 @@ public class Cliente
 
     this.getUtente().setCognome(cognome);
 
+  }
+
+  public void setPassword(String password) throws TorqueException {
+    this.getUtente().setPassword(password);
   }
 
 }
