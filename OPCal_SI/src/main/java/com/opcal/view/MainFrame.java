@@ -20,7 +20,7 @@ class MainFrame extends JFrame {
     // Aggiungi le pagine
     cardPanel.add(createPageWithHeader(new LoginPage(this)), "LOGIN");
     cardPanel.add(createPageWithHeader(new RegistrationPage(this)), "REGISTRATION");
-    cardPanel.add(createPageWithHeader(new MainPage()), "MAIN");
+    cardPanel.add(createPageWithHeader(new MainClientePage()), "MAIN");
 
     // Mostra la prima pagina (Login)
     cardLayout.show(cardPanel, "LOGIN");
@@ -42,7 +42,7 @@ class MainFrame extends JFrame {
 
     // Logo
     JLabel iconLabel = new JLabel();
-    ImageIcon icon = new ImageIcon("/home/umberto/Documents/primo_semestre/laboratorio_sis/SistemiInformativi/report/assets/logo.png");
+    ImageIcon icon = new ImageIcon("../report/assets/logo.png");
     Image img = icon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
     iconLabel.setIcon(new ImageIcon(img));
 

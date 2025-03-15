@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-class MainPage extends JPanel {
+class MainClientePage extends JPanel {
   // Campi per visualizzare/modificare i dati
   private final JTextField nomeField;
   private final JTextField cognomeField;
@@ -19,7 +19,7 @@ class MainPage extends JPanel {
   // Area per visualizzare lo storico delle consegne
   private final JTextArea storicoArea;
 
-  public MainPage() {
+  public MainClientePage() {
     setLayout(new BorderLayout());
     setBackground(new Color(240, 240, 240)); // Colore di sfondo
 

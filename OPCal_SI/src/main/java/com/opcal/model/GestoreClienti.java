@@ -1,11 +1,6 @@
 package com.opcal.model;
 
-import com.opcal.Cliente;
-import com.opcal.ClientePeer;
-import com.opcal.EffettuataPeer;
-import com.opcal.Indirizzo;
-import com.opcal.Spedizione;
-import com.opcal.SpedizionePeer;
+import com.opcal.*;
 import org.apache.torque.TorqueException;
 import org.apache.torque.criteria.Criteria;
 import java.util.ArrayList;

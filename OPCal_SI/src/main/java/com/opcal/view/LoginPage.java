@@ -1,5 +1,9 @@
 package com.opcal.view;
 
+import com.opcal.controller.LoginController;
+import com.opcal.model.Dati;
+import com.opcal.model.DatiCliente;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -78,10 +82,16 @@ class LoginPage extends JPanel {
       String email = userField.getText();
       String password = new String(passField.getPassword());
 
-      if (email.equals("test@example.com") && password.equals("password")) {
-        mainFrame.showPage("MAIN"); // Cambia pagina
-      } else {
+      Dati dati = LoginController.login(email, password);
+
+      if (dati == null) {
         JOptionPane.showMessageDialog(LoginPage.this, "Credenziali non valide!", "Errore", JOptionPane.ERROR_MESSAGE);
+      }
+      if (dati.getClass().equals(DatiCliente.class)) {
+        mainFrame.showPage("Main_Cliente");
+      }
+      else {
+        mainFrame.showPage("MainDipendente");
       }
     });
     return loginButton;

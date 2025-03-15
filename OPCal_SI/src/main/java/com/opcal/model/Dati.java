@@ -4,17 +4,13 @@ public abstract class Dati {
     private final String nome;
     private final String cognome;
     private final String email;
-    private final int passwd;
+    private final String passwd;
 
     public Dati(String nome, String cognome, String email, String passwd) {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
-        this.passwd = hash(passwd);
-    }
-
-    private static int hash(String passwd) {
-        return passwd.hashCode();
+        this.passwd = passwd;
     }
 
     public String getNome() {
