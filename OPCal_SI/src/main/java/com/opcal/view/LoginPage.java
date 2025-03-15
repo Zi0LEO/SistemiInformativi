@@ -87,7 +87,7 @@ class LoginPage extends JPanel {
       if (dati == null) {
         JOptionPane.showMessageDialog(LoginPage.this, "Credenziali non valide!", "Errore", JOptionPane.ERROR_MESSAGE);
       }
-      if (dati.getClass().equals(DatiCliente.class)) {
+      if (dati instanceof DatiCliente) {
         mainFrame.showPage("Main_Cliente");
       }
       else {
