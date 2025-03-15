@@ -23,11 +23,12 @@ public class Indirizzo
     super();
   }
 
-  public Indirizzo(String comune, String via, String civico) {
+  public Indirizzo(String comune, String via, String civico, Cliente cliente) {
     super();
     setComune(comune);
     setVia(via);
     setCivico(civico);
+    setCliente(cliente);
   }
 
 }

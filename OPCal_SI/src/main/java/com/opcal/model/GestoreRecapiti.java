@@ -182,4 +182,13 @@ public class GestoreRecapiti {
 
     }
 
+    public static Indirizzo creaIndirizzo(String comune, String via, String civico, Cliente cliente) {
+        Indirizzo indirizzo = new Indirizzo(comune, via, civico, cliente);
+        try{
+            indirizzo.save();
+        }catch(TorqueException e){
+            e.printStackTrace();
+        }
+        return indirizzo;
+    }
 }

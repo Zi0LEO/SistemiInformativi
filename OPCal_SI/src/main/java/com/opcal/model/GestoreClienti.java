@@ -3,6 +3,10 @@ package com.opcal.model;
 import com.opcal.*;
 import org.apache.torque.TorqueException;
 import org.apache.torque.criteria.Criteria;
+import org.apache.torque.util.Transaction;
+
+import java.security.cert.TrustAnchor;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,21 +18,21 @@ public class GestoreClienti {
      * @return true se l'operazione va a buon fine, <br> false altrimenti.
      * @throws CloneNotSupportedException Nel caso in cui il Cliente che si sta cercando di creare è gia presente
      */
-    public static boolean creaCliente(DatiCliente datoCliente, Indirizzo indirizzoCliente) throws CloneNotSupportedException {
+    public static Cliente creaCliente(DatiCliente datoCliente) throws CloneNotSupportedException {
         if (esiste(datoCliente.getEmail())) throw new CloneNotSupportedException("Il cliente è già esistente");
 
-        Cliente cliente = new Cliente();
+        Utente utente = null;
+        Cliente cliente = null;
         try {
-            cliente.addIndirizzo(indirizzoCliente);
-            cliente.setEmail(datoCliente.getEmail());
-            cliente.setNome(datoCliente.getNome());
-            cliente.setCognome(datoCliente.getCognome());
+            cliente = new Cliente(datoCliente.getEmail());
+            utente = new Utente(datoCliente.getNome(), datoCliente.getCognome(), datoCliente.getEmail(), datoCliente.getPassword());
+            cliente.setUtente(utente);
             cliente.save();
+            utente.save();
         } catch (TorqueException e) {
             System.out.println(e.getMessage());
-            return false;
         }
-        return true;
+        return cliente;
     }
 
     /**
