@@ -2,8 +2,6 @@ package com.opcal.view;
 
 import com.opcal.controller.LoginController;
 import com.opcal.model.Dati;
-import com.opcal.model.DatiCliente;
-import com.opcal.model.DatiDipendente;
 
 import javax.swing.*;
 import java.awt.*;
