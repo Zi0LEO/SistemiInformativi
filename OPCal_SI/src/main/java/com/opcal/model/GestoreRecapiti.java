@@ -70,9 +70,9 @@ public class GestoreRecapiti {
         return peso * 5;
     }
 
-    public static Indirizzo visualizzaIndirizzo(Cliente cliente) {
+    public static Indirizzo visualizzaIndirizzo(String emailCliente) {
         Criteria criteria = new Criteria();
-        criteria.where(IndirizzoPeer.EMAIL_CLIENTE, cliente.getEmail());
+        criteria.where(IndirizzoPeer.EMAIL_CLIENTE, emailCliente);
         try {
             return IndirizzoPeer.doSelect(criteria).getFirst();
         } catch (TorqueException e) {
