@@ -5,7 +5,6 @@ import org.apache.torque.TorqueException;
 import org.apache.torque.criteria.Criteria;
 import org.apache.torque.util.Transaction;
 
-import java.security.cert.TrustAnchor;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +20,19 @@ public class GestoreClienti {
     public static Cliente creaCliente(DatiCliente datoCliente) throws CloneNotSupportedException {
         if (esiste(datoCliente.getEmail())) throw new CloneNotSupportedException("Il cliente è già esistente");
 
-        Utente utente = null;
+        Connection connection = null;
         Cliente cliente = null;
         try {
+            connection = Transaction.begin();
+            Utente utente = new Utente(datoCliente.getNome(), datoCliente.getCognome(), datoCliente.getEmail(), datoCliente.getPassword());
+            utente.save();
             cliente = new Cliente(datoCliente.getEmail());
-            utente = new Utente(datoCliente.getNome(), datoCliente.getCognome(), datoCliente.getEmail(), datoCliente.getPassword());
             cliente.setUtente(utente);
             cliente.save();
-            utente.save();
+            Transaction.commit(connection);
         } catch (TorqueException e) {
-            System.out.println(e.getMessage());
+            Transaction.safeRollback(connection);
+            e.printStackTrace();
         }
         return cliente;
     }
