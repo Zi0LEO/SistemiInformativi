@@ -121,15 +121,14 @@ public class GestoreClienti {
     }
 
     /**
-     * Permette di ricevere la lista delle spedizioni a consegnate a un cliente
+     * Permette di ricevere la lista delle spedizioni a consegnate a un cliente ordinate in ordine ascendente per data.
      *
      * @param cliente Il cliente che richiede le sue consegne
      * @return La lista delle consegne in ordine alfabetico, è inizializzata come ArrayList.
      */
-    public List<Spedizione> storicoConsegne(Cliente cliente) {
-        return storicoConsegneImpl(cliente, new Criteria().addAscendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
+    public List<Spedizione> getStoricoConsegne(Cliente cliente) {
+        return getStoricoConsegne(cliente, 1);
     }
-
 
     /**
      * Permette di ricevere la lista delle spedizioni a consegnate a un cliente
@@ -139,7 +138,7 @@ public class GestoreClienti {
      *                <br> 2 crescente per codice, <br> 3 decrescente per codice.
      * @return Un'oggetto di tipo List che è la lista delle spedizioni, è inizializzata come ArrayList.
      */
-    public static List<Spedizione> storicoConsegne(Cliente cliente, int tipo) {
+    public static List<Spedizione> getStoricoConsegne(Cliente cliente, int tipo) {
         switch (tipo) {
             case 1:
                 return storicoConsegneImpl(cliente, new Criteria().addAscendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
@@ -154,16 +153,38 @@ public class GestoreClienti {
         }
     }
 
+    private static List<Spedizione> storicoConsegneImpl(Cliente cliente, Criteria criteria) {
+        //SELECT codice
+        // FROM spedizione s JOIN effettuata e ON s.codice=e.codice
+        // WHERE s.email_destinatario = cliente.email
+
+        criteria.addJoin(SpedizionePeer.CODICE, EffettuataPeer.CODICE);
+        criteria.where(SpedizionePeer.EMAIL_DESTINATARIO,cliente.getEmail());
+
+        return getSpedizioni(criteria);
+    }
+
 
     /**
-     * Permette di ricevere la lista delle ricevute di un cliente
+     * Permette di ricevere la lista delle ricevute di un cliente ordinate in ordine ascendente per data.
      *
      * @param cliente Il cliente che richiede le sue ricevute
-     * @param tipo    Un intero tra 0 e 3 che indica il tipo di ordinamento, <br> 0 ritorna l'ordinamento crescente per data, <br> 1 decrescente per data,
-     *                <br> 2 crescente per codice, <br> 3 decrescente per codice, <br> 4 crescente per stato, <br> 5 decrescente per stato.
      * @return Un'oggetto di tipo List che è la lista delle ricevute     , è inizializzata come ArrayList.
      */
-    public static List<Ricevuta> listaRicevute(Cliente cliente, int tipo){
+
+    public static List<Ricevuta> getListaRicevute(Cliente cliente){
+        return getListaRicevute(cliente,1);
+    }
+
+   /**
+    * Permette di ricevere la lista delle ricevute di un cliente.
+    *
+    * @param cliente Il cliente che richiede le sue ricevute
+    * @param tipo    Un intero tra 0 e 3 che indica il tipo di ordinamento, <br> 0 ritorna l'ordinamento crescente per data, <br> 1 decrescente per data,
+    *                <br> 2 crescente per codice, <br> 3 decrescente per codice, <br> 4 crescente per stato, <br> 5 decrescente per stato.
+    * @return Un'oggetto di tipo List che è la lista delle ricevute     , è inizializzata come ArrayList.
+    */
+    public static List<Ricevuta> getListaRicevute(Cliente cliente, int tipo){
         switch (tipo) {
             case 1:
                 return listaRicevuteImpl(cliente, new Criteria().addAscendingOrderByColumn(RicevutaPeer.DATA));
@@ -201,15 +222,20 @@ public class GestoreClienti {
         }
         return ris;
     }
-    
-    private static List<Spedizione> storicoConsegneImpl(Cliente cliente, Criteria criteria) {
+
+
+    private static List<Spedizione> storicoSpedizioniImpl(Cliente cliente, Criteria criteria) {
         //SELECT codice
-        // FROM spedizione s JOIN effettuata e ON s.codice=e.codice
-        // WHERE s.email_destinatario = cliente.email
+        // FROM spedizione s
+        // WHERE s.email_destinatario = cliente.email and s.codice NOT IN ( Select codice FROM Effettuata )
 
-        criteria.addJoin(SpedizionePeer.CODICE, EffettuataPeer.CODICE);
         criteria.where(SpedizionePeer.EMAIL_DESTINATARIO,cliente.getEmail());
+        criteria.where(SpedizionePeer.CODICE,EffettuataPeer.CODICE,Criteria.NOT_IN);
 
+        return getSpedizioni(criteria);
+    }
+
+    private static List<Spedizione> getSpedizioni(Criteria criteria) {
         criteria.addSelectColumn(SpedizionePeer.CODICE);
 
         List<Spedizione> ris = new ArrayList<>();
@@ -222,6 +248,35 @@ public class GestoreClienti {
 
         return ris;
     }
+
+    public static List<Cliente> getListaClienti(Dipendente dipendente,int tipo){
+        if(tipo == 1)
+            return listaClientiImpl(dipendente,new Criteria().addAscendingOrderByColumn(UtentePeer.COGNOME));
+        else if (tipo == 2)
+            return listaClientiImpl(dipendente,new Criteria().addDescendingOrderByColumn(UtentePeer.COGNOME));
+
+        else
+            throw new IllegalArgumentException("Tipo non ammesso");
+    }
+
+    private static List<Cliente> listaClientiImpl(Dipendente dipendente,Criteria criteria) {
+
+        criteria.addJoin(UtentePeer.EMAIL,ClientePeer.EMAIL);
+        criteria.addSelectColumn(ClientePeer.EMAIL);
+        criteria.addDescendingOrderByColumn(UtentePeer.COGNOME);
+
+        List<Cliente> ris = new ArrayList<>();
+
+        try {
+            ris = ClientePeer.doSelect(criteria);
+        } catch (TorqueException e) {
+            System.out.println("Errore nella query");
+        }
+
+        return ris;
+    }
+
+
 
     private static boolean esiste(String email) {
         try {

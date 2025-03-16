@@ -1,6 +1,7 @@
 package com.opcal;
 
 
+import com.opcal.model.DatiCliente;
 import org.apache.torque.TorqueException;
 
 /**
@@ -27,6 +28,15 @@ public class Cliente
   public Cliente(String email){
     super();
     this.setEmail(email);
+  }
+
+  public DatiCliente getAnagrafica(){
+      try {
+          return new DatiCliente(getNome(),getCognome(),getEmail(),"x");
+      } catch (TorqueException e) {
+        System.out.println("Errore nella ricerca dell'anagrafica");
+        return null;
+      }
   }
 
   public String getNome() throws TorqueException {

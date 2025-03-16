@@ -330,14 +330,24 @@ I gruppi funzionali che si è deciso di implementare sono quelli riguardanti la 
   \item{(MUST)} Implementare una schermata di sign-in [Cliente];
   \item{(MUST)} Inserimento dei propri dati anagrafici[Cliente];
   \item{(MUST)} Modifica dei propri dati anagrafici[Cliente];
-  \item{(MUST)} Implementare la possibilità di poter registrare delle spedizioni[Cliente]; 
   \item{(MUST)} Implementare la possibilità di poter tracciare le spedizioni[Cliente];
+  \item{(MUST)} Introdurre un ordinamento ascendente e discendente alla lista delle spedizioni[Cliente];
+  \begin{enumerate}
+  		\item Per data;
+  		\item Per stato (tranne consegnata);
+  \end{enumerate}
   \item{(MUST)} Aggiungere una funzione per iniziare una procedura di reso[Cliente];
   \item{(MUST)} Scaricare tutti i documenti da compilare per procedere con il reso[Cliente];
-  \item{(MUST)} Poter annullare o modificare una procedura di reso[Cliente];
-  \item{(MUST)} Introdurre di un sistema di sicurezza per il login nella piattaforma[Cliente, Sportellista];
+  \item{(MUST)} Visualizzare la lista dei resi richiesti [Cliente];
+  \item{(MUST)} Introdurre un ordinamento ascendente e discendente alla lista dei resi[Cliente];
+  \begin{enumerate}
+  	\item Per stato del reso (Default);
+  	\item Per data del reso;
+  \end{enumerate}
+  \item{(MUST)} Poter annullare una procedura di reso[Cliente];
+  \item{(MUST)} Introdurre di un sistema di sicurezza per il login nella piattaforma[Cliente, Dipendente];
   \item{(MUST)} Dare la possibilità di avere uno storico delle consegne[Cliente];
-  \item{(MUST)} Introdurre un ordinamento per lo storico delle consegne[Cliente]:
+  \item{(MUST)} Introdurre un ordinamento ascendente e discendente per lo storico delle consegne[Cliente]:
     \begin{enumerate}
       \item Per data, dalla più alla meno recente (Default);
       \item Per numero di ordine;
@@ -349,15 +359,15 @@ I gruppi funzionali che si è deciso di implementare sono quelli riguardanti la 
       \item Per data del pagamento;
       \item In ordine alfabetico;
     \end{enumerate}
-  \item{(MUST)} Visualizzare in tempo reale lo stato delle spedizioni di ogni cliente [Sportellista];
-  \item{(MUST)} Visualizzare in tempo reale lo stato dei pagamenti di ogni cliente [Sportellista];
-  \item{(MUST)} Accedere ai dati anagrafici dei clienti [Sportellista, Portalettere];
-  \item{(MUST)} Modificare i dati anagrafici dei clienti [Sportellista];
-  \item{(MUST)} Accedere ai dati delle spedizioni dei clienti [Sportellista, Portalettere];
-  \item{(MUST)} Modificare i dati in merito alle spedizioni dei clienti [Sportellista, Portalettere];
-  \item {(MUST)}  Implementare un sistema di mailing [Sportellista]:
+  \item{(MUST)} Visualizzare la lista dei clienti[Dipendente];
+  \item{(MUST)} Introdurre un ordinamento ascendente e discendente alla lista dei clienti [Dipendente];
+  \begin{enumerate}
+  	\item Per ordine alfabetico del cognome (Default);
+  \end{enumerate}
+  \item{(MUST)} Visualizzare i dati anagrafici dei clienti [Dipendente];
+  \item{(MUST)} Modificare i dati anagrafici dei clienti [Dipendente];
+  \item {(MUST)}  Implementare un sistema di mailing [Dipendente]:
 \end{enumerate}
-
 Per il \textbf{Requisito 20, Implementare un sistema di mailing}, si riporta di seguito una descrizione dettagliata: \\
 Attore Principale: Sportellista \\
 Descrizione dello scenario principale:  
