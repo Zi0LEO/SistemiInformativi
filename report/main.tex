@@ -641,7 +641,7 @@ I tipi di dato utilizzati per gli attributi sono i seguenti:
 
 Il modello relazionale sarà il seguente:
 \begin{itemize}
-  \item \textbf{Cliente}(\underline{E-mail}, Nome, Cognome,);
+  \item \textbf{Cliente}(\underline{E-mail}, Nome, Cognome);
   \item \textbf{Indirizzo}(\underline{Comune, Via, Civico}, Orario, EmailCliente) \\ \textbf{Indirizzo}(EmailCliente) $\subseteq _{FK}$ \textbf{Cliente}(E-mail); 
   \item \textbf{Ricevuta}(\underline{Codice}, Stato, Data)\\ \textbf{Ricevuta}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice);
   \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, EmailMittente, EmailDestinatario) \\ \textbf{Spedizione}(EmailMittente) $\subseteq _{FK}$ \textbf{Cliente}(E-mail) \\ \textbf{Spedizione}(EmailDestinatario) $\subseteq _{FK}$ \textbf{Cliente}(E-mail);

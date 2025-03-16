@@ -145,18 +145,6 @@
       required="true"
       type="DATE"
       description="Data del pagamento"/>
-    <column
-      name="email_cliente"
-      required="true"
-      type="VARCHAR"
-      size="255"
-      description="Cliente a cui la ricevuta è a carico"/>
-
-    <foreign-key foreignTable="cliente">
-      <reference
-        local="email_cliente"
-        foreign="email"/>
-    </foreign-key>
 
     <foreign-key foreignTable="spedizione">
       <reference
