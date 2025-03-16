@@ -140,13 +140,13 @@ public class GestoreClienti {
      */
     public static List<Spedizione> getStoricoConsegne(Cliente cliente, int tipo) {
         switch (tipo) {
-            case 1:
+            case 0:
                 return storicoConsegneImpl(cliente, new Criteria().addAscendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
-            case 2:
+            case 1:
                 return storicoConsegneImpl(cliente, new Criteria().addDescendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
-            case 3:
+            case 2:
                 return storicoConsegneImpl(cliente, new Criteria().addAscendingOrderByColumn(SpedizionePeer.CODICE));
-            case 4:
+            case 3:
                 return storicoConsegneImpl(cliente, new Criteria().addDescendingOrderByColumn(SpedizionePeer.CODICE));
             default:
                 throw new IllegalArgumentException("Tipo non ammesso");
@@ -182,7 +182,7 @@ public class GestoreClienti {
     * @param cliente Il cliente che richiede le sue ricevute
     * @param tipo    Un intero tra 0 e 3 che indica il tipo di ordinamento, <br> 0 ritorna l'ordinamento crescente per data, <br> 1 decrescente per data,
     *                <br> 2 crescente per codice, <br> 3 decrescente per codice, <br> 4 crescente per stato, <br> 5 decrescente per stato.
-    * @return Un'oggetto di tipo List che è la lista delle ricevute     , è inizializzata come ArrayList.
+    * @return Un'oggetto di tipo List che è la lista delle ricevute, è inizializzata come ArrayList.
     */
     public static List<Ricevuta> getListaRicevute(Cliente cliente, int tipo){
         switch (tipo) {
@@ -223,7 +223,6 @@ public class GestoreClienti {
         return ris;
     }
 
-
     private static List<Spedizione> storicoSpedizioniImpl(Cliente cliente, Criteria criteria) {
         //SELECT codice
         // FROM spedizione s
@@ -249,17 +248,30 @@ public class GestoreClienti {
         return ris;
     }
 
-    public static List<Cliente> getListaClienti(Dipendente dipendente,int tipo){
-        if(tipo == 1)
-            return listaClientiImpl(dipendente,new Criteria().addAscendingOrderByColumn(UtentePeer.COGNOME));
-        else if (tipo == 2)
-            return listaClientiImpl(dipendente,new Criteria().addDescendingOrderByColumn(UtentePeer.COGNOME));
+    /** Permette di ricevere la lista dei clienti.
+     *
+     * @param tipo Un intero tra 0 e 1 che indica il tipo di ordinamento, <br> 0 ritorna l'ordinamento crescente per cognome, <br> 1 decrescente per cognome,
+     * @return  Un'oggetto di tipo List che è la lista dei clienti, è inizializzata come ArrayList.
+     */
+    public static List<Cliente> getListaClienti(int tipo){
+        if (tipo == 0)
+            return listaClientiImpl(new Criteria().addAscendingOrderByColumn(UtentePeer.COGNOME));
+        else if (tipo == 1)
+            return listaClientiImpl(new Criteria().addDescendingOrderByColumn(UtentePeer.COGNOME));
 
         else
             throw new IllegalArgumentException("Tipo non ammesso");
     }
 
-    private static List<Cliente> listaClientiImpl(Dipendente dipendente,Criteria criteria) {
+    /** Permette di ricevere la lista dei clienti ordinata ascendente per cognome.
+
+     * @return  Un'oggetto di tipo List che è la lista dei clienti, è inizializzata come ArrayList.
+     */
+    public static List<Cliente> getListaClienti(){
+        return getListaClienti(1);
+    }
+
+    private static List<Cliente> listaClientiImpl(Criteria criteria) {
 
         criteria.addJoin(UtentePeer.EMAIL,ClientePeer.EMAIL);
         criteria.addSelectColumn(ClientePeer.EMAIL);
@@ -276,6 +288,19 @@ public class GestoreClienti {
         return ris;
     }
 
+    /** Permette di ricevere la lista delle email dei clienti.
+     *
+     * @return  Un'oggetto di tipo List che è la lista delle email, è inizializzata come ArrayList.
+     */
+    public static List<String> getMailingList(){
+        ArrayList<Cliente> lc = (ArrayList<Cliente>) getListaClienti();
+        ArrayList<String> mailingList = new ArrayList<>();
+
+        for (Cliente cliente : lc)
+            mailingList.add(cliente.getEmail());
+        
+        return mailingList;
+    }
 
 
     private static boolean esiste(String email) {
