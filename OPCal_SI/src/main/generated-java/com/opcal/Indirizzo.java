@@ -31,4 +31,7 @@ public class Indirizzo
     setCliente(cliente);
   }
 
+  public String toString() {
+    return getComune() + ", Via/Contrada " + getVia() + ", " + getCivico();
+  }
 }
