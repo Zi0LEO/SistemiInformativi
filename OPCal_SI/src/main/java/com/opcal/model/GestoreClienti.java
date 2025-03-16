@@ -1,8 +1,11 @@
-package main.java.com.opcal.model;
+package com.opcal.model;
 
 import com.opcal.*;
 import org.apache.torque.TorqueException;
 import org.apache.torque.criteria.Criteria;
+import org.apache.torque.util.Transaction;
+
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,21 +17,24 @@ public class GestoreClienti {
      * @return true se l'operazione va a buon fine, <br> false altrimenti.
      * @throws CloneNotSupportedException Nel caso in cui il Cliente che si sta cercando di creare è gia presente
      */
-    public static boolean creaCliente(DatiCliente datoCliente, Indirizzo indirizzoCliente) throws CloneNotSupportedException {
+    public static Cliente creaCliente(DatiCliente datoCliente) throws CloneNotSupportedException {
         if (esiste(datoCliente.getEmail())) throw new CloneNotSupportedException("Il cliente è già esistente");
 
-        Cliente cliente = new Cliente();
+        Connection connection = null;
+        Cliente cliente = null;
         try {
-            cliente.addIndirizzo(indirizzoCliente);
-            cliente.setEmail(datoCliente.getEmail());
-            cliente.setNome(datoCliente.getNome());
-            cliente.setCognome(datoCliente.getCognome());
+            connection = Transaction.begin();
+            Utente utente = new Utente(datoCliente.getNome(), datoCliente.getCognome(), datoCliente.getEmail(), datoCliente.getPassword());
+            utente.save();
+            cliente = new Cliente(datoCliente.getEmail());
+            cliente.setUtente(utente);
             cliente.save();
+            Transaction.commit(connection);
         } catch (TorqueException e) {
-            System.out.println(e.getMessage());
-            return false;
+            Transaction.safeRollback(connection);
+            e.printStackTrace();
         }
-        return true;
+        return cliente;
     }
 
     /**
@@ -120,7 +126,7 @@ public class GestoreClienti {
      * @param cliente Il cliente che richiede le sue consegne
      * @return La lista delle consegne in ordine alfabetico, è inizializzata come ArrayList.
      */
-    public static List<Spedizione> storicoConsegne(Cliente cliente) {
+    public List<Spedizione> storicoConsegne(Cliente cliente) {
         return storicoConsegneImpl(cliente, new Criteria().addAscendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
     }
 

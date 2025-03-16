@@ -1,4 +1,4 @@
-package main.java.com.opcal.model;
+package com.opcal.model;
 
 import com.opcal.*;
 import org.apache.torque.TorqueException;
@@ -70,9 +70,9 @@ public class GestoreRecapiti {
         return peso * 5;
     }
 
-    public static Indirizzo visualizzaIndirizzo(Cliente cliente) {
+    public static Indirizzo visualizzaIndirizzo(String emailCliente) {
         Criteria criteria = new Criteria();
-        criteria.where(IndirizzoPeer.EMAIL_CLIENTE, cliente.getEmail());
+        criteria.where(IndirizzoPeer.EMAIL_CLIENTE, emailCliente);
         try {
             return IndirizzoPeer.doSelect(criteria).getFirst();
         } catch (TorqueException e) {
@@ -182,4 +182,13 @@ public class GestoreRecapiti {
 
     }
 
+    public static Indirizzo creaIndirizzo(String comune, String via, String civico, Cliente cliente) {
+        Indirizzo indirizzo = new Indirizzo(comune, via, civico, cliente);
+        try{
+            indirizzo.save();
+        }catch(TorqueException e){
+            e.printStackTrace();
+        }
+        return indirizzo;
+    }
 }

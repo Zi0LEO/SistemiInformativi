@@ -18,5 +18,15 @@ public class Utente
    */
   private static final long serialVersionUID = 1741106773841L;
 
+  public Utente() {
+    super();
+  }
 
+  public Utente(String nome, String cognome, String email, String password) {
+    super();
+    setNome(nome);
+    setCognome(cognome);
+    setEmail(email);
+    setPassword(password);
+  }
 }
