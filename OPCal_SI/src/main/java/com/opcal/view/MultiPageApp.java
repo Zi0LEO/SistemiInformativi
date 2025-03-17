@@ -11,9 +11,6 @@ public class MultiPageApp {
 
      SwingUtilities.invokeLater(MainFrame::new);
 
-
-
-
   }
 }
 
