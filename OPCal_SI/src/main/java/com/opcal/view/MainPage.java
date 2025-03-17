@@ -7,6 +7,7 @@ import com.opcal.model.DatiCliente;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class MainPage extends JPanel{
 
@@ -18,7 +19,7 @@ public class MainPage extends JPanel{
   private final JButton eliminaButton;
 
   public MainPage(MainFrame parentFrame) {
-    setLayout(new BorderLayout());
+    setLayout(new BorderLayout(5,5));
     setBackground(new Color(240, 240, 240)); // Colore di sfondo
 
     // Pannello superiore: Dati cliente
@@ -92,8 +93,25 @@ public class MainPage extends JPanel{
 
     add(buttonPanel, BorderLayout.CENTER);
 
-    JTable table = new JTable();
-    add(table, BorderLayout.SOUTH);
+
+    QueryResultsTable resultsTable = new QueryResultsTable();
+    JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
+    resultsScrollPane.setPreferredSize(new Dimension(600, 400));
+    add(resultsScrollPane, BorderLayout.SOUTH);
+
+    String[] columnNames = {"ID", "Name", "Value", "Date"}; //aggiungi i campi necessari qui
+    resultsTable.setColumnNames(columnNames);
+
+    //aggiungi i risultati delle query
+    List<Object[]> queryResults = List.of(
+        new Object[]{1, "John", 123.45, "2023-10-20"},
+        new Object[]{2, "Jane", 678.90, "2023-10-21"},
+        new Object[]{3, "Doe", 345.00, "2023-10-22"}
+    );
+    resultsTable.updateTableData(queryResults);
+
+    //dai l'ordine
+    resultsTable.enableSortByColumn();
   }
 
 
