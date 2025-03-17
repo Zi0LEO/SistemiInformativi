@@ -7,7 +7,6 @@ import com.opcal.model.DatiCliente;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class MainPage extends JPanel{
 

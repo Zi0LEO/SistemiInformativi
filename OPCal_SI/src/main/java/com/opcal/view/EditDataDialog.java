@@ -6,9 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class EditDataDialog extends JDialog {
-  private JTextField nome, cognome, comune, via, civico;
-  private JComboBox<String> orario;
-  private JButton saveButton, cancelButton;
+  private final JTextField nome, cognome, comune, via, civico;
+  private final JComboBox<String> orario;
 
   public EditDataDialog(Frame parent, String email){
     super(parent,"Modifica Dati",true);
@@ -78,11 +77,11 @@ public class EditDataDialog extends JDialog {
     gbc.gridy = 7;
     gbc.gridx = 0;
     gbc.gridwidth = 1;
-    saveButton = new JButton("Salva");
+    JButton saveButton = new JButton("Salva");
     add(saveButton, gbc);
 
     gbc.gridx = 1;
-    cancelButton = new JButton("Annulla");
+    JButton cancelButton = new JButton("Annulla");
     add(cancelButton, gbc);
 
     saveButton.addActionListener(e -> {

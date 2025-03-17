@@ -12,31 +12,31 @@ public class MainController {
 
   public static boolean modificaDati(String email, String nome, String cognome, String comune, String via, String civico, String orario) {
     Indirizzo indirizzo = null;
-    if (!nome.equals(""))
+    if (!nome.isEmpty())
       try {
         GestoreClienti.modificaNomeCliente(email, nome);
       } catch (ClassNotFoundException e) {
         return false;
       }
-    if (!cognome.equals(""))
+    if (!cognome.isEmpty())
       try {
         GestoreClienti.modificaCognomeCliente(email, cognome);
       } catch (ClassNotFoundException e) {
         return false;
       }
-    if (!comune.equals("")) {
+    if (!comune.isEmpty()) {
       indirizzo = GestoreRecapiti.modificaIndirizzo(email, comune, 1);
       if (indirizzo == null)
         return false;
     }
 
-    if (!via.equals("")) {
+    if (!via.isEmpty()) {
       indirizzo = GestoreRecapiti.modificaIndirizzo(email, via, 2);
       if (indirizzo == null)
         return false;
     }
 
-    if (!civico.equals("")){
+    if (!civico.isEmpty()){
       indirizzo = GestoreRecapiti.modificaIndirizzo(email, civico, 3);
       System.out.println(indirizzo);
       if (indirizzo == null)
