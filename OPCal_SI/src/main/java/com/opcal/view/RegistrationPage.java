@@ -5,7 +5,6 @@ import com.opcal.controller.RegistrazioneController;
 import javax.swing.*;
 import java.awt.*;
 
-
 class RegistrationPage extends JPanel {
 
   public RegistrationPage(MainFrame mainFrame) {

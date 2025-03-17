@@ -11,26 +11,18 @@ import java.awt.*;
 public class MainPage extends JPanel{
 
   // Campi per visualizzare/modificare i dati
-  private JPanel datiPanel;
+  private final JPanel datiPanel;
 
   private Dati dati;
 
-  // Pulsanti per le azioni
-  private final JButton modificaButton;
   private final JButton eliminaButton;
-  private final JButton storicoButton;
 
-  // Area per visualizzare lo storico delle consegne
-  private final JTextArea storicoArea;
-
-  public MainPage() {
+  public MainPage(MainFrame parentFrame) {
     setLayout(new BorderLayout());
     setBackground(new Color(240, 240, 240)); // Colore di sfondo
 
     // Pannello superiore: Dati cliente
     datiPanel = new JPanel();
-
-
     datiPanel.add(new JLabel("I tuoi dati:"));
     add(datiPanel, BorderLayout.NORTH);
 
@@ -39,12 +31,12 @@ public class MainPage extends JPanel{
     buttonPanel.setBackground(new Color(240, 240, 240));
 
     // Pulsante modifica dati
-    modificaButton = new JButton("Modifica i tuoi dati");
+    // Pulsanti per le azioni
+    JButton modificaButton = new JButton("Modifica i tuoi dati");
     modificaButton.setFont(new Font("Arial", Font.BOLD, 16));
     modificaButton.setPreferredSize(new Dimension(200, 40));
     modificaButton.addActionListener(e -> {
-      EditDataDialog editDialog = new EditDataDialog(
-          (MainFrame) SwingUtilities.getWindowAncestor(this), dati.getEmail());
+      EditDataDialog editDialog = new EditDataDialog(parentFrame, dati.getEmail());
     });
     buttonPanel.add(modificaButton);
 
@@ -53,28 +45,55 @@ public class MainPage extends JPanel{
     eliminaButton.setFont(new Font("Arial", Font.BOLD, 16));
     eliminaButton.setPreferredSize(new Dimension(200, 40));
     eliminaButton.setBackground(new Color(255, 100, 100)); // Rosso per indicare pericolo
+
+    eliminaButton.addActionListener(actionEvent -> {
+      JDialog dialog = new JDialog();
+      dialog.setLayout(new FlowLayout());
+      dialog.setSize(300, 150);
+      dialog.setLocationRelativeTo(eliminaButton);
+      dialog.setModal(true);
+      dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+      dialog.setTitle("Elimina Account");
+      dialog.setResizable(false);
+      dialog.add(new JLabel("Sei sicuro di voler eliminare l'account?"));
+
+      JButton confirmButton = new JButton("Conferma");
+      confirmButton.addActionListener(confirmActionEvent -> {
+        if (dati == null || dati.getEmail() == null) {
+          JOptionPane.showMessageDialog(dialog, "Errore: Nessun dato utente trovato.", "Errore", JOptionPane.ERROR_MESSAGE);
+          dialog.dispose();
+          return;
+        }
+        //boolean success = MainController.eliminaAccount(dati.getEmail());
+//        if (success) {
+//          JOptionPane.showMessageDialog(dialog, "Account eliminato con successo!", "Conferma", JOptionPane.INFORMATION_MESSAGE);
+          parentFrame.showPage("LOGIN");
+//        } else {
+//          JOptionPane.showMessageDialog(dialog, "Errore durante l'eliminazione dell'account!", "Errore", JOptionPane.ERROR_MESSAGE);
+//        }
+        dialog.dispose();
+      });
+
+      JButton cancelButton = new JButton("Annulla");
+      cancelButton.addActionListener(cancelActionEvent -> dialog.dispose());
+
+      dialog.add(confirmButton);
+      dialog.add(cancelButton);
+      dialog.setVisible(true);
+    });
+
     buttonPanel.add(eliminaButton);
 
     // Pulsante Visualizza Storico
-    storicoButton = new JButton("Visualizza Storico");
+    JButton storicoButton = new JButton("Visualizza Storico");
     storicoButton.setFont(new Font("Arial", Font.BOLD, 16));
     storicoButton.setPreferredSize(new Dimension(200, 40));
     buttonPanel.add(storicoButton);
 
     add(buttonPanel, BorderLayout.CENTER);
 
-    // Pannello inferiore: Storico consegne
-    JPanel storicoPanel = new JPanel(new BorderLayout());
-    storicoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-    storicoPanel.setBackground(new Color(240, 240, 240));
-
-    storicoArea = new JTextArea();
-    storicoArea.setFont(new Font("Arial", Font.PLAIN, 16));
-    storicoArea.setEditable(false); // L'area di testo è di sola lettura
-    JScrollPane scrollPane = new JScrollPane(storicoArea);
-    storicoPanel.add(scrollPane, BorderLayout.CENTER);
-
-    add(storicoPanel, BorderLayout.SOUTH);
+    JTable table = new JTable();
+    add(table, BorderLayout.SOUTH);
   }
 
 

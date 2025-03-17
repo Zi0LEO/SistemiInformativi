@@ -8,7 +8,7 @@ import java.awt.*;
 class MainFrame extends JFrame {
   private final CardLayout cardLayout;
   private final JPanel cardPanel;
-  private final MainPage mainPage = new MainPage();
+  private final MainPage mainPage;
 
   public Dati getLoggedUser() {
     return loggedUser;
@@ -31,6 +31,7 @@ class MainFrame extends JFrame {
     cardPanel = new JPanel(cardLayout);
 
     // Aggiungi le pagine
+    mainPage = new MainPage(this);
     cardPanel.add(createPageWithHeader(new LoginPage(this)), "LOGIN");
     cardPanel.add(createPageWithHeader(new RegistrationPage(this)), "REGISTRATION");
     cardPanel.add(createPageWithHeader(mainPage), "Main");
