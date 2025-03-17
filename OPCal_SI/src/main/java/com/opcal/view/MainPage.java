@@ -32,7 +32,6 @@ public class MainPage extends JPanel{
     buttonPanel.setBackground(new Color(240, 240, 240));
 
     // Pulsante modifica dati
-    // Pulsanti per le azioni
     JButton modificaButton = new JButton("Modifica i tuoi dati");
     modificaButton.setFont(new Font("Arial", Font.BOLD, 16));
     modificaButton.setPreferredSize(new Dimension(200, 40));
