@@ -78,7 +78,7 @@ class MainFrame extends JFrame {
   // Metodo per cambiare pagina
   public void loggedIn() {
     cardLayout.show(cardPanel, "Main");
-    mainPage.initializeData();
+    mainPage.updateContent();
   }
 
   public void showPage(String pageName) {
