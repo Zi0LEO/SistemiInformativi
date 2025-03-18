@@ -103,11 +103,8 @@ public class GestoreClienti {
      */
     public static boolean cancellaCliente(Cliente cliente) {
         try {
-            System.out.println("qui");
             ClientePeer.doDelete(cliente);
-            System.out.println("utente eliminato");
             UtentePeer.doDelete(cliente.getUtente());
-            System.out.println("cliente eliminato");
             return true;
         } catch (TorqueException e) {
             return false;

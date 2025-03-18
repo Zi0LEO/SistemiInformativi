@@ -2,7 +2,6 @@ package com.opcal.controller;
 
 import com.opcal.model.GestoreClienti;
 import com.opcal.view.MainFrame;
-import org.apache.torque.TorqueException;
 
 import javax.swing.*;
 import java.awt.*;
