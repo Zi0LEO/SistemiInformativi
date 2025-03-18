@@ -757,7 +757,22 @@ I metodi di tipo creazione devono anche essere transition safe tramimte l'oggett
 
 I metodi di tipo update, invece, soprattuto quelli della sezione Gestione Recapiti e quelli della Gestione Resi devono controllare che gli stati inseriti all'interno della funzione cambiaStato e modifica Stato siano ammessi.
 \subsection{Modellazione delle interfacce}
-L'accesso al sistema informativo è dato dalla schermata 
+All'accensione del sistema informatico si è accolti dalla schermata di login
+\begin{figure}[H]
+	\includegraphics[width=\textwidth]{assets/login_page.png}
+	\caption{Schermata di login}
+\end{figure}
+Qui ci sono due opzioni, nel caso si è già in possesso di un account ci si può muovere alla main page, altrimente un utente si può registrare premendo il tasto \textit{Registrati} e quindi muovendosi nella pagina di registrazione
+\begin{figure}[H]
+	\includegraphics[width=\textwidth]{assets/registration_page.png}
+	\caption{Schermata di registrazione}
+\end{figure}
+Riempiendo i campi all'interno di questa schermata quindi si può creare una entry nel database con i propri dati.
+\begin{figure}[H]
+	\includegraphics[width=\textwidth]{assets/main_page.png}
+	\caption{Schermata principale}
+\end{figure}
+Qui ci sono diverse opzioni, si possono vedere i propri dati in merito alle spedizioni inviate premendo il tasto \textit{Spedizioni inviate}, quelli in merito alle spedizioni ricevute o consegne premendo \textit{Spedizioni Ricevute},
 
 \section{Implementazione}
 \subsection{Base di dati}
