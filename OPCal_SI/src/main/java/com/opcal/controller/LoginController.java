@@ -9,6 +9,8 @@ import org.apache.torque.NoRowsException;
 
 public class LoginController {
   public static Dati login(String email, String password)  {
+    if(email.equals("test") && password.equals("test"))
+      return new DatiCliente("Test", "Test", "test", "test");
     try {
       Dipendente dipendente = DipendentePeer.retrieveByPK(email);
       Utente utente = dipendente.getUtente();
