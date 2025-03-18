@@ -30,7 +30,7 @@ public class MainPage extends JPanel{
     buttonPanel.setBackground(new Color(240, 240, 240));
 
     // Pulsante modifica dati
-//    buttonPanel.add(MyButton.createButton("Modifica dati", () -> MainController.modificaDatiButton(parentFrame, dati.getEmail())));
+    buttonPanel.add(MyButton.createButton("Modifica dati", () -> MainController.modificaDatiButton(parentFrame, dati.getEmail())));
 
     // Pulsante Elimina Account
     buttonPanel.add(MyButton.createButton("Elimina Account", () -> MainController.eliminaAccount(parentFrame, dati.getEmail())));
@@ -41,6 +41,7 @@ public class MainPage extends JPanel{
     JPanel queryButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
     //Pulsanti spedizioni
+    queryButtonPanel.add(MyButton.createButton("Crea Spedizione", () -> MainController.creaSpedizione(dati.getEmail(), parentFrame)));
     queryButtonPanel.add(MyButton.createButton("Spedizioni", () -> MainController.mostraSpedizioniInviate(dati.getEmail(), table)));
 
     JButton spedizioniRicevuteButton = new JButton("Spedizioni ricevute");

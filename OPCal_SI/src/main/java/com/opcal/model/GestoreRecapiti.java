@@ -14,7 +14,7 @@ public class GestoreRecapiti {
     public static boolean creaSpedizione(Cliente mittente, Cliente destinatario, int peso) {
         Connection connection = null;
 
-        Spedizione spedizione = new Spedizione(mittente.getEmail(), destinatario.getEmail(), peso, calcolaPrezzo(peso));
+        Spedizione spedizione = new Spedizione(mittente.getEmail(), destinatario.getEmail(), peso, calcolaPrezzo(peso, destinatario.getEmail()));
         InCorso inCorso = new InCorso(spedizione);
         try {
             connection = Transaction.begin();
@@ -30,9 +30,9 @@ public class GestoreRecapiti {
         return true;
     }
 
-    public static boolean creaRitiro(Cliente mittente, Cliente destinatario, int peso) {
+    public static boolean creaRitiro(String mittente, String destinatario, int peso) {
         Connection connection = null;
-        Spedizione spedizione = new Spedizione(mittente.getEmail(), destinatario.getEmail(), peso, calcolaPrezzo(peso));
+        Spedizione spedizione = new Spedizione(mittente, destinatario, peso, calcolaPrezzo(peso, destinatario));
         Prenotata prenotata = new Prenotata(spedizione);
         try {
             connection = Transaction.begin();
@@ -52,17 +52,67 @@ public class GestoreRecapiti {
         ricevuta.save();
     }
 
-    //temporaneo
-    private static int calcolaPrezzo(int peso) {
-        return peso * 5;
+    public static Integer calcolaPrezzo(int peso, String emailDestinatario) {
+        Indirizzo indirizzo;
+        try {
+            Criteria criteria = new Criteria();
+            criteria.where(IndirizzoPeer.EMAIL_CLIENTE, emailDestinatario);
+            indirizzo = IndirizzoPeer.doSelect(criteria).getFirst();
+        }catch (TorqueException e){
+            return null;
+        }
+        if (indirizzo.getComune().equals("Cosenza") || indirizzo.getComune().equals("Rende") || indirizzo.getComune().equals("Castrolibero"))
+            return prezzoSuddiviso(peso, true);
+
+        return prezzoSuddiviso(peso, false);
     }
+
+    private static Integer prezzoSuddiviso(int peso, boolean spedizioneInterna) {
+        int centinaia = peso / 100;
+        int decine = (peso % 100) / 10;
+        int unita = peso % 10;
+
+        int media;
+        if (spedizioneInterna)
+            return centinaia * 350 + decine * 45 + unita * 5;
+        else{
+            media = calcolaMediaCorrieri(centinaia, decine, unita);
+        }
+        return (int) Math.floor(media + (media * 0.2));
+    }
+
+    private static Integer calcolaMediaCorrieri(int centinaia, int decine, int unita) {
+        Criteria criteria = new Criteria();
+        List<Corriere> corrieri;
+      try {
+          criteria.addSelectColumn(CorrierePeer.PREZZO1)
+              .addSelectColumn(CorrierePeer.PREZZO10)
+              .addSelectColumn(CorrierePeer.PREZZO100);
+          corrieri = CorrierePeer.doSelect(criteria);
+      } catch (TorqueException e) {
+          return null;
+      }
+      ListIterator<Corriere> iterator = corrieri.listIterator();
+      if (!iterator.hasNext()) return null;
+      Corriere corriere = iterator.next();
+          int media1 = corriere.getPrezzo1();
+          int media10 = corriere.getPrezzo10();
+          int media100 = corriere.getPrezzo100();
+      while(iterator.hasNext()) {
+          corriere = iterator.next();
+          media1 = (media1 + corriere.getPrezzo1()) / 2;
+          media10 = (media10 + corriere.getPrezzo10()) / 2;
+          media100 = (media10 + corriere.getPrezzo100()) / 2;
+      }
+          return centinaia * media100 + decine * media10 + unita * media1;
+      }
 
     public static Indirizzo visualizzaIndirizzo(String emailCliente) {
         Criteria criteria = new Criteria();
         criteria.where(IndirizzoPeer.EMAIL_CLIENTE, emailCliente);
         try {
             return IndirizzoPeer.doSelect(criteria).getFirst();
-        } catch (TorqueException e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
@@ -240,5 +290,4 @@ public class GestoreRecapiti {
         }
         return indirizzo;
     }
-
 }
