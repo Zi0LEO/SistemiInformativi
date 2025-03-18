@@ -42,10 +42,10 @@ public class MainPage extends JPanel{
 
     //Pulsanti spedizioni
     queryButtonPanel.add(MyButton.createButton("Crea Spedizione", () -> MainController.creaSpedizione(dati.getEmail(), parentFrame)));
+
     queryButtonPanel.add(MyButton.createButton("Spedizioni", () -> MainController.mostraSpedizioniInviate(dati.getEmail(), table)));
 
-    JButton spedizioniRicevuteButton = new JButton("Spedizioni ricevute");
-    queryButtonPanel.add(spedizioniRicevuteButton);
+    queryButtonPanel.add(MyButton.createButton("Spedizioni inviate", () -> MainController.mostraSpedizioniRicevute(dati.getEmail(), table)));
 
     JButton spedizioniInCorsoButton = new JButton("Spedizioni in corso");
     queryButtonPanel.add(spedizioniInCorsoButton);

@@ -13,6 +13,7 @@ public class Spedizione
   }
 
   public Spedizione(String emailMittente, String emailDestinatario, int peso, int prezzo) {
+    super();
     setEmailMittente(emailMittente);
     setEmailDestinatario(emailDestinatario);
     setPeso(peso);

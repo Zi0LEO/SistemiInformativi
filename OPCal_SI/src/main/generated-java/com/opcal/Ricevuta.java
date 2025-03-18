@@ -17,6 +17,7 @@ public class Ricevuta
 
   public Ricevuta(Spedizione spedizione) throws TorqueException {
     super();
+    setStato("Richiesto");
     setData(new Date(System.currentTimeMillis()));
     setSpedizione(spedizione);
   }

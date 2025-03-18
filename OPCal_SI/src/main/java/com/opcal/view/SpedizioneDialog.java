@@ -6,9 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SpedizioneDialog extends JDialog {
-
       private JLabel prezzoLabel;
-  public SpedizioneDialog(String email, Frame owner) {
+
+      public SpedizioneDialog(String email, Frame owner) {
         super(owner, "Spedizione", true);
         setSize(300, 600);
         setLocationRelativeTo(null);
@@ -61,7 +61,7 @@ public class SpedizioneDialog extends JDialog {
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.gridwidth = 1;
-        add(MyButton.createButton("Conferma", () -> SpedizioneDialogController.conferma(email, emailField.getText(), pesoField.getText())), gbc);
+        add(MyButton.createButton("Conferma", () -> SpedizioneDialogController.conferma(this, email, emailField.getText(), pesoField.getText())), gbc);
 
         gbc.gridx = 1;
         add(MyButton.createButton("Annulla", () -> SpedizioneDialogController.annulla(this)), gbc);

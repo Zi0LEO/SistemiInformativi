@@ -32,15 +32,16 @@ public class GestoreRecapiti {
 
     public static boolean creaRitiro(String mittente, String destinatario, int peso) {
         Connection connection = null;
-        Spedizione spedizione = new Spedizione(mittente, destinatario, peso, calcolaPrezzo(peso, destinatario));
-        Prenotata prenotata = new Prenotata(spedizione);
         try {
             connection = Transaction.begin();
-            prenotata.save();
+            Spedizione spedizione = new Spedizione(mittente, destinatario, peso, calcolaPrezzo(peso, destinatario));
             spedizione.save();
+            Prenotata prenotata = new Prenotata(spedizione);
+            prenotata.save();
             creaRicevuta(spedizione);
             Transaction.commit(connection);
         } catch (TorqueException e) {
+            e.printStackTrace();
             Transaction.safeRollback(connection);
             return false;
         }
@@ -59,6 +60,7 @@ public class GestoreRecapiti {
             criteria.where(IndirizzoPeer.EMAIL_CLIENTE, emailDestinatario);
             indirizzo = IndirizzoPeer.doSelect(criteria).getFirst();
         }catch (TorqueException e){
+            e.printStackTrace();
             return null;
         }
         if (indirizzo.getComune().equals("Cosenza") || indirizzo.getComune().equals("Rende") || indirizzo.getComune().equals("Castrolibero"))
@@ -209,9 +211,20 @@ public class GestoreRecapiti {
         return true;
     }
 
-    public static List<Object[]> mostraSpedizioniInviate(String email){
+    public static List<Object[]> mostraSpedizioni(String email, int tipo){
         Criteria criteria = new Criteria();
-        criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
+        criteria.addSelectColumn(SpedizionePeer.CODICE)
+            .addSelectColumn(SpedizionePeer.EMAIL_MITTENTE)
+            .addSelectColumn(SpedizionePeer.EMAIL_DESTINATARIO)
+            .addSelectColumn(SpedizionePeer.PESO)
+            .addSelectColumn(SpedizionePeer.PREZZO);
+        switch (tipo){
+            case 1:
+                criteria.where(SpedizionePeer.EMAIL_DESTINATARIO, email);
+                break;
+            case 2:
+                criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
+        }
         List<Spedizione> partialResult;
         try {
             partialResult = SpedizionePeer.doSelect(criteria);
@@ -230,7 +243,7 @@ public class GestoreRecapiti {
             row[4] = spedizione.getPrezzo();
             try{
                 row[5] = spedizione.getCorriere().getNome();
-            } catch (TorqueException e){
+            } catch (Exception e){
                 row[5] = "Nessuno";
             }
             result.add(row);

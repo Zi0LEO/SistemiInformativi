@@ -33,7 +33,12 @@ public class MainController {
   }
 
   public static void mostraSpedizioniInviate(String email, QueryResultsTable table) {
-    List<Object[]> data = GestoreRecapiti.mostraSpedizioniInviate(email);
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(email, 2);
+    String[] campi = SpedizionePeer.getFields();
+    updateTable(campi, data, table);
+  }
+  public static void mostraSpedizioniRicevute(String email, QueryResultsTable table) {
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(email, 1);
     String[] campi = SpedizionePeer.getFields();
     updateTable(campi, data, table);
   }
