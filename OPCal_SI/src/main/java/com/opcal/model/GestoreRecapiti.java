@@ -213,6 +213,18 @@ public class GestoreRecapiti {
         return indirizzo;
     }
 
+    public static boolean cancellaIndirizzo(String emailCliente) {
+        try {
+            Indirizzo indirizzo = GestoreRecapiti.visualizzaIndirizzo(emailCliente);
+            IndirizzoPeer.doDelete(indirizzo);
+            return true;
+        } catch (TorqueException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
     public static Indirizzo creaIndirizzo(String comune, String via, String civico, Cliente cliente) {
         Indirizzo indirizzo = new Indirizzo(comune, via, civico, cliente);
         try{
@@ -222,4 +234,5 @@ public class GestoreRecapiti {
         }
         return indirizzo;
     }
+
 }
