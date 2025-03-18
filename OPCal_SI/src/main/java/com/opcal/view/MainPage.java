@@ -43,9 +43,9 @@ public class MainPage extends JPanel{
     //Pulsanti spedizioni
     queryButtonPanel.add(MyButton.createButton("Crea Spedizione", () -> MainController.creaSpedizione(dati.getEmail(), parentFrame)));
 
-    queryButtonPanel.add(MyButton.createButton("Spedizioni", () -> MainController.mostraSpedizioniInviate(dati.getEmail(), table)));
+    queryButtonPanel.add(MyButton.createButton("Spedizioni ricevute", () -> MainController.mostraSpedizioniRicevute(dati.getEmail(), table)));
 
-    queryButtonPanel.add(MyButton.createButton("Spedizioni inviate", () -> MainController.mostraSpedizioniRicevute(dati.getEmail(), table)));
+    queryButtonPanel.add(MyButton.createButton("Spedizioni inviate", () -> MainController.mostraSpedizioniInviate(dati.getEmail(), table)));
 
     JButton spedizioniInCorsoButton = new JButton("Spedizioni in corso");
     queryButtonPanel.add(spedizioniInCorsoButton);
@@ -74,10 +74,9 @@ public class MainPage extends JPanel{
     searchButton.setPreferredSize(new Dimension(100, 30));
     searchPanel.add(toSearch);
     searchPanel.add(searchButton);
+
     table = new QueryResultsTable();
-    table.setColumnNames(new String[]{"default data 1", "default data 2", "default data 3"});
-    table.enableSortByColumn();
-    JScrollPane resultsScrollPane = new JScrollPane(table);
+    JScrollPane resultsScrollPane = new JScrollPane(table.getTable());
     resultsScrollPane.setPreferredSize(new Dimension(600, 400));
     queryPanel.add(searchPanel, BorderLayout.NORTH);
     queryPanel.add(resultsScrollPane, BorderLayout.SOUTH);
