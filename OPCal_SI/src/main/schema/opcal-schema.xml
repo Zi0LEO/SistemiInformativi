@@ -3,8 +3,8 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://db.apache.org/torque/5.0/templates/database
         http://db.apache.org/torque/torque-5.0/documentation/orm-reference/database-5-0-strict.xsd"
-  name="opcal"
-  defaultIdMethod="native">
+  name="OPCal"
+  defaultJavaType="object">
 
   <table name="utente">
     <column
@@ -110,8 +110,7 @@
       description="Civico dell'indirizzo"/>
     <column
       name="orario"
-      required="true"
-      type="INTEGER"
+      type="VARCHAR"
       size="16"
       description="orario preferito di consegna/ritiro"/>
     <column
@@ -145,20 +144,7 @@
       name="data"
       required="true"
       type="DATE"
-      size="255"
       description="Data del pagamento"/>
-    <column
-      name="email_cliente"
-      required="true"
-      type="VARCHAR"
-      size="255"
-      description="Cliente a cui la ricevuta è a carico"/>
-
-    <foreign-key foreignTable="cliente">
-      <reference
-        local="email_cliente"
-        foreign="email"/>
-    </foreign-key>
 
     <foreign-key foreignTable="spedizione">
       <reference
@@ -233,13 +219,11 @@
       name="data_ritiro"
       required="true"
       type="DATE"
-      size="255"
       description="Data prevista di ritiro"/>
     <column
       name="data_prenotazione"
       required="true"
       type="DATE"
-      size="255"
       description="Data di prenotazione della spedizione"/>
     <foreign-key foreignTable="spedizione">
       <reference
@@ -260,7 +244,6 @@
       name="data_spedizione"
       required="true"
       type="DATE"
-      size="255"
       description="Data di spedizione"/>
     <column
       name="stato"
@@ -287,13 +270,11 @@
       name="data_spedizione"
       required="true"
       type="DATE"
-      size="255"
       description="Data di spedizione"/>
     <column
       name="data_consegna"
       required="true"
       type="DATE"
-      size="255"
       description="Data di consegna della spedizione"/>
     <foreign-key foreignTable="spedizione">
       <reference
@@ -366,7 +347,6 @@
       name="data"
       required="true"
       type="DATE"
-      size="255"
       description="Data di richiesta del reso"/>
     <foreign-key foreignTable="spedizione">
       <reference

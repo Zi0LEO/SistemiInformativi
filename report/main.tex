@@ -340,9 +340,7 @@ I gruppi funzionali che si è deciso di implementare sono quelli riguardanti la 
   \item{(MUST)} Introdurre un ordinamento per lo storico delle consegne[Cliente]:
     \begin{enumerate}
       \item Per data, dalla più alla meno recente (Default);
-      \item Per tipo di spedizione;
       \item Per numero di ordine;
-      \item In ordine alfabetico.
     \end{enumerate} 
   \item{(MUST)} Visualizzare le ricevute a proprio carico[Cliente];
   \item {(MUST)} Ordinare la lista delle ricevute a proprio carico[Cliente]:
@@ -643,7 +641,7 @@ I tipi di dato utilizzati per gli attributi sono i seguenti:
 
 Il modello relazionale sarà il seguente:
 \begin{itemize}
-  \item \textbf{Cliente}(\underline{E-mail}, Nome, Cognome,);
+  \item \textbf{Cliente}(\underline{E-mail}, Nome, Cognome);
   \item \textbf{Indirizzo}(\underline{Comune, Via, Civico}, Orario, EmailCliente) \\ \textbf{Indirizzo}(EmailCliente) $\subseteq _{FK}$ \textbf{Cliente}(E-mail); 
   \item \textbf{Ricevuta}(\underline{Codice}, Stato, Data)\\ \textbf{Ricevuta}(Codice) $\subseteq _{FK}$ \textbf{Spedizione}(Codice);
   \item \textbf{Spedizione}(\underline{Codice}, Peso, Prezzo, EmailMittente, EmailDestinatario) \\ \textbf{Spedizione}(EmailMittente) $\subseteq _{FK}$ \textbf{Cliente}(E-mail) \\ \textbf{Spedizione}(EmailDestinatario) $\subseteq _{FK}$ \textbf{Cliente}(E-mail);
