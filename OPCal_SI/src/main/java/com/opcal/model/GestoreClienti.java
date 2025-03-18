@@ -100,27 +100,40 @@ public class GestoreClienti {
      * Permette di cancellare un cliente già esistente all'interno della base di dati
      *
      * @param cliente L'oggetto di tipo cliente che dovrà essere eliminato
-     * @throws ClassNotFoundException Nel caso in cui il cliente non è presente nella classe
      */
-    public static void cancellaCliente(Cliente cliente) throws ClassNotFoundException {
+    public static boolean cancellaCliente(Cliente cliente) {
         try {
+            System.out.println("qui");
             ClientePeer.doDelete(cliente);
+            System.out.println("utente eliminato");
+            UtentePeer.doDelete(cliente.getUtente());
+            System.out.println("cliente eliminato");
+            return true;
         } catch (TorqueException e) {
-            throw new ClassNotFoundException("Il cliente non è stato trovato");
+            return false;
         }
+
     }
 
     /**
      * Permette di cancellare un cliente già esistente all'interno della base di dati
      *
      * @param email L'identificatore del cliente che dovrà essere eliminato
-     * @throws ClassNotFoundException Nel caso in cui il cliente non è presente nella classe
      */
-    public static void cancellaCliente(String email) throws ClassNotFoundException {
-        try {
-            cancellaCliente(ClientePeer.retrieveByPK(email));
+    public static boolean cancellaCliente(String email){
+        try{
+            Criteria criteria1 = new Criteria();
+            Criteria criteria2 = new Criteria();
+
+            criteria1.where(ClientePeer.EMAIL, email);
+            criteria2.where(UtentePeer.EMAIL, email);
+
+            ClientePeer.doDelete(criteria1);
+            UtentePeer.doDelete(criteria2);
+            return true;
         } catch (TorqueException e) {
-            throw new ClassNotFoundException("Il cliente non è stato trovato");
+            e.printStackTrace();
+            return false;
         }
     }
 
