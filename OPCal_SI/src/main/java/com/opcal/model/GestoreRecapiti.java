@@ -10,13 +10,12 @@ import java.sql.Date;
 import java.util.List;
 
 public class GestoreRecapiti {
-    private static int recapitiGestiti;
 
     public static boolean creaSpedizione(Cliente mittente, Cliente destinatario, int peso) {
-        String codice = generaCodice();
         Connection connection = null;
-        InCorso inCorso = new InCorso(codice);
-        Spedizione spedizione = new Spedizione(codice, mittente.getEmail(), destinatario.getEmail(), peso, calcolaPrezzo(peso));
+
+        Spedizione spedizione = new Spedizione(mittente.getEmail(), destinatario.getEmail(), peso, calcolaPrezzo(peso));
+        InCorso inCorso = new InCorso(spedizione);
         try {
             connection = Transaction.begin();
             inCorso.save();
@@ -32,14 +31,12 @@ public class GestoreRecapiti {
     }
 
     public static boolean creaRitiro(Cliente mittente, Cliente destinatario, int peso) {
-        Prenotata prenotata = new Prenotata();
-        String codice = generaCodice();
         Connection connection = null;
-        Spedizione spedizione = new Spedizione(codice, mittente.getEmail(), destinatario.getEmail(), peso, calcolaPrezzo(peso));
+        Spedizione spedizione = new Spedizione(mittente.getEmail(), destinatario.getEmail(), peso, calcolaPrezzo(peso));
+        Prenotata prenotata = new Prenotata(spedizione);
         try {
             connection = Transaction.begin();
             prenotata.save();
-            spedizione.addPrenotata(prenotata);
             spedizione.save();
             creaRicevuta(spedizione);
             Transaction.commit(connection);
@@ -48,16 +45,6 @@ public class GestoreRecapiti {
             return false;
         }
         return true;
-    }
-
-    private synchronized static String generaCodice() {
-        recapitiGestiti++;
-        Integer recapiti = recapitiGestiti;
-        String ret = recapiti.toString();
-        StringBuilder sb = new StringBuilder();
-        sb.repeat("0", 6 - ret.length());
-        sb.append(ret);
-        return sb.toString();
     }
 
     private static void creaRicevuta(Spedizione spedizione) throws TorqueException {
@@ -129,10 +116,9 @@ public class GestoreRecapiti {
             con = Transaction.begin();
             Prenotata prenotata = PrenotataPeer.retrieveByPK(spedizione.getCodice(), con);
             PrenotataPeer.doDelete(prenotata, con);
-            InCorso inCorso = new InCorso(spedizione.getCodice());
+            InCorso inCorso = new InCorso(spedizione);
             inCorso.save(con);
             spedizione.resetPrenotata();
-            spedizione.addInCorso(inCorso, con);
             spedizione.save(con);
             Transaction.commit(con);
         } catch (Exception e) {
@@ -146,10 +132,10 @@ public class GestoreRecapiti {
         Connection con = null;
         try {
             con = Transaction.begin();
-            InCorso inCorso = new InCorso(spedizione.getCodice());
+            InCorso inCorso = InCorsoPeer.retrieveByPK(spedizione.getCodice());
             Date dataSpedizione = (Date) inCorso.getDataSpedizione();
             InCorsoPeer.doDelete(inCorso);
-            Effettuata effettuata = new Effettuata(spedizione.getCodice(), dataSpedizione);
+            Effettuata effettuata = new Effettuata(spedizione, dataSpedizione);
             effettuata.save();
             spedizione.resetInCorso();
             spedizione.addEffettuata(effettuata);

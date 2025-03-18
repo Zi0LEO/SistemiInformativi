@@ -136,7 +136,7 @@
       name="codice"
       required="true"
       primaryKey="true"
-      type="VARCHAR"
+      type="INTEGER"
       size="255"
       description="Codice della spedizione a cui la ricevuta si riferisce"/>
     <column
@@ -163,7 +163,7 @@
       name="codice"
       required="true"
       primaryKey="true"
-      type="VARCHAR"
+      type="INTEGER"
       size="255"
       description="Codice della spedizione"/>
     <column
@@ -215,7 +215,7 @@
       name="codice"
       required="true"
       primaryKey="true"
-      type="VARCHAR"
+      type="INTEGER"
       size="255"
       description="Codice della spedizione"/>
     <column
@@ -240,7 +240,7 @@
       name="codice"
       required="true"
       primaryKey="true"
-      type="VARCHAR"
+      type="INTEGER"
       size="255"
       description="Codice della spedizione"/>
     <column
@@ -266,7 +266,7 @@
       name="codice"
       required="true"
       primaryKey="true"
-      type="VARCHAR"
+      type="INTEGER"
       size="255"
       description="Codice della spedizione"/>
     <column
@@ -338,7 +338,7 @@
       name="codice"
       required="true"
       primaryKey="true"
-      type="VARCHAR"
+      type="INTEGER"
       size="255"
       description="Codice della spedizione a cui il reso si riferisce"/>
     <column

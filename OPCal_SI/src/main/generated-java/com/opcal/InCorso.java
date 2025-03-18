@@ -8,15 +8,12 @@ public class InCorso
   @Serial
   private static final long serialVersionUID = 1741196585711L;
 
-  public InCorso(String codice) {
-    super();
-    setDataSpedizione(new Date(System.currentTimeMillis()));
-    setCodice(codice);
-    setStato("Presa in carico");
-  }
-
-
   public InCorso() {
     super();
+  }
+  public InCorso(Spedizione spedizione) {
+    setDataSpedizione(new Date(System.currentTimeMillis()));
+    setStato("Presa in carico");
+    setSpedizione(spedizione);
   }
 }

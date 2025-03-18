@@ -12,9 +12,7 @@ public class Spedizione
     super();
   }
 
-  public Spedizione(String codice, String emailMittente, String emailDestinatario, int peso, int prezzo) {
-    super();
-    setCodice(codice);
+  public Spedizione(String emailMittente, String emailDestinatario, int peso, int prezzo) {
     setEmailMittente(emailMittente);
     setEmailDestinatario(emailDestinatario);
     setPeso(peso);

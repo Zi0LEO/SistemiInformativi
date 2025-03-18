@@ -1,4 +1,4 @@
-package main.java.com.opcal.model;
+package com.opcal.model;
 
 import com.itextpdf.layout.Document;
 import com.opcal.Reso;
@@ -21,7 +21,7 @@ public class GestoreResi {
      * @return true se l'operazion va a buon fine <br> false se l'operazione ha incontrato degli errrori
      * @throws CloneNotSupportedException nel caso in cui il reso che si sta cercando di creare è gia presente all'interno della base di dati
      */
-    public static boolean creaReso(String codice, String stato, Date data) throws CloneNotSupportedException {
+    public static boolean creaReso(Integer codice, String stato, Date data) throws CloneNotSupportedException {
         if (esiste(codice)) throw new CloneNotSupportedException("Il reso è già esistente");
         if (!statoPossibile(stato)) throw new IllegalArgumentException("Stato non valido");
 
@@ -57,7 +57,7 @@ public class GestoreResi {
      * @param newStato Il nuovo stato
      * @throws ClassNotFoundException Nel caso in cui non esiste il reso inserito
      */
-    public static void modificaStatoReso(String codice, String newStato) throws ClassNotFoundException {
+    public static void modificaStatoReso(int codice, String newStato) throws ClassNotFoundException {
         if (!statoPossibile(newStato)) throw new IllegalArgumentException("Stato non valido");
 
         try {
@@ -101,7 +101,7 @@ public class GestoreResi {
     }
 
 
-    private static boolean esiste(String codice) {
+    private static boolean esiste(Integer codice) {
         try {
             ResoPeer.retrieveByPK(codice);
         } catch (TorqueException e) {

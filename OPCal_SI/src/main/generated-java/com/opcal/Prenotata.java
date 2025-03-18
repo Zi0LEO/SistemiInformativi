@@ -11,6 +11,10 @@ public class Prenotata
 
   public Prenotata() {
     super();
+  }
+
+  public Prenotata(Spedizione spedizione) {
+    setSpedizione(spedizione);
     setDataPrenotazione(new Date(System.currentTimeMillis()));
 
     //data di ritiro di default una settimana dopo la prenotazione
