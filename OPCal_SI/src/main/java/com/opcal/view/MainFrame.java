@@ -5,7 +5,7 @@ import com.opcal.model.Dati;
 import javax.swing.*;
 import java.awt.*;
 
-class MainFrame extends JFrame {
+public class MainFrame extends JFrame {
   private final CardLayout cardLayout;
   private final JPanel cardPanel;
   private final MainPage mainPage;

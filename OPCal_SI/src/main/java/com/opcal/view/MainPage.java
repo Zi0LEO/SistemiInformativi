@@ -9,14 +9,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+import static com.opcal.view.MyButton.createButton;
+
 public class MainPage extends JPanel{
 
   // Campi per visualizzare/modificare i dati
   private final JPanel datiPanel;
+  public String currentlyShownTable;
+
+  private MyButton modificaButton, eliminaButton;
 
   private Dati dati;
-
-  private final JButton eliminaButton;
 
   public MainPage(MainFrame parentFrame) {
     setLayout(new BorderLayout(5,5));
@@ -32,67 +35,16 @@ public class MainPage extends JPanel{
     buttonPanel.setBackground(new Color(240, 240, 240));
 
     // Pulsante modifica dati
-    JButton modificaButton = new JButton("Modifica i tuoi dati");
-    modificaButton.setFont(new Font("Arial", Font.BOLD, 16));
-    modificaButton.setPreferredSize(new Dimension(200, 40));
-    modificaButton.addActionListener(e -> {
-      EditDataDialog editDialog = new EditDataDialog(parentFrame, dati.getEmail());
-    });
-    buttonPanel.add(modificaButton);
-
-
+    buttonPanel.add(createButton("Modifica dati", () -> MainController.modificaDatiButton(parentFrame, dati.getEmail())));
 
     // Pulsante Elimina Account
-    eliminaButton = new JButton("Elimina Account");
-    eliminaButton.setFont(new Font("Arial", Font.BOLD, 16));
-    eliminaButton.setPreferredSize(new Dimension(200, 40));
-    eliminaButton.setBackground(new Color(255, 100, 100)); // Rosso per indicare pericolo
+    buttonPanel.add(createButton("Elimina Account", () -> MainController.eliminaAccount(parentFrame, dati.getEmail())));
 
-    eliminaButton.addActionListener(actionEvent -> {
-      JDialog dialog = new JDialog();
-      dialog.setLayout(new FlowLayout());
-      dialog.setSize(300, 150);
-      dialog.setLocationRelativeTo(eliminaButton);
-      dialog.setModal(true);
-      dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-      dialog.setTitle("Elimina Account");
-      dialog.setResizable(false);
-      dialog.add(new JLabel("Sei sicuro di voler eliminare l'account?"));
-
-      JButton confirmButton = new JButton("Conferma");
-      confirmButton.addActionListener(confirmActionEvent -> {
-        if (dati == null || dati.getEmail() == null) {
-          JOptionPane.showMessageDialog(dialog, "Errore: Nessun dato utente trovato.", "Errore", JOptionPane.ERROR_MESSAGE);
-          dialog.dispose();
-          return;
-        }
-        //boolean success = MainController.eliminaAccount(dati.getEmail());
-//        if (success) {
-//          JOptionPane.showMessageDialog(dialog, "Account eliminato con successo!", "Conferma", JOptionPane.INFORMATION_MESSAGE);
-          parentFrame.showPage("LOGIN");
-//        } else {
-//          JOptionPane.showMessageDialog(dialog, "Errore durante l'eliminazione dell'account!", "Errore", JOptionPane.ERROR_MESSAGE);
-//        }
-        dialog.dispose();
-      });
-
-      JButton cancelButton = new JButton("Annulla");
-      cancelButton.addActionListener(cancelActionEvent -> dialog.dispose());
-
-      dialog.add(confirmButton);
-      dialog.add(cancelButton);
-      dialog.setVisible(true);
-    });
-
-    buttonPanel.add(eliminaButton);
-
-    // Pulsante Visualizza Storico
-    JButton logout = new JButton("Log Out");
-    logout.setFont(new Font("Arial", Font.BOLD, 16));
-    logout.setPreferredSize(new Dimension(200, 40));
-    buttonPanel.add(logout);
+    // Pulsante Logout
+    buttonPanel.add(createButton("Logout", () -> MainController.logout(parentFrame)));
 
     JPanel queryButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+
     //Pulsanti spedizioni
     JButton spedizioniInviateButton = new JButton("Spedizioni inviate");
     queryButtonPanel.add(spedizioniInviateButton);
