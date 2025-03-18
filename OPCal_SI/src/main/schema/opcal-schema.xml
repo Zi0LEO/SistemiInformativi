@@ -4,9 +4,11 @@
   xsi:schemaLocation="http://db.apache.org/torque/5.0/templates/database
         http://db.apache.org/torque/torque-5.0/documentation/orm-reference/database-5-0-strict.xsd"
   name="OPCal"
-  defaultJavaType="object">
+          defaultIdMethod="native"
+          defaultJavaType="object">
 
-  <table name="utente">
+  <table name="utente"
+  idMethod="none">
     <column
       name="email"
       primaryKey="true"
@@ -34,7 +36,8 @@
       description="Cognome utente"/>
   </table>
 
-  <table name="cliente">
+  <table name="cliente"
+  idMethod="none">
     <column
       name="email"
       primaryKey="true"
@@ -49,7 +52,8 @@
   </foreign-key>
   </table>
 
-  <table name="amministratore">
+  <table name="amministratore"
+  idMethod="none">
     <column
       name="email"
       primaryKey="true"
@@ -64,7 +68,8 @@
     </foreign-key>
   </table>
 
-  <table name="dipendente">
+  <table name="dipendente"
+  idMethod="none">
     <column
       name="email"
       primaryKey="true"
@@ -86,7 +91,8 @@
     </foreign-key>
   </table>
 
-  <table name="indirizzo">
+  <table name="indirizzo"
+  idMethod="none">
     <column
       name="comune"
       required="true"
@@ -115,7 +121,6 @@
       description="orario preferito di consegna/ritiro"/>
     <column
       name="email_cliente"
-      required="true"
       type="VARCHAR"
       size="255"
       description="cliente associato all'indirizzo"/>
@@ -175,13 +180,11 @@
       description="Prezzo della spedizione"/>
     <column
       name="email_mittente"
-      required="true"
       type="VARCHAR"
       size="255"
       description="Mittente"/>
     <column
       name="email_destinatario"
-      required="true"
       type="VARCHAR"
       size="255"
       description="Destinatario"/>
@@ -283,7 +286,8 @@
     </foreign-key>
   </table>
 
-  <table name="corriere" description="Rubrica corrieri">
+  <table name="corriere" description="Rubrica corrieri"
+  idMethod="none">
     <column
       name="iva"
       required="true"
