@@ -7,14 +7,13 @@ import com.opcal.model.DatiCliente;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class MainPage extends JPanel{
 
   // Campi per visualizzare/modificare i dati
   private final JPanel datiPanel;
-  public String currentlyShownTable;
 
+  public QueryResultsTable table;
   private Dati dati;
 
   public MainPage(MainFrame parentFrame) {
@@ -31,7 +30,7 @@ public class MainPage extends JPanel{
     buttonPanel.setBackground(new Color(240, 240, 240));
 
     // Pulsante modifica dati
-    buttonPanel.add(MyButton.createButton("Modifica dati", () -> MainController.modificaDatiButton(parentFrame, dati.getEmail())));
+//    buttonPanel.add(MyButton.createButton("Modifica dati", () -> MainController.modificaDatiButton(parentFrame, dati.getEmail())));
 
     // Pulsante Elimina Account
     buttonPanel.add(MyButton.createButton("Elimina Account", () -> MainController.eliminaAccount(parentFrame, dati.getEmail())));
@@ -42,8 +41,7 @@ public class MainPage extends JPanel{
     JPanel queryButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
     //Pulsanti spedizioni
-    JButton spedizioniInviateButton = new JButton("Spedizioni inviate");
-    queryButtonPanel.add(spedizioniInviateButton);
+    queryButtonPanel.add(MyButton.createButton("Spedizioni", () -> MainController.mostraSpedizioniInviate(dati.getEmail(), table)));
 
     JButton spedizioniRicevuteButton = new JButton("Spedizioni ricevute");
     queryButtonPanel.add(spedizioniRicevuteButton);
@@ -75,25 +73,16 @@ public class MainPage extends JPanel{
     searchButton.setPreferredSize(new Dimension(100, 30));
     searchPanel.add(toSearch);
     searchPanel.add(searchButton);
-    QueryResultsTable resultsTable = new QueryResultsTable();
-    JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
+    table = new QueryResultsTable();
+    table.setColumnNames(new String[]{"default data 1", "default data 2", "default data 3"});
+    table.enableSortByColumn();
+    JScrollPane resultsScrollPane = new JScrollPane(table);
     resultsScrollPane.setPreferredSize(new Dimension(600, 400));
     queryPanel.add(searchPanel, BorderLayout.NORTH);
     queryPanel.add(resultsScrollPane, BorderLayout.SOUTH);
 
     add(queryPanel, BorderLayout.SOUTH);
 
-    String[] columnNames = {"ID", "Name", "Value", "Date"}; //aggiungi i campi necessari qui
-    resultsTable.setColumnNames(columnNames);
-
-    //aggiungi i risultati delle query
-    List<Object[]> queryResults = List.of(
-        new Object[]{1, "John", 123.45, "2023-10-20"},
-        new Object[]{2, "Jane", 678.90, "2023-10-21"},
-        new Object[]{3, "Doe", 345.00, "2023-10-22"}
-    );
-    resultsTable.updateTableData(queryResults);
-    resultsTable.enableSortByColumn();
   }
 
 

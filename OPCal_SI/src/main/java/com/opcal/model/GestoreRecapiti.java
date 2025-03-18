@@ -7,7 +7,7 @@ import org.apache.torque.util.Transaction;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.util.List;
+import java.util.*;
 
 public class GestoreRecapiti {
 
@@ -159,13 +159,33 @@ public class GestoreRecapiti {
         return true;
     }
 
-    public static List<Indirizzo> ordinaIndirizzi(int criterio, boolean crescente) {
+    public static List<Object[]> mostraSpedizioniInviate(String email){
+        Criteria criteria = new Criteria();
+        criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
+        List<Spedizione> partialResult;
         try {
-            return IndirizzoPeer.ordinaIndirizzi(criterio, crescente);
-        } catch (TorqueException e) {
+            partialResult = SpedizionePeer.doSelect(criteria);
+        }catch (TorqueException e){
             return null;
         }
-
+        ListIterator<Spedizione> iterator = partialResult.listIterator();
+        List<Object[]> result = new LinkedList<>();
+        while(iterator.hasNext()){
+            Object[] row = new Object[SpedizionePeer.numColumns];
+            Spedizione spedizione = iterator.next();
+            row[0] = spedizione.getCodice();
+            row[1] = spedizione.getEmailMittente();
+            row[2] = spedizione.getEmailDestinatario();
+            row[3] = spedizione.getPeso();
+            row[4] = spedizione.getPrezzo();
+            try{
+                row[5] = spedizione.getCorriere().getNome();
+            } catch (TorqueException e){
+                row[5] = "Nessuno";
+            }
+            result.add(row);
+        }
+        return result;
     }
 
     public static Indirizzo modificaIndirizzo(String emailCliente, String value, int campo) {

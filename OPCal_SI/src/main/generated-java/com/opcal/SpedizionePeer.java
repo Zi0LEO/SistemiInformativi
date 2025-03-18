@@ -13,4 +13,7 @@ package com.opcal;
 public class SpedizionePeer
     extends BaseSpedizionePeer {
 
+  public static String[] getFields(){
+    return new String[] {"Codice", "Mittente", "Destinatario","Peso", "Prezzo", "Corriere"};
+  }
 }
