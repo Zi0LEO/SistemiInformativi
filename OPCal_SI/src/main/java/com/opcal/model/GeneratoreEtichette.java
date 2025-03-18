@@ -1,4 +1,4 @@
-package main.java.com.opcal.model;
+package com.opcal.model;
 
 import com.itextpdf.barcodes.Barcode128;
 import com.itextpdf.kernel.colors.ColorConstants;

@@ -128,7 +128,6 @@ class RegistrationPage extends JPanel {
     registerButton.setPreferredSize(new Dimension(200, 50));
     registerButton.setFont(new Font("Cantarell", Font.BOLD, 20));
     registerButton.addActionListener(e -> {
-      // Qui puoi aggiungere la logica di registrazione
       String nome = nameField.getText();
       String cognome = surnameField.getText();
       String email = emailField.getText();

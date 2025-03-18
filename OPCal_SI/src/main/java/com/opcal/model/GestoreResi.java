@@ -7,7 +7,7 @@ import org.apache.torque.TorqueException;
 
 import java.util.Date;
 
-import static main.java.com.opcal.model.GeneratoreEtichette.creaEtichetta;
+import static com.opcal.model.GeneratoreEtichette.creaEtichetta;
 import static main.java.com.opcal.model.StatoReso.statoPossibile;
 
 public class GestoreResi {
