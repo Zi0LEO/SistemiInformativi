@@ -13,12 +13,6 @@ public class MultiPageApp {
      TorqueInitializer.initTorque();
 
      SwingUtilities.invokeLater(MainFrame::new);
-
-     ColumnMap[] columns = IndirizzoPeer.getTableMap().getColumns();
-     for (ColumnMap column : columns) {
-       System.out.println(column.getColumnName());
      }
-
   }
-}
 

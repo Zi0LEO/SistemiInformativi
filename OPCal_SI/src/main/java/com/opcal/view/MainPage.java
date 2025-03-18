@@ -9,15 +9,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-import static com.opcal.view.MyButton.createButton;
-
 public class MainPage extends JPanel{
 
   // Campi per visualizzare/modificare i dati
   private final JPanel datiPanel;
   public String currentlyShownTable;
-
-  private MyButton modificaButton, eliminaButton;
 
   private Dati dati;
 
@@ -35,13 +31,13 @@ public class MainPage extends JPanel{
     buttonPanel.setBackground(new Color(240, 240, 240));
 
     // Pulsante modifica dati
-    buttonPanel.add(createButton("Modifica dati", () -> MainController.modificaDatiButton(parentFrame, dati.getEmail())));
+    buttonPanel.add(MyButton.createButton("Modifica dati", () -> MainController.modificaDatiButton(parentFrame, dati.getEmail())));
 
     // Pulsante Elimina Account
-    buttonPanel.add(createButton("Elimina Account", () -> MainController.eliminaAccount(parentFrame, dati.getEmail())));
+    buttonPanel.add(MyButton.createButton("Elimina Account", () -> MainController.eliminaAccount(parentFrame, dati.getEmail())));
 
     // Pulsante Logout
-    buttonPanel.add(createButton("Logout", () -> MainController.logout(parentFrame)));
+    buttonPanel.add(MyButton.createButton("Logout", () -> MainController.logout(parentFrame)));
 
     JPanel queryButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
