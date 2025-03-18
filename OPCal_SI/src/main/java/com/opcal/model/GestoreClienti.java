@@ -47,7 +47,9 @@ public class GestoreClienti {
     public static void modificaNomeCliente(String email, String nome) throws ClassNotFoundException {
         try {
             Cliente c = ClientePeer.retrieveByPK(email);
-            c.setNome(nome);
+            Utente u = c.getUtente();
+            u.setNome(nome);
+            u.save();
             c.save();
         } catch (TorqueException e) {
             throw new ClassNotFoundException("Il cliente non esiste");
@@ -63,7 +65,9 @@ public class GestoreClienti {
     public static void modificaCognomeCliente(String email, String cognome) throws ClassNotFoundException {
         try {
             Cliente c = ClientePeer.retrieveByPK(email);
-            c.setCognome(cognome);
+            Utente u = c.getUtente();
+            u.setCognome(cognome);
+            u.save();
             c.save();
         } catch (TorqueException e) {
             throw new ClassNotFoundException("Il cliente non esiste");

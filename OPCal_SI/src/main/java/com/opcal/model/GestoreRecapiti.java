@@ -182,6 +182,37 @@ public class GestoreRecapiti {
 
     }
 
+    public static Indirizzo modificaIndirizzo(String emailCliente, String value, int campo) {
+        Indirizzo indirizzo = GestoreRecapiti.visualizzaIndirizzo(emailCliente);
+        Indirizzo newIndirizzo;
+        try{
+            switch (campo) {
+                case 1:
+                    newIndirizzo = new Indirizzo(value, indirizzo.getVia(), indirizzo.getCivico(), ClientePeer.retrieveByPK(emailCliente));
+                    IndirizzoPeer.doDelete(indirizzo);
+                    indirizzo = newIndirizzo;
+                    break;
+                case 2:
+                    newIndirizzo = new Indirizzo(indirizzo.getComune(), value, indirizzo.getCivico(), ClientePeer.retrieveByPK(emailCliente));
+                    IndirizzoPeer.doDelete(indirizzo);
+                    indirizzo = newIndirizzo;
+                    break;
+                case 3:
+                    newIndirizzo = new Indirizzo(indirizzo.getComune(), indirizzo.getVia(), value, ClientePeer.retrieveByPK(emailCliente));
+                    IndirizzoPeer.doDelete(indirizzo);
+                    indirizzo = newIndirizzo;
+                case 4:
+                    indirizzo.setOrario(value);
+                    break;
+            }
+            indirizzo.save();
+        }catch(TorqueException e){
+            e.printStackTrace();
+            return null;
+        }
+        return indirizzo;
+    }
+
     public static Indirizzo creaIndirizzo(String comune, String via, String civico, Cliente cliente) {
         Indirizzo indirizzo = new Indirizzo(comune, via, civico, cliente);
         try{
