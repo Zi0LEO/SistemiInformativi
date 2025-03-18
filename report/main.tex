@@ -772,15 +772,24 @@ Riempiendo i campi all'interno di questa schermata quindi si può creare una ent
 	\includegraphics[width=\textwidth]{assets/main_page.png}
 	\caption{Schermata principale}
 \end{figure}
-Qui ci sono diverse opzioni, si possono vedere i propri dati in merito alle spedizioni inviate premendo il tasto \textit{Spedizioni inviate}, quelli in merito alle spedizioni ricevute o consegne premendo \textit{Spedizioni Ricevute},
-
+Qui ci sono diverse opzioni, partendo dal basso si possono vedere i propri dati in merito alle spedizioni di vario tipo premendo il bottone corrispondente, si può ricevere la lista delle ricevute premento l'apposito bottone \textit{Ricevute} che modificherà la list presente sotto. Il bottone \textit{Scarica documenti per reso} automaticamente genererà un file pdf che conterrà un codice a barre che dovrà essere compilato per far partire la procedura. 
+I più in alto da sinistra c'è il bottone che permette di tornare indietro alla schermata precedente \textit{Logout}, quello che permette di eliminare il proprio account \textit{Elimina Account} e quello che permette di modificare i propri dati, \textit{Modifica dati}, quest'utlimo aprirà una scheda aggiuntiva:
+\begin{figure}[H]
+	\includegraphics[width=\textwidth]{assets/modification_page.png}
+	\caption{Schermata principale con modifica}
+\end{figure}
+Qui compilando i vari box di testo sarà possibile modificare i propri dati all'interno della base di dati.
+\begin{figure}[H]
+	\includegraphics[width=\textwidth]{assets/diagramma_navigazione.png}
+	\caption{Diagramma di Navigazione}
+\end{figure}
 \section{Implementazione}
 \subsection{Base di dati}
 La base di dati è appoggiata su MySQL, ma in Java è implementata tramite \textit{Torque}, quindi tramite un'approccio di tipo ORM, le classi da lui generate sono quindi degli accessi diretti alle entità.
 \subsection{UI}
 La gui è stata implementata tramite il pacchetto Java Swing.
 \subsection{Design Pattern}
-All'interno dell'implementazione sono stati utilizzati 3 design pattern:
+All'interno dell'implementazione sono stati utilizzati 2 design pattern:
 \subsubsection{Model View Controller}
 Il pattern MVC è utilizzato per far comunicare le 3 parti principali della base di dati, all'interno del package \textit{model} quindi sono presenti tutti i metodi della logica di business, all'interno del package \textit{view} invece sono presenti quelli per la modellazione dell'interfaccia grafica, infine all'interno del package \textit{controller} ci sono tutte quelle classi atte a regolare le comunicazioni tra queste due parti.
 \subsubsection{Data Transfer Object}
