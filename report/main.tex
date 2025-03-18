@@ -721,7 +721,6 @@ END IF;
 END //
 DELIMETER;
 \end{minted}
-
 \subsection{Modellazione della logica di business}
 Viene riportato il primo diagramma che rappresenta la logica di business, è importante annotare che NON sono raffigurate le classi, e quindi i metodi, che sono all'interno della parte del Controller e della View.
 \begin{figure}[H]
@@ -729,8 +728,73 @@ Viene riportato il primo diagramma che rappresenta la logica di business, è imp
 	\includegraphics[width=\textwidth]{assets/logica_business.png}
 	\caption{Diagramma}
 \end{figure}
+Tutti i metodi di ricerca sono implementati tramite la funzione \textbf{criteria} di Torque, nello specifico il metodo \textit{getStoricoConsegne(Cliente cliente, int tipo)} ritorna la lisa delle consegne del cliente in input, l'ordinamento in questo metodo, come in tutti gli altri è dettato dalla variabile \textit{tipo} che è inserita in input, come dal \textit{requisito funzionale \textbf{2.2.1.5}} il numero 0 da un'ordinamento ascendente per data, 1 discendente per data, 2 ascendente per stato e 3 discendente per stato. Il metodo è riportato dopo come è implementato in java e SQL per semplicità è mostrato solo il caso di tipo 0.
+\begin{minted}[linenos]{java}
+Criteria criteria = Criteria().addAscendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA))
+criteria.addJoin(SpedizionePeer.CODICE, EffettuataPeer.CODICE);
+criteria.where(SpedizionePeer.EMAIL_DESTINATARIO,cliente.getEmail());
+criteria.addSelectColumn(SpedizionePeer.CODICE);
+
+List<Spedizione> ris = new ArrayList<>();
+
+try {
+	ris = SpedizionePeer.doSelect(criteria);
+} catch (TorqueException e) {
+	System.out.println("Errore nella query");
+}
+
+return ris;
+\end{minted}
+------------------------------------------------------------------------------------------------------------------
+\begin{minted}[linenos]{sql}
+SELECT Spedizione.CODICE
+FROM Spedizione
+JOIN Effettuata ON Spedizione.CODICE = Effettuata.CODICE
+WHERE Spedizione.EMAIL_DESTINATARIO =  "test@example.com"
+ORDER BY Effettuata.DATA_CONSEGNA ASC;
+\end{minted}
+I metodi di tipo creazione devono anche essere transition safe tramimte l'oggetto \textit{Transition} di Torque e la possibilità di fare una \textit{rollback} nel caso in cui all'intero del try and catch c'è un'errore, oltretutto si deve fare una check del caso in cui il cliente che si sta cercando di inserire è già esistente, visto che la funzione \textit{save()} di torque non fa questa cosa.
+
+I metodi di tipo update, invece, soprattuto quelli della sezione Gestione Recapiti e quelli della Gestione Resi devono controllare che gli stati inseriti all'interno della funzione cambiaStato e modifica Stato siano ammessi.
 \subsection{Modellazione delle interfacce}
+L'accesso al sistema informativo è dato dalla schermata 
 
 \section{Implementazione}
-
+\subsection{Base di dati}
+La base di dati è appoggiata su MySQL, ma in Java è implementata tramite \textit{Torque}, quindi tramite un'approccio di tipo ORM, le classi da lui generate sono quindi degli accessi diretti alle entità.
+\subsection{UI}
+La gui è stata implementata tramite il pacchetto Java Swing.
+\subsection{Design Pattern}
+All'interno dell'implementazione sono stati utilizzati 3 design pattern:
+\subsubsection{Model View Controller}
+Il pattern MVC è utilizzato per far comunicare le 3 parti principali della base di dati, all'interno del package \textit{model} quindi sono presenti tutti i metodi della logica di business, all'interno del package \textit{view} invece sono presenti quelli per la modellazione dell'interfaccia grafica, infine all'interno del package \textit{controller} ci sono tutte quelle classi atte a regolare le comunicazioni tra queste due parti.
+\subsubsection{Data Transfer Object}
+La classe astratta Dati, con le sue due implementazioni Dati Cliente e Dati Sportellista sono delle classi utilizzate per comprimere i dati in un singolo oggetto e comodamente transferirle dal Model (Gestione Clienti) al Controller e quindi alla View, di seguito quindi è riportato il codice della classe Dati.
+\begin{minted}[linenos]{java}
+public abstract class Dati {
+	private final String nome;
+	private final String cognome;
+	private final String email;
+	private final String passwd;
+	
+	public Dati(String nome, String cognome, String email, String passwd) {
+		this.nome = nome;
+		this.cognome = cognome;
+		this.email = email;
+		this.passwd = passwd;
+	}
+	public String getNome() {
+		return nome;
+	}
+	public String getCognome() {
+		return cognome;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public String getPassword() {
+		return passwd;
+	}
+}
+\end{minted}
 \end{document}
