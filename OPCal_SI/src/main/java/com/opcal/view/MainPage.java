@@ -40,6 +40,8 @@ public class MainPage extends JPanel{
     });
     buttonPanel.add(modificaButton);
 
+
+
     // Pulsante Elimina Account
     eliminaButton = new JButton("Elimina Account");
     eliminaButton.setFont(new Font("Arial", Font.BOLD, 16));
@@ -85,18 +87,53 @@ public class MainPage extends JPanel{
     buttonPanel.add(eliminaButton);
 
     // Pulsante Visualizza Storico
-    JButton storicoButton = new JButton("Visualizza Storico");
-    storicoButton.setFont(new Font("Arial", Font.BOLD, 16));
-    storicoButton.setPreferredSize(new Dimension(200, 40));
-    buttonPanel.add(storicoButton);
+    JButton logout = new JButton("Log Out");
+    logout.setFont(new Font("Arial", Font.BOLD, 16));
+    logout.setPreferredSize(new Dimension(200, 40));
+    buttonPanel.add(logout);
 
-    add(buttonPanel, BorderLayout.CENTER);
+    JPanel queryButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+    //Pulsanti spedizioni
+    JButton spedizioniInviateButton = new JButton("Spedizioni inviate");
+    queryButtonPanel.add(spedizioniInviateButton);
 
+    JButton spedizioniRicevuteButton = new JButton("Spedizioni ricevute");
+    queryButtonPanel.add(spedizioniRicevuteButton);
 
+    JButton spedizioniInCorsoButton = new JButton("Spedizioni in corso");
+    queryButtonPanel.add(spedizioniInCorsoButton);
+
+    JButton spedizioniPrenotateButton = new JButton("Spedizioni prenotate");
+    queryButtonPanel.add(spedizioniPrenotateButton);
+
+    //Ricevute
+    JButton ricevuteButton = new JButton("Ricevute");
+    queryButtonPanel.add(ricevuteButton);
+
+    //Resi
+    JButton resiButton = new JButton("Resi effettuati");
+    queryButtonPanel.add(resiButton);
+
+    JPanel wrapperButtonPanel = new JPanel(new BorderLayout(5,5));
+    wrapperButtonPanel.add(buttonPanel, BorderLayout.NORTH);
+    wrapperButtonPanel.add(queryButtonPanel, BorderLayout.SOUTH);
+    add(wrapperButtonPanel, BorderLayout.CENTER);
+
+    JPanel queryPanel = new JPanel(new BorderLayout(5,5));
+    JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+    JTextField toSearch = new JTextField(20);
+    toSearch.setPreferredSize(new Dimension(200, 30));
+    JButton searchButton = new JButton("Cerca");
+    searchButton.setPreferredSize(new Dimension(100, 30));
+    searchPanel.add(toSearch);
+    searchPanel.add(searchButton);
     QueryResultsTable resultsTable = new QueryResultsTable();
     JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
     resultsScrollPane.setPreferredSize(new Dimension(600, 400));
-    add(resultsScrollPane, BorderLayout.SOUTH);
+    queryPanel.add(searchPanel, BorderLayout.NORTH);
+    queryPanel.add(resultsScrollPane, BorderLayout.SOUTH);
+
+    add(queryPanel, BorderLayout.SOUTH);
 
     String[] columnNames = {"ID", "Name", "Value", "Date"}; //aggiungi i campi necessari qui
     resultsTable.setColumnNames(columnNames);
@@ -108,8 +145,6 @@ public class MainPage extends JPanel{
         new Object[]{3, "Doe", 345.00, "2023-10-22"}
     );
     resultsTable.updateTableData(queryResults);
-
-    //dai l'ordine
     resultsTable.enableSortByColumn();
   }
 
