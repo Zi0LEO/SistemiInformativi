@@ -211,44 +211,80 @@ public class GestoreRecapiti {
         return true;
     }
 
-    public static List<Object[]> mostraSpedizioni(String email, int tipo){
+    public static List<Object[]> mostraSpedizioni(String email, int tipo) {
+        Criteria criteria = buildCriteria(email, tipo);
+        List<Spedizione> partialResult = fetchSpedizioni(criteria);
+        if (partialResult == null)
+            return null;
+        return costruisciSpedizioni(partialResult);
+    }
+
+    private static Criteria buildCriteria(String email, int tipo) {
         Criteria criteria = new Criteria();
         criteria.addSelectColumn(SpedizionePeer.CODICE)
             .addSelectColumn(SpedizionePeer.EMAIL_MITTENTE)
             .addSelectColumn(SpedizionePeer.EMAIL_DESTINATARIO)
             .addSelectColumn(SpedizionePeer.PESO)
             .addSelectColumn(SpedizionePeer.PREZZO);
-        switch (tipo){
+        switch (tipo) {
             case 1:
                 criteria.where(SpedizionePeer.EMAIL_DESTINATARIO, email);
                 break;
             case 2:
                 criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
+                break;
         }
-        List<Spedizione> partialResult;
-        try {
-            partialResult = SpedizionePeer.doSelect(criteria);
-        }catch (TorqueException e){
-            return null;
-        }
-        ListIterator<Spedizione> iterator = partialResult.listIterator();
+        return criteria;
+    }
+
+    private static List<Object[]> costruisciSpedizioni(List<Spedizione> partialResult) {
+        int rowLength = SpedizionePeer.numColumns + 1;
         List<Object[]> result = new LinkedList<>();
-        while(iterator.hasNext()){
-            Object[] row = new Object[SpedizionePeer.numColumns];
-            Spedizione spedizione = iterator.next();
-            row[0] = spedizione.getCodice();
-            row[1] = spedizione.getEmailMittente();
-            row[2] = spedizione.getEmailDestinatario();
-            row[3] = spedizione.getPeso();
-            row[4] = spedizione.getPrezzo();
-            try{
-                row[5] = spedizione.getCorriere().getNome();
-            } catch (Exception e){
-                row[5] = "Nessuno";
-            }
+        for(Spedizione singola : partialResult) {
+            List<String> campi = Spedizione.getFieldNames();
+            Object[] row = new Object[rowLength];
+            row[0] = singola.getCodice();
+            row[1] = singola.getEmailMittente();
+            row[2] = singola.getEmailDestinatario();
+            row[3] = mostraStato(singola.getCodice());
+            row[4] = singola.getPeso();
+            row[5] = singola.getPrezzo();
+            row[6] = safeCorriere(singola);
             result.add(row);
         }
         return result;
+    }
+
+    private static Object safeCorriere(Spedizione singola) {
+        try {
+            return singola.getCorriere().getNome();
+        } catch (Exception e) {
+            return "Nessuno";
+        }
+    }
+
+    private static List<Spedizione> fetchSpedizioni(Criteria criteria) {
+        List<Spedizione> partialResult;
+        try {
+            partialResult = SpedizionePeer.doSelect(criteria);
+        } catch (TorqueException e) {
+            return null;
+        }
+        return partialResult;
+    }
+
+    private static String mostraStato(Integer codice) {
+        Criteria criteria = new Criteria();
+        criteria.where(InCorsoPeer.CODICE, codice);
+        try {
+            return InCorsoPeer.doSelect(criteria).getFirst().getStato();
+        } catch (Exception e) {
+        }
+        try {
+            PrenotataPeer.doSelect(criteria);
+            return "In attesa di ritiro";
+        }catch (Exception e){}
+        return "Consegnata";
     }
 
     public static Indirizzo modificaIndirizzo(String emailCliente, String value, int campo) {
