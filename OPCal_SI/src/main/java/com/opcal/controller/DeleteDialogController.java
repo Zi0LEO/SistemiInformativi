@@ -15,7 +15,7 @@ public class DeleteDialogController extends DialogController {
     if (success) {
       dialog.dispose();
       JOptionPane.showMessageDialog(null, "Cliente eliminato con successo!", "Eliminazione", JOptionPane.INFORMATION_MESSAGE);
-      frame.showPage("LOGIN");
+      frame.showPage("Login");
     }
     else {
       JOptionPane.showMessageDialog(null, "Errore durante l'eliminazione", "Errore", JOptionPane.ERROR_MESSAGE);

@@ -11,17 +11,21 @@ import java.awt.*;
 public class MainPage extends JPanel{
 
   private final JPanel datiPanel;
+  private final MainFrame parentFrame;
 
   public QueryResultsTable table;
   private Dati dati;
 
-  public MainPage(MainFrame parentFrame) {
+  public MainPage(MainFrame mainFrame) {
     setLayout(new BorderLayout(5,5));
     setBackground(new Color(240, 240, 240)); // Colore di sfondo
-
+    parentFrame = mainFrame;
     // Pannello superiore: Dati cliente
     datiPanel = new JPanel();
     datiPanel.add(new JLabel("I tuoi dati:"));
+    datiPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+    datiPanel.setBackground(new Color(200, 220, 240)); // Colore di sfondo
+
     add(datiPanel, BorderLayout.NORTH);
 
     // Pannello centrale: Pulsanti
@@ -80,25 +84,20 @@ public class MainPage extends JPanel{
     tablePanel.add(resultsScrollPane, BorderLayout.SOUTH);
 
     add(tablePanel, BorderLayout.SOUTH);
-
-  }
-
-
-  public void updateContent() {
-    dati = ((MainFrame) SwingUtilities.getWindowAncestor(this)).getLoggedUser();
-    datiPanel.removeAll();
-    datiPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-    datiPanel.setBackground(new Color(200, 220, 240)); // Colore di sfondo
-    datiPanel.add(new JLabel(dati.getNome()));
-    datiPanel.add(new JLabel(dati.getCognome()));
-    datiPanel.add(new JLabel(dati.getEmail()));
-    if (dati instanceof DatiCliente) {
-      datiPanel.setLayout(new GridLayout(5, 1));
-      Indirizzo indirizzo = MainController.trovaIndirizzo(dati.getEmail());
-      datiPanel.add(new JLabel(indirizzo.toString()));
     }
-    else {
-      datiPanel.setLayout(new GridLayout(4, 1));
+
+    public void updateContent() {
+      dati = parentFrame.getLoggedUser();
+      datiPanel.add(new JLabel(dati.getNome()));
+      datiPanel.add(new JLabel(dati.getCognome()));
+      datiPanel.add(new JLabel(dati.getEmail()));
+      if (dati instanceof DatiCliente) {
+        datiPanel.setLayout(new GridLayout(5, 1));
+        Indirizzo indirizzo = MainController.trovaIndirizzo(dati.getEmail());
+        datiPanel.add(new JLabel(indirizzo.toString()));
+      }
+      else {
+        datiPanel.setLayout(new GridLayout(4, 1));
+      }
     }
-  }
 }

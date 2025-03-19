@@ -1,14 +1,13 @@
 package com.opcal.view;
 
 import com.opcal.controller.LoginController;
-import com.opcal.model.Dati;
 
 import javax.swing.*;
 import java.awt.*;
 
 class LoginPage extends JPanel {
 
-  public LoginPage(MainFrame mainFrame) {
+  public LoginPage(MainFrame mainFrame, MainPage mainPage) {
     setBackground(new Color(45, 45, 48));
     setLayout(new GridBagLayout());
 
@@ -57,7 +56,7 @@ class LoginPage extends JPanel {
     gbc.fill = GridBagConstraints.NONE;
     gbc.anchor = GridBagConstraints.CENTER;
 
-    formPanel.add(MyButton.createButton("Login", () -> LoginController.login(mainFrame, userField.getText(), passField.getPassword())),gbc);
+    formPanel.add(MyButton.createButton("Login", () -> LoginController.login(mainFrame, userField.getText(), passField.getPassword(), mainPage)),gbc);
 
     // Pulsante Registrati
     gbc.gridy++;
