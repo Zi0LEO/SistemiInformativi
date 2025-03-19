@@ -1,7 +1,7 @@
 package com.opcal.view;
 
 import com.opcal.controller.DataDialogController;
-import com.opcal.controller.MainController;
+import com.opcal.controller.EditDataDialogController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,21 +10,21 @@ import static com.opcal.view.MyButton.createButton;
 
 public class EditDataDialog extends JDialog {
 
-  public EditDataDialog(Frame parent, String email, String[] fields, boolean gestitoDaRecapito){
+  public EditDataDialog(Frame parent, String email, String[] fields){
     super(parent,"Modifica Dati",true);
     setLayout(new GridBagLayout());
     GridBagConstraints gbc = new GridBagConstraints();
-    gbc.insets = new Insets(10, 5, 10, 5); // Add some padding
+    gbc.insets = new Insets(10, 5, 10, 5);
+    gbc.anchor = GridBagConstraints.CENTER;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
 
     JLabel area = new JLabel("Inserisci solo i dati che vuoi modificare.");
-    gbc.gridx = 0; // Start at column 0
-    gbc.gridy = 0; // Start at row 0
-    gbc.gridwidth = 2; // Span two columns
-    gbc.anchor = GridBagConstraints.CENTER; // Center the label
-    gbc.fill = GridBagConstraints.HORIZONTAL; // Fill horizontally
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.gridwidth = 2;
     add(area, gbc);
 
-    gbc.gridwidth = 1; // Set it back to 1 for other components
+    gbc.gridwidth = 1;
 
     JTextField[] values = new JTextField[fields.length];
     for(int i = 0; i < fields.length; i++){
@@ -37,11 +37,19 @@ public class EditDataDialog extends JDialog {
       add(values[i], gbc);
     }
 
-    //needs button to send data
+    gbc.gridy++;
+    gbc.gridx = 0;
+
+    add(MyButton.createButton("Salva", () -> {
+      String[] valuesString = new String[fields.length];
+      for(int i = 0; i < fields.length; i++)
+        valuesString[i] = values[i].getText();
+      EditDataDialogController.editData(fields, valuesString);
+    }), gbc);
 
     gbc.gridx = 1;
 
-    add(createButton("Salva", () -> DataDialogController.annulla(this)), gbc);
+    add(createButton("Annulla", () -> DataDialogController.annulla(this)), gbc);
     pack();
     setVisible(true);
     }
