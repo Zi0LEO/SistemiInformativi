@@ -1,50 +1,99 @@
 @startuml
 
 left to right direction
-
 actor Cliente
-actor Sportellista
-actor Portalettere
+actor Dipendente
 
-usecase "Visualizzazione fatture" as UC12
-usecase "Ordinamento fatture" as UC11
-usecase "Sicurezza login" as UC13
-usecase "Visualizzazione stato spedizioni" as UC14
-usecase "Visualizzazione stato pagamenti" as UC15
-usecase "Accesso dati anagrafici clienti" as UC16
-usecase "Modifica dati anagrafici clienti" as UC17
-usecase "Accesso dati spedizioni clienti" as UC18
-usecase "Modifica dati spedizioni clienti" as UC19
-usecase "Sistema di mailing" as UC20
-usecase "Per stato di pagamento" as UC21 
-usecase "Per data di pagamenteo" as UC22
-usecase "In ordine alfabetico" as UC23
+usecase "Associare un cliente ai suoi dati rilevanti" as UC1
+usecase "Visualizzare gli indirizzi dei clienti" as UC2
+usecase "Visualizzare le spedizioni in arrivo ad un indirizzo" as UC3
+usecase "Visualizzare le spedizioni da ritirare" as UC4
+usecase "Creare una spedizione" as UC5
+usecase "Prenotare un ritiro" as UC6
+usecase "Ottenere un preventivo per una spedizione interna" as UC7
+usecase "Ottenere un preventivo per una spedizione esterna" as UC8
+usecase "Visualizzare l’orario di consegna preferito" as UC9
+usecase "Modificare il proprio orario di consegna preferito" as UC10
+usecase "Tenere traccia delle spedizioni" as UC11
+usecase "Modificare il ciclo di vita di una spedizione" as UC12
+usecase "Aggiornare lo stato di una spedizione" as UC13
+usecase "Filtrare la lista degli indirizzi" as UC14
+usecase "Ordinare la lista degli indirizzi" as UC15
+usecase "Filtrare la lista delle spedizioni" as UC16
+usecase "Ordinare la lista delle spedizioni" as UC17
+usecase "Assegnare un codice univoco ad una spedizione" as UC18
+usecase "Identificare una spedizione tramite il codice" as UC19
+usecase "Visualizzare la lista dei corrieri esterni" as UC20
+usecase "Calcolare un preventivo per il corriere esterno selezionato" as UC21
 
-Cliente --> UC11
-Cliente --> UC12
-Cliente --> UC13
+usecase "Da 'prenotata' a 'presa in carico'" as UC13_1
+usecase "Da 'presa in carico' a 'spedita'" as UC13_2
+usecase "Da 'spedita' a 'in consegna'" as UC13_3
+usecase "Da 'in consegna' a 'consegnata'" as UC13_4
+usecase "Da 'in consegna' a 'tentato recapito'" as UC13_5
 
-Sportellista --> UC13
-Sportellista --> UC14
-Sportellista --> UC15
-Sportellista --> UC16
-Sportellista --> UC17
-Sportellista --> UC18
-Sportellista --> UC19
-Sportellista --> UC20
-Portalettere --> UC16
-Portalettere --> UC18
-Portalettere --> UC19
+usecase "Per comune di appartenenza" as UC14_1
+usecase "Per via" as UC14_2
+usecase "Per nome del cliente" as UC14_3
+usecase "Per orario preferito di consegna" as UC14_4
 
-UC16 --> UC17 : <<includes>>
-UC18 <-- UC19 : <<extends>>
-UC12 --> UC11 : <<include>>
+usecase "Per indirizzo di consegna" as UC16_2
+usecase "Per indirizzo di partenza" as UC16_3
+usecase "Per stato della spedizione" as UC16_4
 
-UC11 <-- UC21 :<<extends>>
-UC11 <-- UC22 :<<extends>>
-UC11 <-- UC23 :<<extends>>
+usecase "Per prezzo" as UC17_1
+usecase "Per peso" as UC17_2
+usecase "Per data" as UC17_3
+usecase "Per codice identificativo" as UC17_4
 
+Dipendente --> UC1
+Dipendente --> UC2
+Dipendente --> UC3
+Cliente --> UC3
+Dipendente --> UC4
+Dpendente --> UC5
+Cliente --> UC6
+Cliente --> UC7
+Cliente --> UC8
+Dipendente --> UC9
+Cliente --> UC10
+Dipendente --> UC11
+Dipendente --> UC12
+Dipendente --> UC13
+Dipendente --> UC14
+Dipendente --> UC15
+Dipendente --> UC16
+Cliente --> UC16
+Dipendente --> UC17
+Cliente --> UC17
+Dipendente --> UC18
+Dipendente --> UC19
+Cliente --> UC19
+Dipendente --> UC20
+Dipendente --> UC21
 
+UC13 <|-- UC13_1: <<extends>>
+UC13 <|-- UC13_2: <<extends>>
+UC13 <|-- UC13_3: <<extends>>
+UC13 <|-- UC13_4: <<extends>>
+UC13 <|-- UC13_5: <<extends>>
+UC14 <|-- UC14_1: <<extends>>
+UC14 <|-- UC14_2: <<extends>>
+UC14 <|-- UC14_3: <<extends>>
+UC14 <|-- UC14_4: <<extends>>
+UC15 <|-- UC14_1: <<extends>>
+UC15 <|-- UC14_2: <<extends>>
+UC15 <|-- UC14_3: <<extends>>
+UC15 <|-- UC14_4: <<extends>>
 
+UC16 <|-- UC16_1 : <<extends>>
+UC16 <|-- UC16_2 : <<extends>>
+UC16 <|-- UC16_3 : <<extends>>
+UC16 <|-- UC16_4 : <<extends>>
+
+UC17 <|-- UC17_1 : <<extends>>
+UC17 <|-- UC17_2 : <<extends>>
+UC17 <|-- UC17_3 : <<extends>>
+UC17 <|-- UC17_4 : <<extends>>
 
 @enduml
