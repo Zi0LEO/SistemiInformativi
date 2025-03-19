@@ -243,6 +243,10 @@ public class GestoreRecapiti {
                 criteria.or(SpedizionePeer.EMAIL_DESTINATARIO, email);
                 criteria.addJoin(SpedizionePeer.CODICE, EffettuataPeer.CODICE, Criteria.INNER_JOIN);
                 break;
+            case 5:
+                criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
+                criteria.or(SpedizionePeer.EMAIL_DESTINATARIO, email);
+                criteria.addJoin(SpedizionePeer.CODICE, PrenotataPeer.CODICE, Criteria.INNER_JOIN);
         }
         return criteria;
     }

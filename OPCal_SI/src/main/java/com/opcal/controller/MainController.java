@@ -55,5 +55,11 @@ public class MainController {
     String[] campi = SpedizionePeer.getFields();
     table.setTableData(data, campi);
   }
+
+  public static void mostraSpedizioniPrenotate(String email, QueryResultsTable table) {
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(email, 5);
+    String[] campi = SpedizionePeer.getFields();
+    table.setTableData(data, campi);
+  }
 }
 
