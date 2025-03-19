@@ -18,15 +18,17 @@ public class MainController {
   }
 
   public static void logout(MainFrame parentFrame) {
+    parentFrame.setLoggedUser(null);
     parentFrame.showPage("LOGIN");
   }
   public static void eliminaAccount(MainFrame parentFrame, String email){
     DeleteDialog dialog = new DeleteDialog(parentFrame, email);
   }
 
-  public static boolean modificaDatiButton(MainFrame parentFrame, String email) {
-    String[] campi = new String[]{"Nome", "Cognome", "Comune", "Via", "Civico", "Orario"};
-    EditDataDialog editDialog = new EditDataDialog(parentFrame, email, campi, false);
+  public static boolean modificaDati(MainPage mainPage, MainFrame parentFrame, String email, String[] campi) {
+    EditDataDialog editDialog = new EditDataDialog(parentFrame, email, campi);
+    mainPage.repaint();
+    mainPage.revalidate();
     return false;
   }
 
@@ -71,6 +73,18 @@ public class MainController {
     campi = tempCampi.toArray(campi);
     campi[campi.length - 1] = "Pagamento";
     table.setTableData(data, campi);
+  }
+
+  public static void creaReso(String email){
+    //todo
+  }
+
+  public static void visualizzaResi(String email) {
+    //todo
+  }
+
+  public static void cercaInTable(String text) {
+    //todo
   }
 }
 
