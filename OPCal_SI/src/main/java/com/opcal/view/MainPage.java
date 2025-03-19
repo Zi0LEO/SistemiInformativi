@@ -10,7 +10,6 @@ import java.awt.*;
 
 public class MainPage extends JPanel{
 
-  // Campi per visualizzare/modificare i dati
   private final JPanel datiPanel;
 
   public QueryResultsTable table;
@@ -43,14 +42,13 @@ public class MainPage extends JPanel{
     //Pulsanti spedizioni
     queryButtonPanel.add(MyButton.createButton("Crea Spedizione", () -> MainController.creaSpedizione(dati.getEmail(), parentFrame)));
 
-    queryButtonPanel.add(MyButton.createButton("Spedizioni ricevute", () -> MainController.mostraSpedizioniRicevute(dati.getEmail(), table)));
+    queryButtonPanel.add(MyButton.createButton("Spedizioni in arrivo per me", () -> MainController.mostraSpedizioniRicevute(dati.getEmail(), table)));
 
-    queryButtonPanel.add(MyButton.createButton("Spedizioni inviate", () -> MainController.mostraSpedizioniInviate(dati.getEmail(), table)));
+    queryButtonPanel.add(MyButton.createButton("Mie spedizioni inviate", () -> MainController.mostraSpedizioniInviate(dati.getEmail(), table)));
 
-    queryButtonPanel.add(MyButton.createButton("Spedizioni in corso", () -> MainController.mostraSpedizioniInCorso(dati.getEmail(), table)));
+    queryButtonPanel.add(MyButton.createButton("Spedizioni in corso da e per me", () -> MainController.mostraSpedizioniInCorso(dati.getEmail(), table)));
 
-    JButton spedizioniPrenotateButton = new JButton("Spedizioni prenotate");
-    queryButtonPanel.add(spedizioniPrenotateButton);
+    queryButtonPanel.add(MyButton.createButton("Spedizioni consegnate a e per me", () -> MainController.mostraSpedizioniEffettuate(dati.getEmail(), table)));
 
     //Ricevute
     JButton ricevuteButton = new JButton("Ricevute");

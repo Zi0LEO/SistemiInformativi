@@ -6,7 +6,6 @@ import com.opcal.model.GestoreRecapiti;
 import com.opcal.view.*;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -47,6 +46,12 @@ public class MainController {
 
   public static void mostraSpedizioniInCorso(String email, QueryResultsTable table) {
     List<Object[]> data = GestoreRecapiti.mostraSpedizioni(email, 3);
+    String[] campi = SpedizionePeer.getFields();
+    table.setTableData(data, campi);
+  }
+
+  public static void mostraSpedizioniEffettuate(String email, QueryResultsTable table) {
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(email, 4);
     String[] campi = SpedizionePeer.getFields();
     table.setTableData(data, campi);
   }
