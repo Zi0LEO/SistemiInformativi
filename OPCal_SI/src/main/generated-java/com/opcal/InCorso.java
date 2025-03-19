@@ -11,6 +11,7 @@ public class InCorso
   public InCorso() {
     super();
   }
+
   public InCorso(Spedizione spedizione) {
     setDataSpedizione(new Date(System.currentTimeMillis()));
     setStato("Presa in carico");

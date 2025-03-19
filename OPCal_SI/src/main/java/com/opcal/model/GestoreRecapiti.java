@@ -115,7 +115,7 @@ public class GestoreRecapiti {
         try {
             return IndirizzoPeer.doSelect(criteria).getFirst();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
@@ -137,7 +137,7 @@ public class GestoreRecapiti {
             return IndirizzoPeer.doSelect(criteria);
 
         } catch (TorqueException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
@@ -205,7 +205,7 @@ public class GestoreRecapiti {
             InCorso inCorso = InCorsoPeer.retrieveByPK(spedizione.getCodice());
             inCorso.setStato(stato);
         } catch (TorqueException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -233,26 +233,49 @@ public class GestoreRecapiti {
             case 2:
                 criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
                 break;
+            case 3:
+                criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
+                criteria.or(SpedizionePeer.EMAIL_DESTINATARIO, email);
+                criteria.addJoin(SpedizionePeer.CODICE, InCorsoPeer.CODICE, Criteria.INNER_JOIN);
+                break;
         }
         return criteria;
     }
 
     private static List<Object[]> costruisciSpedizioni(List<Spedizione> partialResult) {
-        int rowLength = SpedizionePeer.numColumns + 1;
+        int rowLength = SpedizionePeer.numColumns + 2;
         List<Object[]> result = new LinkedList<>();
         for(Spedizione singola : partialResult) {
-            List<String> campi = Spedizione.getFieldNames();
             Object[] row = new Object[rowLength];
             row[0] = singola.getCodice();
             row[1] = singola.getEmailMittente();
             row[2] = singola.getEmailDestinatario();
             row[3] = mostraStato(singola.getCodice());
-            row[4] = singola.getPeso();
-            row[5] = singola.getPrezzo();
-            row[6] = safeCorriere(singola);
+            row[4] = getRelevantDate(singola.getCodice());
+            row[5] = singola.getPeso();
+            row[6] = singola.getPrezzo();
+            row[7] = safeCorriere(singola);
             result.add(row);
         }
         return result;
+    }
+
+    private static Date getRelevantDate(Integer codice) {
+        Criteria criteria = new Criteria();
+        criteria.where(SpedizionePeer.CODICE, codice);
+        try {
+            return (Date) InCorsoPeer.doSelect(criteria).getFirst().getDataSpedizione();
+        } catch (Exception e) {}
+        try {
+            System.out.println(PrenotataPeer.doSelect(criteria).getFirst().getDataPrenotazione());
+            return (Date) PrenotataPeer.doSelect(criteria).getFirst().getDataPrenotazione();
+
+        }catch (Exception e){}
+        try{
+            return (Date) EffettuataPeer.doSelect(criteria).getFirst().getDataConsegna();
+        }catch (Exception e){
+            return new Date(0);
+        }
     }
 
     private static Object safeCorriere(Spedizione singola) {

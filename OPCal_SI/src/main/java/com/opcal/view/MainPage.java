@@ -47,8 +47,7 @@ public class MainPage extends JPanel{
 
     queryButtonPanel.add(MyButton.createButton("Spedizioni inviate", () -> MainController.mostraSpedizioniInviate(dati.getEmail(), table)));
 
-    JButton spedizioniInCorsoButton = new JButton("Spedizioni in corso");
-    queryButtonPanel.add(spedizioniInCorsoButton);
+    queryButtonPanel.add(MyButton.createButton("Spedizioni in corso", () -> MainController.mostraSpedizioniInCorso(dati.getEmail(), table)));
 
     JButton spedizioniPrenotateButton = new JButton("Spedizioni prenotate");
     queryButtonPanel.add(spedizioniPrenotateButton);

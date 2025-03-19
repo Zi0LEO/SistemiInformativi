@@ -14,6 +14,6 @@ public class SpedizionePeer
     extends BaseSpedizionePeer {
 
   public static String[] getFields(){
-    return new String[] {"Codice", "Mittente", "Destinatario", "Stato", "Peso", "Prezzo", "Corriere"};
+    return new String[] {"Codice", "Mittente", "Destinatario", "Stato", "Data rilevante", "Peso", "Prezzo", "Corriere"};
   }
 }

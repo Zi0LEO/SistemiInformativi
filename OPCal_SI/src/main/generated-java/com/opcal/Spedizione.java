@@ -19,5 +19,4 @@ public class Spedizione
     setPeso(peso);
     setPrezzo(prezzo);
   }
-
 }

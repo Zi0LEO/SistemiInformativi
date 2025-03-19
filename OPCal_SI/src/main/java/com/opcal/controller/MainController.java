@@ -33,18 +33,22 @@ public class MainController {
     SpedizioneDialog dialog = new SpedizioneDialog(email, frame);
   }
 
-  public static void mostraSpedizioniInviate(String email, QueryResultsTable table) {
-    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(email, 2);
-    String[] campi = SpedizionePeer.getFields();
-    table.setTableData(data, campi);
-  }
-
   public static void mostraSpedizioniRicevute(String email, QueryResultsTable table) {
     List<Object[]> data = GestoreRecapiti.mostraSpedizioni(email, 1);
     String[] campi = SpedizionePeer.getFields();
     table.setTableData(data, campi);
   }
 
+  public static void mostraSpedizioniInviate(String email, QueryResultsTable table) {
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(email, 2);
+    String[] campi = SpedizionePeer.getFields();
+    table.setTableData(data, campi);
+  }
 
+  public static void mostraSpedizioniInCorso(String email, QueryResultsTable table) {
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(email, 3);
+    String[] campi = SpedizionePeer.getFields();
+    table.setTableData(data, campi);
+  }
 }
 
