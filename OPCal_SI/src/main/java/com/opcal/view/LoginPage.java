@@ -57,40 +57,12 @@ class LoginPage extends JPanel {
     gbc.fill = GridBagConstraints.NONE;
     gbc.anchor = GridBagConstraints.CENTER;
 
-    JButton loginButton = getJButton(mainFrame, userField, passField);
-    formPanel.add(loginButton, gbc);
+    formPanel.add(MyButton.createButton("Login", () -> LoginController.login(mainFrame, userField.getText(), passField.getPassword())),gbc);
 
     // Pulsante Registrati
     gbc.gridy++;
-    JButton registerButton = new JButton("Registrati");
-    registerButton.setPreferredSize(new Dimension(200, 50));
-    registerButton.setFont(new Font("Cantarell", Font.BOLD, 20));
-    registerButton.addActionListener(e -> {
-      mainFrame.showPage("REGISTRATION"); // Cambia pagina
-    });
-    formPanel.add(registerButton, gbc);
+    formPanel.add(MyButton.createButton("Registrati", () -> mainFrame.showPage("Registration")), gbc);
 
     add(formPanel);
-  }
-
-  private JButton getJButton(MainFrame mainFrame, JTextField userField, JPasswordField passField) {
-    JButton loginButton = new JButton("Login");
-    loginButton.setPreferredSize(new Dimension(200, 50));
-    loginButton.setFont(new Font("Cantarell", Font.BOLD, 20));
-    loginButton.addActionListener(e -> {
-      String email = userField.getText();
-      String password = new String(passField.getPassword());
-
-      Dati dati = LoginController.login(email, password);
-
-      if (dati == null) {
-        JOptionPane.showMessageDialog(LoginPage.this, "Credenziali non valide!", "Errore", JOptionPane.ERROR_MESSAGE);
-      }
-      else {
-        ((MainFrame) SwingUtilities.getWindowAncestor(this)).setLoggedUser(dati);
-        mainFrame.loggedIn();
-      }
-    });
-    return loginButton;
   }
 }

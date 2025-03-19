@@ -1,6 +1,6 @@
 package com.opcal.view;
 
-import com.opcal.controller.RegistrazioneController;
+import com.opcal.controller.RegistrationController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +19,7 @@ class RegistrationPage extends JPanel {
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.insets = new Insets(10, 20, 10, 20);
     gbc.anchor = GridBagConstraints.WEST;
+    gbc.fill = GridBagConstraints.NONE;
 
     // Campo Nome
     gbc.gridx = 0;
@@ -122,50 +123,23 @@ class RegistrationPage extends JPanel {
     gbc.gridx = 0;
     gbc.gridy++;
     gbc.gridwidth = 2;
-    gbc.fill = GridBagConstraints.NONE;
+
     gbc.anchor = GridBagConstraints.CENTER;
-    JButton registerButton = new JButton("Registrati");
-    registerButton.setPreferredSize(new Dimension(200, 50));
-    registerButton.setFont(new Font("Cantarell", Font.BOLD, 20));
-    registerButton.addActionListener(e -> {
-      // Qui puoi aggiungere la logica di registrazione
-      String nome = nameField.getText();
-      String cognome = surnameField.getText();
-      String email = emailField.getText();
-      String password = new String(passField.getPassword());
-      String comune = comuneField.getText();
-      String via = viaField.getText();
-      String civico = civicoField.getText();
 
-      if (nome.isEmpty() || cognome.isEmpty() || email.isEmpty() || password.isEmpty() || comune.isEmpty() || via.isEmpty() || civico.isEmpty()) {
-        JOptionPane.showMessageDialog(RegistrationPage.this, "Completa tutti i campi!", "Errore", JOptionPane.ERROR_MESSAGE);
-        return;
-      }
-      if (!email.contains("@") || !email.contains(".")) {
-        JOptionPane.showMessageDialog(RegistrationPage.this, "Inserisci un email valida!", "Errore", JOptionPane.ERROR_MESSAGE);
-        return;
-      }
-      try{
-        RegistrazioneController.registrazione(nome, cognome, comune, via, civico, email, password);
-        JOptionPane.showMessageDialog(RegistrationPage.this, "Registrazione completata!", "Successo", JOptionPane.INFORMATION_MESSAGE);
-      } catch (CloneNotSupportedException ex) {
-        JOptionPane.showMessageDialog(RegistrationPage.this, "Questo utente esiste già", "Errore", JOptionPane.ERROR_MESSAGE);
-        return;
-      }
-
-      mainFrame.showPage("LOGIN"); // Torna al login dopo la registrazione
-    });
-    formPanel.add(registerButton, gbc);
+    formPanel.add(MyButton.createButton("Registrati", () ->
+        RegistrationController.registrazione(
+            nameField.getText(),
+            surnameField.getText(),
+            comuneField.getText(),
+            viaField.getText(),
+            civicoField.getText(),
+            emailField.getText(),
+            passField.getPassword())
+    ), gbc);
 
     // Pulsante Torna al Login
     gbc.gridy++;
-    JButton backButton = new JButton("Torna al Login");
-    backButton.setPreferredSize(new Dimension(200, 50));
-    backButton.setFont(new Font("Cantarell", Font.BOLD, 20));
-    backButton.addActionListener(e -> {
-      mainFrame.showPage("LOGIN"); // Torna al login
-    });
-    formPanel.add(backButton, gbc);
+    formPanel.add(MyButton.createButton("Torna al Login", () -> mainFrame.showPage("Login")), gbc);
 
     add(formPanel);
   }

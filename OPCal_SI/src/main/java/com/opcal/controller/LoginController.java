@@ -1,34 +1,24 @@
 package com.opcal.controller;
 
-import com.opcal.*;
 import com.opcal.model.Dati;
-import com.opcal.model.DatiCliente;
-import com.opcal.model.DatiDipendente;
-import org.apache.torque.NoRowsException;
+import com.opcal.model.GestoreClienti;
+import com.opcal.view.MainFrame;
 
 
 public class LoginController {
-  public static Dati login(String email, String password)  {
-    try {
-      Dipendente dipendente = DipendentePeer.retrieveByPK(email);
-      Utente utente = dipendente.getUtente();
-      if(!utente.getPassword().equals(password))
-        return null;
-      return new DatiDipendente(utente.getNome(), utente.getCognome(), utente.getEmail(), utente.getPassword());
-    } catch(NoRowsException e){
-    } catch(Exception e){
-      return null;
+  public static void login(MainFrame frame, String email, char[] password){
+    String pass = new String(password);
+    Dati dati = null;
+//    dati = GestoreDipendenti.autentica(email,pass);
+    if (dati != null) {
+      frame.setLoggedUser(dati);
+      frame.showPage("Main");
+      return;
     }
-    try {
-      Cliente cliente = ClientePeer.retrieveByPK(email);
-      Utente utente = cliente.getUtente();
-      if(!utente.getPassword().equals(password))
-        return null;
-      return new DatiCliente(utente.getNome(), utente.getCognome(), utente.getEmail(), utente.getPassword());
-    } catch(NoRowsException e){
-    } catch(Exception e){
-      return null;
+    dati = GestoreClienti.autentica(email, pass);
+    if (dati != null) {
+      frame.setLoggedUser(dati);
+      frame.showPage("Main");
     }
-    return null;
   }
 }

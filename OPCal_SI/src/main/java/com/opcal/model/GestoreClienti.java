@@ -11,13 +11,26 @@ import java.util.List;
 
 public class GestoreClienti {
 
+    public static DatiCliente autentica(String email, String password) {
+        Utente utente;
+        Connection connection = null;
+        try{
+            utente = UtentePeer.retrieveByPK(email);
+            if(utente.getPassword().equals(password))
+                return new DatiCliente(utente.getNome(), utente.getCognome(), utente.getEmail());
+        }catch (TorqueException e){
+            return null;
+        }
+        return null;
+    }
+
     /**
      * Permette di creare un'oggetto di tipo Cliente e inserirlo all'interno della base di dati
      *
      * @return true se l'operazione va a buon fine, <br> false altrimenti.
      * @throws CloneNotSupportedException Nel caso in cui il Cliente che si sta cercando di creare è gia presente
      */
-    public static Cliente creaCliente(DatiCliente datoCliente) throws CloneNotSupportedException {
+    public static boolean creaCliente(DatiCliente datoCliente) throws CloneNotSupportedException {
         if (esiste(datoCliente.getEmail())) throw new CloneNotSupportedException("Il cliente è già esistente");
 
         Connection connection = null;
@@ -33,8 +46,9 @@ public class GestoreClienti {
         } catch (TorqueException e) {
             Transaction.safeRollback(connection);
             e.printStackTrace();
+            return false;
         }
-        return cliente;
+        return true;
     }
 
     /**

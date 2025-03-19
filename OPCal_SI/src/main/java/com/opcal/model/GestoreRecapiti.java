@@ -362,12 +362,14 @@ public class GestoreRecapiti {
 
     }
 
-    public static Indirizzo creaIndirizzo(String comune, String via, String civico, Cliente cliente) {
-        Indirizzo indirizzo = new Indirizzo(comune, via, civico, cliente);
+    public static Indirizzo creaIndirizzo(String comune, String via, String civico, String email) {
+        Indirizzo indirizzo = null;
         try{
+            indirizzo = new Indirizzo(comune, via, civico, ClientePeer.retrieveByPK(email));
             indirizzo.save();
         }catch(TorqueException e){
             e.printStackTrace();
+            return null;
         }
         return indirizzo;
     }

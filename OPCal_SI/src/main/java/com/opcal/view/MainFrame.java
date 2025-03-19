@@ -32,8 +32,8 @@ public class MainFrame extends JFrame {
 
     // Aggiungi le pagine
     mainPage = new MainPage(this);
-    cardPanel.add(createPageWithHeader(new LoginPage(this)), "LOGIN");
-    cardPanel.add(createPageWithHeader(new RegistrationPage(this)), "REGISTRATION");
+    cardPanel.add(createPageWithHeader(new LoginPage(this)), "Login");
+    cardPanel.add(createPageWithHeader(new RegistrationPage(this)), "Registration");
     cardPanel.add(createPageWithHeader(mainPage), "Main");
 
     // Mostra la prima pagina (Login)

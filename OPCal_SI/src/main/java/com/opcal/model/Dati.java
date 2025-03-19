@@ -13,6 +13,9 @@ public abstract class Dati {
         this.passwd = passwd;
     }
 
+    public Dati(String nome, String cognome, String email) {
+        this(nome, cognome, email, null);
+    }
     public String getNome() {
         return nome;
     }

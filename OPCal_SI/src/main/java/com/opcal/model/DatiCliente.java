@@ -6,8 +6,8 @@ public class DatiCliente extends Dati {
     super(nome, cognome, email, passwd);
   }
 
-/*  public DatiCliente(String email, String passwd) {
-    super(null,null,email,passwd);
+  public DatiCliente(String nome, String cognome, String email){
+    super(nome, cognome, email);
   }
-*/
+
 }
