@@ -53,8 +53,7 @@ public class MainPage extends JPanel{
     queryButtonPanel.add(MyButton.createButton("Spedizioni prenotate", () -> MainController.mostraSpedizioniPrenotate(dati.getEmail(), table)));
 
     //Ricevute
-    JButton ricevuteButton = new JButton("Ricevute");
-    queryButtonPanel.add(ricevuteButton);
+    queryButtonPanel.add(MyButton.createButton("Visualizza ricevute pagamenti", () -> MainController.mostraRicevute(dati.getEmail(), table)));
 
     //Resi
     JButton resiButton = new JButton("Resi effettuati");

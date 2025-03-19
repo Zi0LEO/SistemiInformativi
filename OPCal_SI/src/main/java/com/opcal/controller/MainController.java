@@ -1,7 +1,9 @@
 package com.opcal.controller;
 
 import com.opcal.Indirizzo;
+import com.opcal.Ricevuta;
 import com.opcal.SpedizionePeer;
+import com.opcal.model.GestoreClienti;
 import com.opcal.model.GestoreRecapiti;
 import com.opcal.view.*;
 
@@ -59,6 +61,15 @@ public class MainController {
   public static void mostraSpedizioniPrenotate(String email, QueryResultsTable table) {
     List<Object[]> data = GestoreRecapiti.mostraSpedizioni(email, 5);
     String[] campi = SpedizionePeer.getFields();
+    table.setTableData(data, campi);
+  }
+
+  public static void mostraRicevute(String email, QueryResultsTable table) {
+    List<Object[]> data = GestoreClienti.listaRicevute(email);
+    List<String> tempCampi = Ricevuta.getFieldNames();
+    String[] campi = new String[tempCampi.size() + 1];
+    campi = tempCampi.toArray(campi);
+    campi[campi.length - 1] = "Pagamento";
     table.setTableData(data, campi);
   }
 }

@@ -8,7 +8,6 @@ public class MyButton extends JButton {
   private MyButton(String text) {
     super(text);
     this.setFont(new Font("Arial", Font.BOLD, 16));
-    this.setPreferredSize(new Dimension(200, 40));
   }
 
   public static MyButton createButton(String text, Runnable action) {
