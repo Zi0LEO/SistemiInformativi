@@ -5,6 +5,7 @@ import org.apache.torque.TorqueException;
 import org.apache.torque.criteria.Criteria;
 import org.apache.torque.util.Transaction;
 
+
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
@@ -291,21 +292,6 @@ public class GestoreClienti {
 
         return ris;
     }
-
-    /** Permette di ricevere la lista delle email dei clienti.
-     *
-     * @return  Un'oggetto di tipo List che è la lista delle email, è inizializzata come ArrayList.
-     */
-    public static List<String> getMailingList(){
-        ArrayList<Cliente> lc = (ArrayList<Cliente>) getListaClienti();
-        ArrayList<String> mailingList = new ArrayList<>();
-
-        for (Cliente cliente : lc)
-            mailingList.add(cliente.getEmail());
-        
-        return mailingList;
-    }
-
 
     private static boolean esiste(String email) {
         try {
