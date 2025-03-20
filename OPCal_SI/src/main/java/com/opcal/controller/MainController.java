@@ -1,8 +1,6 @@
 package com.opcal.controller;
 
-import com.opcal.Indirizzo;
-import com.opcal.Ricevuta;
-import com.opcal.SpedizionePeer;
+import com.opcal.*;
 import com.opcal.model.GestoreClienti;
 import com.opcal.model.GestoreRecapiti;
 import com.opcal.view.*;
@@ -44,32 +42,50 @@ public class MainController {
     SpedizioneDialog dialog = new SpedizioneDialog(mainPage.getDati().getEmail(), mainPage.getParentFrame());
   }
 
+  private String[] getCampi(int tipo) {
+    Map<String, String> fieldsWithTable = SpedizionePeer.getFields();
+    switch (tipo) {
+      case 1:
+        fieldsWithTable.put("Data prenotazione", PrenotataPeer.TABLE_NAME);
+        fieldsWithTable.put("Data prevista di ritiro", PrenotataPeer.TABLE_NAME);
+        break;
+      case 2:
+        fieldsWithTable.put("Data spedizione", InCorsoPeer.TABLE_NAME);
+        break;
+      case 3:
+        fieldsWithTable.put("Data spedizione", EffettuataPeer.TABLE_NAME);
+        fieldsWithTable.put("Data consegna", EffettuataPeer.TABLE_NAME);
+        break;
+    }
+    mainPage.setData(fieldsWithTable);
+    return fieldsWithTable.keySet().toArray(new String[0]);
+  }
+
   public void mostraSpedizioniRicevute() {
     List<Object[]> data = GestoreRecapiti.mostraSpedizioni(mainPage.getDati().getEmail(), 1);
-    Map<String, String> fieldsWithTable = SpedizionePeer.getFields();
-//    mainPage.table.setTableData(data, campi);
+    mainPage.table.setTableData(data, getCampi(0));
   }
 
   public void mostraSpedizioniInviate() {
     List<Object[]> data = GestoreRecapiti.mostraSpedizioni(mainPage.getDati().getEmail(), 2);
-//    mainPage.table.setTableData(data, campi);
+    mainPage.table.setTableData(data, getCampi(0));
   }
 
   public void mostraSpedizioniInCorso() {
     List<Object[]> data = GestoreRecapiti.mostraSpedizioni(mainPage.getDati().getEmail(), 3);
 
-//    mainPage.table.setTableData(data, campi);
+    mainPage.table.setTableData(data, getCampi(2));
   }
 
   public void mostraSpedizioniEffettuate() {
     List<Object[]> data = GestoreRecapiti.mostraSpedizioni(mainPage.getDati().getEmail(), 4);
     //SpedizionePeer.getFields()
-//    mainPage.table.setTableData(data, campi);
+    mainPage.table.setTableData(data, getCampi(3));
   }
 
   public void mostraSpedizioniPrenotate() {
     List<Object[]> data = GestoreRecapiti.mostraSpedizioni(mainPage.getDati().getEmail(), 5);
-//    mainPage.table.setTableData(data, campi);
+    mainPage.table.setTableData(data, getCampi(1));
   }
 
   public void mostraRicevute() {
