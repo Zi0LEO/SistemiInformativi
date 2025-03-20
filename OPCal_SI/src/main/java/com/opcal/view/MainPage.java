@@ -7,16 +7,36 @@ import com.opcal.model.DatiCliente;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 public class MainPage extends JPanel{
 
   private final JPanel datiPanel;
   private final MainFrame parentFrame;
 
+  private Map<String, String> currentlyShownData;
+  private final MainController controller;
+
   public QueryResultsTable table;
   private Dati dati;
 
+  public void setData(Map<String, String> data){
+    currentlyShownData = data;
+  }
+  public Map<String, String> getData(){
+    return currentlyShownData;
+  }
+
+  public MainFrame getParentFrame() {
+    return parentFrame;
+  }
+
+  public Dati getDati(){
+    return dati;
+  }
+
   public MainPage(MainFrame mainFrame) {
+    controller = new MainController(this);
     setLayout(new BorderLayout(5,5));
     setBackground(new Color(240, 240, 240)); // Colore di sfondo
     parentFrame = mainFrame;
@@ -33,36 +53,37 @@ public class MainPage extends JPanel{
     buttonPanel.setBackground(new Color(240, 240, 240));
 
     // Pulsante modifica dati
-    buttonPanel.add(MyButton.createButton("Modifica dati", () -> MainController.modificaDati(this, parentFrame, dati.getEmail(), new String[]{})));
+    buttonPanel.add(MyButton.createButton("Modifica dati", controller::modificaDati));
 
     // Pulsante Elimina Account
-    buttonPanel.add(MyButton.createButton("Elimina Account", () -> MainController.eliminaAccount(parentFrame, dati.getEmail())));
+    buttonPanel.add(MyButton.createButton("Elimina Account", controller::eliminaAccount));
+
 
     // Pulsante Logout
-    buttonPanel.add(MyButton.createButton("Logout", () -> MainController.logout(parentFrame)));
+    buttonPanel.add(MyButton.createButton("Logout", controller::logout));
 
     JPanel queryButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
     //Pulsanti spedizioni
-    queryButtonPanel.add(MyButton.createButton("Crea Spedizione", () -> MainController.creaSpedizione(dati.getEmail(), parentFrame)));
+    queryButtonPanel.add(MyButton.createButton("Crea Spedizione", controller::creaSpedizione));
 
-    queryButtonPanel.add(MyButton.createButton("Spedizioni in arrivo", () -> MainController.mostraSpedizioniRicevute(dati.getEmail(), table)));
+    queryButtonPanel.add(MyButton.createButton("Spedizioni in arrivo", controller::mostraSpedizioniRicevute));
 
-    queryButtonPanel.add(MyButton.createButton("Mie spedizioni inviate", () -> MainController.mostraSpedizioniInviate(dati.getEmail(), table)));
+    queryButtonPanel.add(MyButton.createButton("Mie spedizioni inviate", controller::mostraSpedizioniInviate));
 
-    queryButtonPanel.add(MyButton.createButton("Spedizioni in corso", () -> MainController.mostraSpedizioniInCorso(dati.getEmail(), table)));
+    queryButtonPanel.add(MyButton.createButton("Spedizioni in corso", controller::mostraSpedizioniInCorso));
 
-    queryButtonPanel.add(MyButton.createButton("Spedizioni consegnate", () -> MainController.mostraSpedizioniEffettuate(dati.getEmail(), table)));
+    queryButtonPanel.add(MyButton.createButton("Spedizioni consegnate", controller::mostraSpedizioniEffettuate));
 
-    queryButtonPanel.add(MyButton.createButton("Spedizioni prenotate", () -> MainController.mostraSpedizioniPrenotate(dati.getEmail(), table)));
+    queryButtonPanel.add(MyButton.createButton("Spedizioni prenotate", controller::mostraSpedizioniPrenotate));
 
     //Ricevute
-    queryButtonPanel.add(MyButton.createButton("Visualizza ricevute pagamenti", () -> MainController.mostraRicevute(dati.getEmail(), table)));
+    queryButtonPanel.add(MyButton.createButton("Visualizza ricevute pagamenti", controller::mostraRicevute));
 
     //Resi
-    queryButtonPanel.add(MyButton.createButton("Crea reso",() -> MainController.creaReso(dati.getEmail())));
+    queryButtonPanel.add(MyButton.createButton("Crea reso", controller::creaReso));
 
-    queryButtonPanel.add(MyButton.createButton("Visualizza resi effettuati", () -> MainController.visualizzaResi(dati.getEmail())));
+    queryButtonPanel.add(MyButton.createButton("Visualizza resi effettuati", controller::visualizzaResi));
 
     JPanel wrapperButtonPanel = new JPanel(new BorderLayout(5,5));
     wrapperButtonPanel.add(buttonPanel, BorderLayout.NORTH);
@@ -76,7 +97,7 @@ public class MainPage extends JPanel{
     JTextField toSearch = new JTextField(20);
     toSearch.setPreferredSize(new Dimension(300, 30));
     searchPanel.add(toSearch);
-    searchPanel.add(MyButton.createButton("Cerca", () -> MainController.cercaInTable(toSearch.getText())));
+    searchPanel.add(MyButton.createButton("Cerca", () -> controller.cercaInTable(toSearch.getText())));
 
     table = new QueryResultsTable();
     JScrollPane resultsScrollPane = new JScrollPane(table.getTable());
@@ -86,6 +107,7 @@ public class MainPage extends JPanel{
     add(tablePanel, BorderLayout.SOUTH);
     }
 
+    //temporary
     public void updateContent() {
       dati = parentFrame.getLoggedUser();
       datiPanel.add(new JLabel(dati.getNome()));
@@ -93,7 +115,7 @@ public class MainPage extends JPanel{
       datiPanel.add(new JLabel(dati.getEmail()));
       if (dati instanceof DatiCliente) {
         datiPanel.setLayout(new GridLayout(5, 1));
-        Indirizzo indirizzo = MainController.trovaIndirizzo(dati.getEmail());
+        Indirizzo indirizzo = controller.trovaIndirizzo();
         datiPanel.add(new JLabel(indirizzo.toString()));
       }
       else {
