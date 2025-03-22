@@ -5,6 +5,7 @@ import com.opcal.model.GestoreClienti;
 import com.opcal.view.MainFrame;
 import com.opcal.view.MainPage;
 
+import javax.swing.*;
 
 
 public class LoginController {
@@ -23,6 +24,8 @@ public class LoginController {
       frame.setLoggedUser(dati);
       frame.showPage("Main");
       mainPage.updateContent();
+      return;
     }
+    JOptionPane.showMessageDialog(null, "Email o password errati!", "Errore", JOptionPane.ERROR_MESSAGE);
   }
 }

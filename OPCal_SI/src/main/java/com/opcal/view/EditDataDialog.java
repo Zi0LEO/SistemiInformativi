@@ -1,20 +1,22 @@
 package com.opcal.view;
 
-import com.opcal.controller.DataDialogController;
 import com.opcal.controller.EditDataDialogController;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import static com.opcal.view.MyButton.createButton;
 
 public class EditDataDialog extends JDialog {
 
-  public EditDataDialog(Frame parent, String email, String[] fields){
+  public EditDataDialog(Frame parent, String email, List<String> fields){
     super(parent,"Modifica Dati",true);
     setLayout(new GridBagLayout());
+    setSize(500, 400);
     GridBagConstraints gbc = new GridBagConstraints();
-    gbc.insets = new Insets(10, 5, 10, 5);
+    gbc.insets = new Insets(5, 5, 5, 5);
     gbc.anchor = GridBagConstraints.CENTER;
     gbc.fill = GridBagConstraints.HORIZONTAL;
 
@@ -25,32 +27,36 @@ public class EditDataDialog extends JDialog {
     add(area, gbc);
 
     gbc.gridwidth = 1;
-
-    JTextField[] values = new JTextField[fields.length];
-    for(int i = 0; i < fields.length; i++){
-      gbc.gridy = i + 1;
-      gbc.gridx = 0;
-      add(new JLabel(fields[i]), gbc);
-
-      gbc.gridx = 1;
-      values[i] = new JTextField();
-      add(values[i], gbc);
-    }
-
     gbc.gridy++;
-    gbc.gridx = 0;
 
-    add(MyButton.createButton("Salva", () -> {
-      String[] valuesString = new String[fields.length];
-      for(int i = 0; i < fields.length; i++)
-        valuesString[i] = values[i].getText();
-      EditDataDialogController.editData(fields, valuesString);
-    }), gbc);
+    List<JTextField> values = new java.util.LinkedList<>();
+    fields.forEach((field) -> createModifier(gbc, field, values));
+
+    gbc.gridx = 0;
+    gbc.gridy++;
+
+    add(MyButton.createButton("Salva", () -> EditDataDialogController.salva(
+        this,
+        email,
+        values.stream().map(JTextComponent::getText).collect(Collectors.toList()
+        ))), gbc);
 
     gbc.gridx = 1;
 
-    add(createButton("Annulla", () -> DataDialogController.annulla(this)), gbc);
+    add(MyButton.createButton("Annulla", () -> EditDataDialogController.annulla(this)), gbc);
+
     pack();
     setVisible(true);
-    }
   }
+
+  private void createModifier(GridBagConstraints gbc, String field, List<JTextField> values) {
+    gbc.gridx = 0;
+    JLabel label = new JLabel(field);
+    add(label, gbc);
+    gbc.gridx = 1;
+    JTextField value = new JTextField();
+    add(value, gbc);
+    values.add(value);
+    gbc.gridy++;
+  }
+}

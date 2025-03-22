@@ -34,7 +34,7 @@ public class GestoreClienti {
         if (esiste(datoCliente.getEmail())) throw new CloneNotSupportedException("Il cliente è già esistente");
 
         Connection connection = null;
-        Cliente cliente = null;
+        Cliente cliente;
         try {
             connection = Transaction.begin();
             Utente utente = new Utente(datoCliente.getNome(), datoCliente.getCognome(), datoCliente.getEmail(), datoCliente.getPassword());
@@ -146,6 +146,17 @@ public class GestoreClienti {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static Dati trovaUtente(String email) {
+        Utente utente;
+      try {
+        utente = UtentePeer.retrieveByPK(email);
+      } catch (TorqueException e) {
+          e.printStackTrace();
+          return null;
+      }
+      return new DatiCliente(utente.getNome(), utente.getCognome(), email);
     }
 
     /**

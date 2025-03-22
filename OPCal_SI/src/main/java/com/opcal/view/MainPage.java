@@ -1,9 +1,6 @@
 package com.opcal.view;
 
-import com.opcal.Indirizzo;
 import com.opcal.controller.MainController;
-import com.opcal.model.Dati;
-import com.opcal.model.DatiCliente;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,14 +8,13 @@ import java.util.Map;
 
 public class MainPage extends JPanel{
 
-  private final JPanel datiPanel;
+  public final JPanel datiPanel;
   private final MainFrame parentFrame;
 
   private Map<String, String> currentlyShownData;
-  private final MainController controller;
+  public final MainController controller;
 
   public QueryResultsTable table;
-  private Dati dati;
 
   public void setData(Map<String, String> data){
     currentlyShownData = data;
@@ -31,15 +27,13 @@ public class MainPage extends JPanel{
     return parentFrame;
   }
 
-  public Dati getDati(){
-    return dati;
-  }
 
   public MainPage(MainFrame mainFrame) {
     controller = new MainController(this);
     setLayout(new BorderLayout(5,5));
-    setBackground(new Color(240, 240, 240)); // Colore di sfondo
+    setBackground(new Color(240, 240, 240));
     parentFrame = mainFrame;
+
     // Pannello superiore: Dati cliente
     datiPanel = new JPanel();
     datiPanel.add(new JLabel("I tuoi dati:"));
@@ -53,7 +47,7 @@ public class MainPage extends JPanel{
     buttonPanel.setBackground(new Color(240, 240, 240));
 
     // Pulsante modifica dati
-    buttonPanel.add(MyButton.createButton("Modifica dati", controller::modificaDati));
+    buttonPanel.add(MyButton.createButton("Modifica dati", controller::modificaDatiPropri));
 
     // Pulsante Elimina Account
     buttonPanel.add(MyButton.createButton("Elimina Account", controller::eliminaAccount));
@@ -107,19 +101,8 @@ public class MainPage extends JPanel{
     add(tablePanel, BorderLayout.SOUTH);
     }
 
-    //temporary
-    public void updateContent() {
-      dati = parentFrame.getLoggedUser();
-      datiPanel.add(new JLabel(dati.getNome()));
-      datiPanel.add(new JLabel(dati.getCognome()));
-      datiPanel.add(new JLabel(dati.getEmail()));
-      if (dati instanceof DatiCliente) {
-        datiPanel.setLayout(new GridLayout(5, 1));
-        Indirizzo indirizzo = controller.trovaIndirizzo();
-        datiPanel.add(new JLabel(indirizzo.toString()));
-      }
-      else {
-        datiPanel.setLayout(new GridLayout(4, 1));
-      }
+    public void updateContent(){
+    controller.updateContent(this);
     }
+
 }

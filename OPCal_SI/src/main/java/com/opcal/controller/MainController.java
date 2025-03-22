@@ -1,17 +1,26 @@
 package com.opcal.controller;
 
 import com.opcal.*;
+import com.opcal.model.Dati;
+import com.opcal.model.DatiCliente;
 import com.opcal.model.GestoreClienti;
 import com.opcal.model.GestoreRecapiti;
 import com.opcal.view.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 
 public class MainController {
 
+  private static final Logger log = LoggerFactory.getLogger(MainController.class);
   private final MainPage mainPage;
+  private Dati dati;
 
   public MainController(MainPage mainPage) {
     this.mainPage = mainPage;
@@ -19,7 +28,7 @@ public class MainController {
 
   public Indirizzo trovaIndirizzo() {
 
-    return GestoreRecapiti.visualizzaIndirizzo(mainPage.getDati().getEmail());
+    return GestoreRecapiti.visualizzaIndirizzo(dati.getEmail());
   }
 
   public void logout() {
@@ -28,21 +37,29 @@ public class MainController {
   }
 
   public void eliminaAccount(){
-    DeleteDialog dialog = new DeleteDialog(mainPage.getParentFrame(), mainPage.getDati().getEmail());
+    DeleteDialog dialog = new DeleteDialog(mainPage.getParentFrame(), dati.getEmail());
   }
 
-  public boolean modificaDati() {
-    //EditDataDialog editDialog = new EditDataDialog(mainPage.getParentFrame(), email, campi);
-    mainPage.repaint();
-    mainPage.revalidate();
-    return false;
+  public void modificaDatiPropri() {
+    List<String> campi = new ArrayList<>(){
+      {
+        add("Nome");
+        add("Cognome");
+        add("Comune");
+        add("Via");
+        add("Civico");
+        add("Orario");
+      }};
+    EditDataDialog dialog = new EditDataDialog(mainPage.getParentFrame(), dati.getEmail(), campi);
+    System.out.println("test");
+    mainPage.controller.updateContent(mainPage);
   }
 
   public void creaSpedizione(){
-    SpedizioneDialog dialog = new SpedizioneDialog(mainPage.getDati().getEmail(), mainPage.getParentFrame());
+    SpedizioneDialog dialog = new SpedizioneDialog(dati.getEmail(), mainPage.getParentFrame());
   }
 
-  private String[] getCampi(int tipo) {
+  private String[] retrieveCampi(int tipo) {
     Map<String, String> fieldsWithTable = SpedizionePeer.getFields();
     switch (tipo) {
       case 1:
@@ -62,34 +79,34 @@ public class MainController {
   }
 
   public void mostraSpedizioniRicevute() {
-    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(mainPage.getDati().getEmail(), 1);
-    mainPage.table.setTableData(data, getCampi(0));
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(dati.getEmail(), 1);
+    mainPage.table.setTableData(data, retrieveCampi(0));
   }
 
   public void mostraSpedizioniInviate() {
-    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(mainPage.getDati().getEmail(), 2);
-    mainPage.table.setTableData(data, getCampi(0));
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(dati.getEmail(), 2);
+    mainPage.table.setTableData(data, retrieveCampi(0));
   }
 
   public void mostraSpedizioniInCorso() {
-    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(mainPage.getDati().getEmail(), 3);
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(dati.getEmail(), 3);
 
-    mainPage.table.setTableData(data, getCampi(2));
+    mainPage.table.setTableData(data, retrieveCampi(2));
   }
 
   public void mostraSpedizioniEffettuate() {
-    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(mainPage.getDati().getEmail(), 4);
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(dati.getEmail(), 4);
     //SpedizionePeer.getFields()
-    mainPage.table.setTableData(data, getCampi(3));
+    mainPage.table.setTableData(data, retrieveCampi(3));
   }
 
   public void mostraSpedizioniPrenotate() {
-    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(mainPage.getDati().getEmail(), 5);
-    mainPage.table.setTableData(data, getCampi(1));
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(dati.getEmail(), 5);
+    mainPage.table.setTableData(data, retrieveCampi(1));
   }
 
   public void mostraRicevute() {
-    List<Object[]> data = GestoreClienti.listaRicevute(mainPage.getDati().getEmail());
+    List<Object[]> data = GestoreClienti.listaRicevute(dati.getEmail());
     List<String> tempCampi = Ricevuta.getFieldNames();
     String[] campi = new String[tempCampi.size() + 1];
     campi = tempCampi.toArray(campi);
@@ -107,6 +124,29 @@ public class MainController {
 
   public void cercaInTable(String text) {
     //todo
+  }
+
+  public Dati trovaUtente(String email) {
+    return GestoreClienti.trovaUtente(email);
+  }
+
+  //temporary
+  public void updateContent(MainPage mainPage) {
+    Dati dati = trovaUtente(mainPage.getParentFrame().getLoggedUser().getEmail());
+    this.dati = dati;
+    mainPage.datiPanel.removeAll();
+    mainPage.datiPanel.add(new JLabel(dati.getNome()));
+    mainPage.datiPanel.add(new JLabel(dati.getCognome()));
+    mainPage.datiPanel.add(new JLabel(dati.getEmail()));
+    if (dati instanceof DatiCliente) {
+      mainPage.datiPanel.setLayout(new GridLayout(5, 1));
+      Indirizzo indirizzo = trovaIndirizzo();
+      mainPage.datiPanel.add(new JLabel(indirizzo.toString()));
+    } else {
+      mainPage.datiPanel.setLayout(new GridLayout(4, 1));
+    }
+    mainPage.revalidate();
+    mainPage.repaint();
   }
 }
 
