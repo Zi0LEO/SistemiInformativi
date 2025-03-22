@@ -13,7 +13,7 @@ import com.opcal.ClientePeer;
 import com.opcal.Spedizione;
 import org.apache.torque.TorqueException;
 
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 
 public class GeneratoreEtichette {
 
@@ -23,24 +23,17 @@ public class GeneratoreEtichette {
      * @param spedizione la spedizione di cui creare l'etichetta
      * @return Un'oggetto di tipo Document che è l'etichetta.
      */
-    public static Document creaEtichetta(Spedizione spedizione) {
-        String dest = "etichettaDiReso.pdf";
+    public static byte[] creaEtichetta(Spedizione spedizione) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
         Cliente[] cl = mittenteDestinatario(spedizione);
-        PdfWriter writer;
-        try {
-            writer = new PdfWriter(dest);
-        } catch (IOException e) {
-            System.out.println("C'è stato un problema nella creazione del PDF, riprovare più tardi");
-            return null;
-        }
-
+        PdfWriter writer = new PdfWriter(stream);
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf, PageSize.A6);
 
         document.add(new Paragraph("ETICHETTA DI RESO").setFontSize(14).setFontColor(ColorConstants.RED));
         try {
-            document.add(new Paragraph("Mittente:" + cl[0].getNome() + cl[0].getCognome()));
-            document.add(new Paragraph("Destinatario:" + cl[1].getNome() + cl[1].getCognome()));
+            document.add(new Paragraph("Mittente: " + cl[0].getNome() +" "+ cl[0].getCognome()));
+            document.add(new Paragraph("Destinatario: " + cl[1].getNome() +" "+ cl[1].getCognome()));
         } catch (TorqueException te) {
             System.out.println("Errore nella ricerca dell'anagradica");
         }
@@ -56,7 +49,7 @@ public class GeneratoreEtichette {
         document.add(barcodeImage);
 
         document.close();
-        return document;
+        return stream.toByteArray();
     }
 
     private static Cliente[] mittenteDestinatario(Spedizione s) {
