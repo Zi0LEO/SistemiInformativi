@@ -117,7 +117,10 @@ public class MainController {
   }
 
   public void visualizzaResi() {
-    //todo
+    List<Object[]> data = GestoreResi.listaResi(dati.getEmail());
+    List<String> campi = Reso.getFieldNames();
+    String[] campiArr = campi.toArray(new String[0]);
+    mainPage.table.setTableData(data, campiArr);
   }
 
   public void cercaInTable(String text) {
