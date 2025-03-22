@@ -103,7 +103,7 @@ public class MainController {
   }
 
   public void mostraRicevute() {
-    List<Object[]> data = GestoreClienti.listaRicevute(dati.getEmail());
+    List<Object[]> data = GestoreClienti.getListaRicevute(dati.getEmail());
     List<String> tempCampi = Ricevuta.getFieldNames();
     String[] campi = new String[tempCampi.size() + 1];
     campi = tempCampi.toArray(campi);
