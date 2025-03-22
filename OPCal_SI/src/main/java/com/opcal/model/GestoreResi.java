@@ -3,9 +3,10 @@ package com.opcal.model;
 import com.itextpdf.layout.Document;
 import com.opcal.Reso;
 import com.opcal.ResoPeer;
+import com.opcal.SpedizionePeer;
 import org.apache.torque.TorqueException;
 
-import java.util.Date;
+import java.sql.Date;
 
 import static main.java.com.opcal.model.GeneratoreEtichette.creaEtichetta;
 import static main.java.com.opcal.model.StatoReso.statoPossibile;
@@ -21,14 +22,15 @@ public class GestoreResi {
      * @return true se l'operazion va a buon fine <br> false se l'operazione ha incontrato degli errrori
      * @throws CloneNotSupportedException nel caso in cui il reso che si sta cercando di creare è gia presente all'interno della base di dati
      */
-    public static boolean creaReso(Integer codice, String stato, Date data) throws CloneNotSupportedException {
+    public static boolean creaReso(Integer codice, String emailRichiedente) throws CloneNotSupportedException, TorqueException {
         if (esiste(codice)) throw new CloneNotSupportedException("Il reso è già esistente");
-        if (!statoPossibile(stato)) throw new IllegalArgumentException("Stato non valido");
+        if (!emailRichiedente.equals(SpedizionePeer.retrieveByPK(codice).getEmailDestinatario()))
+            throw new IllegalArgumentException("Richiesta non valida");
 
         Reso r = new Reso();
         r.setCodice(codice);
-        r.setStato(stato);
-        r.setData(data);
+        r.setStato("RICHIESTO");
+        r.setData(new Date(System.currentTimeMillis()));
 
         try {
             r.save();

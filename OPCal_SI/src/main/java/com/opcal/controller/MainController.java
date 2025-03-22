@@ -1,10 +1,7 @@
 package com.opcal.controller;
 
 import com.opcal.*;
-import com.opcal.model.Dati;
-import com.opcal.model.DatiCliente;
-import com.opcal.model.GestoreClienti;
-import com.opcal.model.GestoreRecapiti;
+import com.opcal.model.*;
 import com.opcal.view.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,7 +112,8 @@ public class MainController {
   }
 
   public void creaReso(){
-    //todo
+    JDialog dialog = new CreaResoDialog(mainPage.getParentFrame());
+    dialog.add(new JLabel("Inserisci il codice della spedizione"));
   }
 
   public void visualizzaResi() {
