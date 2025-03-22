@@ -32,8 +32,8 @@ public class GeneratoreEtichette {
 
         document.add(new Paragraph("ETICHETTA DI RESO").setFontSize(14).setFontColor(ColorConstants.RED));
         try {
-            document.add(new Paragraph("Mittente:" + cl[0].getNome() + cl[0].getCognome()));
-            document.add(new Paragraph("Destinatario:" + cl[1].getNome() + cl[1].getCognome()));
+            document.add(new Paragraph("Mittente: " + cl[0].getNome() +" "+ cl[0].getCognome()));
+            document.add(new Paragraph("Destinatario: " + cl[1].getNome() +" "+ cl[1].getCognome()));
         } catch (TorqueException te) {
             System.out.println("Errore nella ricerca dell'anagradica");
         }
