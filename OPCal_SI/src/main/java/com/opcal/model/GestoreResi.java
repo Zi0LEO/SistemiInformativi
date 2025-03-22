@@ -1,6 +1,5 @@
 package com.opcal.model;
 
-import com.itextpdf.layout.Document;
 import com.opcal.Reso;
 import com.opcal.ResoPeer;
 import org.apache.torque.TorqueException;
@@ -75,7 +74,7 @@ public class GestoreResi {
      * @param reso il reso di cui si deve creare l'etichetta
      * @return Un'oggetto di tipo Document che è l'etichetta.
      */
-    public static Document stampaEtichettaReso(Reso reso) {
+    public static byte[] stampaEtichettaReso(Reso reso) {
         try {
             return creaEtichetta(reso.getSpedizione());
         } catch (TorqueException e) {
