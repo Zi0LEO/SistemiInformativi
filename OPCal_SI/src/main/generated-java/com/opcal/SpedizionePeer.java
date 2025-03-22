@@ -1,6 +1,6 @@
 package com.opcal;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SpedizionePeer
@@ -8,7 +8,7 @@ public class SpedizionePeer
 
   public static Map<String, String> getFields(){
     String tableName = SpedizionePeer.TABLE_NAME;
-    Map ret = new HashMap();
+    Map ret = new LinkedHashMap();
     ret.put("Codice", tableName);
     ret.put("Mittente", tableName);
     ret.put("Destinatario", tableName);
