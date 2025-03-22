@@ -3,9 +3,13 @@ package com.opcal.model;
 import com.itextpdf.layout.Document;
 import com.opcal.Reso;
 import com.opcal.ResoPeer;
+import com.opcal.SpedizionePeer;
 import org.apache.torque.TorqueException;
+import org.apache.torque.criteria.Criteria;
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.opcal.model.GeneratoreEtichette.creaEtichetta;
 import static main.java.com.opcal.model.StatoReso.statoPossibile;
@@ -15,27 +19,24 @@ public class GestoreResi {
     /**
      * Permette di creare un'oggetto di tipo reso e inserirlo all'interno della base di dati
      *
-     * @param codice Il codice del reso da inserire
-     * @param stato  Lo stato del reso da inserire
-     * @param data   La data del reso da inserire
-     * @return true se l'operazion va a buon fine <br> false se l'operazione ha incontrato degli errrori
+     * @param codice           Il codice del reso da inserire
+     * @param emailRichiedente L'indirizzo email del richiedente
      * @throws CloneNotSupportedException nel caso in cui il reso che si sta cercando di creare è gia presente all'interno della base di dati
      */
-    public static boolean creaReso(String codice, String stato, Date data) throws CloneNotSupportedException {
+    public static void creaReso(Integer codice, String emailRichiedente) throws CloneNotSupportedException, TorqueException {
         if (esiste(codice)) throw new CloneNotSupportedException("Il reso è già esistente");
-        if (!statoPossibile(stato)) throw new IllegalArgumentException("Stato non valido");
+        if (!emailRichiedente.equals(SpedizionePeer.retrieveByPK(codice).getEmailDestinatario()))
+            throw new IllegalArgumentException("Richiesta non valida");
 
         Reso r = new Reso();
         r.setCodice(codice);
-        r.setStato(stato);
-        r.setData(data);
+        r.setStato("RICHIESTO");
+        r.setData(new Date(System.currentTimeMillis()));
 
         try {
             r.save();
         } catch (TorqueException e) {
-            return false;
         }
-        return true;
     }
 
     /**
@@ -57,7 +58,7 @@ public class GestoreResi {
      * @param newStato Il nuovo stato
      * @throws ClassNotFoundException Nel caso in cui non esiste il reso inserito
      */
-    public static void modificaStatoReso(String codice, String newStato) throws ClassNotFoundException {
+    public static void modificaStatoReso(int codice, String newStato) throws ClassNotFoundException {
         if (!statoPossibile(newStato)) throw new IllegalArgumentException("Stato non valido");
 
         try {
@@ -101,7 +102,7 @@ public class GestoreResi {
     }
 
 
-    private static boolean esiste(String codice) {
+    private static boolean esiste(Integer codice) {
         try {
             ResoPeer.retrieveByPK(codice);
         } catch (TorqueException e) {
@@ -110,4 +111,30 @@ public class GestoreResi {
         return true;
     }
 
+    public static List<Object[]> listaResi(String email) {
+        Criteria criteria = new Criteria();
+        criteria.addSelectColumn(ResoPeer.CODICE);
+        criteria.addSelectColumn(ResoPeer.STATO);
+        criteria.addSelectColumn(ResoPeer.DATA);
+        criteria.addJoin(ResoPeer.CODICE, SpedizionePeer.CODICE);
+        criteria.where(SpedizionePeer.EMAIL_DESTINATARIO, email);
+
+      try {
+        return buildResoReturn(ResoPeer.doSelect(criteria));
+      } catch (TorqueException e) {
+          return null;
+      }
+    }
+
+    private static List<Object[]> buildResoReturn(List<Reso> resi) {
+        List<Object[]> returnList = new ArrayList<>();
+        for (Reso r : resi) {
+            Object[] obj = new Object[3];
+            obj[0] = r.getCodice();
+            obj[1] = r.getStato();
+            obj[2] = r.getData();
+            returnList.add(obj);
+        }
+        return returnList;
+    }
 }

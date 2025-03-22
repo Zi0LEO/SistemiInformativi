@@ -5,10 +5,9 @@ import com.opcal.model.Dati;
 import javax.swing.*;
 import java.awt.*;
 
-class MainFrame extends JFrame {
+public class MainFrame extends JFrame {
   private final CardLayout cardLayout;
   private final JPanel cardPanel;
-  private final MainPage mainPage;
 
   public Dati getLoggedUser() {
     return loggedUser;
@@ -31,13 +30,13 @@ class MainFrame extends JFrame {
     cardPanel = new JPanel(cardLayout);
 
     // Aggiungi le pagine
-    mainPage = new MainPage(this);
-    cardPanel.add(createPageWithHeader(new LoginPage(this)), "LOGIN");
-    cardPanel.add(createPageWithHeader(new RegistrationPage(this)), "REGISTRATION");
+    MainPage mainPage = new MainPage(this);
+    cardPanel.add(createPageWithHeader(new LoginPage(this, mainPage)), "Login");
+    cardPanel.add(createPageWithHeader(new RegistrationPage(this)), "Registration");
     cardPanel.add(createPageWithHeader(mainPage), "Main");
 
     // Mostra la prima pagina (Login)
-    cardLayout.show(cardPanel, "LOGIN");
+    cardLayout.show(cardPanel, "Login");
 
     // Aggiungi il pannello principale al frame
     add(cardPanel);
@@ -76,13 +75,10 @@ class MainFrame extends JFrame {
     return pageWithHeader;
   }
 
-  // Metodo per cambiare pagina
-  public void loggedIn() {
-    cardLayout.show(cardPanel, "Main");
-    mainPage.updateContent();
-  }
-
   public void showPage(String pageName) {
     cardLayout.show(cardPanel, pageName);
+    cardPanel.invalidate();
+    cardPanel.revalidate();
+    cardPanel.repaint();
   }
 }

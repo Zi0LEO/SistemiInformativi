@@ -1,30 +1,45 @@
 package com.opcal.view;
 
-import com.opcal.Indirizzo;
 import com.opcal.controller.MainController;
-import com.opcal.model.Dati;
-import com.opcal.model.DatiCliente;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
+import java.util.Map;
 
 public class MainPage extends JPanel{
 
-  // Campi per visualizzare/modificare i dati
-  private final JPanel datiPanel;
+  public final JPanel datiPanel;
+  private final MainFrame parentFrame;
 
-  private Dati dati;
+  private Map<String, String> currentlyShownData;
+  public final MainController controller;
 
-  private final JButton eliminaButton;
+  public QueryResultsTable table;
 
-  public MainPage(MainFrame parentFrame) {
+  public void setData(Map<String, String> data){
+    currentlyShownData = data;
+  }
+  public Map<String, String> getData(){
+    return currentlyShownData;
+  }
+
+  public MainFrame getParentFrame() {
+    return parentFrame;
+  }
+
+
+  public MainPage(MainFrame mainFrame) {
+    controller = new MainController(this);
     setLayout(new BorderLayout(5,5));
-    setBackground(new Color(240, 240, 240)); // Colore di sfondo
+    setBackground(new Color(240, 240, 240));
+    parentFrame = mainFrame;
 
     // Pannello superiore: Dati cliente
     datiPanel = new JPanel();
     datiPanel.add(new JLabel("I tuoi dati:"));
+    datiPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+    datiPanel.setBackground(new Color(200, 220, 240)); // Colore di sfondo
+
     add(datiPanel, BorderLayout.NORTH);
 
     // Pannello centrale: Pulsanti
@@ -32,138 +47,62 @@ public class MainPage extends JPanel{
     buttonPanel.setBackground(new Color(240, 240, 240));
 
     // Pulsante modifica dati
-    JButton modificaButton = new JButton("Modifica i tuoi dati");
-    modificaButton.setFont(new Font("Arial", Font.BOLD, 16));
-    modificaButton.setPreferredSize(new Dimension(200, 40));
-    modificaButton.addActionListener(e -> {
-      EditDataDialog editDialog = new EditDataDialog(parentFrame, dati.getEmail());
-    });
-    buttonPanel.add(modificaButton);
-
-
+    buttonPanel.add(MyButton.createButton("Modifica dati", controller::modificaDatiPropri));
 
     // Pulsante Elimina Account
-    eliminaButton = new JButton("Elimina Account");
-    eliminaButton.setFont(new Font("Arial", Font.BOLD, 16));
-    eliminaButton.setPreferredSize(new Dimension(200, 40));
-    eliminaButton.setBackground(new Color(255, 100, 100)); // Rosso per indicare pericolo
+    buttonPanel.add(MyButton.createButton("Elimina Account", controller::eliminaAccount));
 
-    eliminaButton.addActionListener(actionEvent -> {
-      JDialog dialog = new JDialog();
-      dialog.setLayout(new FlowLayout());
-      dialog.setSize(300, 150);
-      dialog.setLocationRelativeTo(eliminaButton);
-      dialog.setModal(true);
-      dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-      dialog.setTitle("Elimina Account");
-      dialog.setResizable(false);
-      dialog.add(new JLabel("Sei sicuro di voler eliminare l'account?"));
 
-      JButton confirmButton = new JButton("Conferma");
-      confirmButton.addActionListener(confirmActionEvent -> {
-        if (dati == null || dati.getEmail() == null) {
-          JOptionPane.showMessageDialog(dialog, "Errore: Nessun dato utente trovato.", "Errore", JOptionPane.ERROR_MESSAGE);
-          dialog.dispose();
-          return;
-        }
-        //boolean success = MainController.eliminaAccount(dati.getEmail());
-//        if (success) {
-//          JOptionPane.showMessageDialog(dialog, "Account eliminato con successo!", "Conferma", JOptionPane.INFORMATION_MESSAGE);
-          parentFrame.showPage("LOGIN");
-//        } else {
-//          JOptionPane.showMessageDialog(dialog, "Errore durante l'eliminazione dell'account!", "Errore", JOptionPane.ERROR_MESSAGE);
-//        }
-        dialog.dispose();
-      });
-
-      JButton cancelButton = new JButton("Annulla");
-      cancelButton.addActionListener(cancelActionEvent -> dialog.dispose());
-
-      dialog.add(confirmButton);
-      dialog.add(cancelButton);
-      dialog.setVisible(true);
-    });
-
-    buttonPanel.add(eliminaButton);
-
-    // Pulsante Visualizza Storico
-    JButton logout = new JButton("Log Out");
-    logout.setFont(new Font("Arial", Font.BOLD, 16));
-    logout.setPreferredSize(new Dimension(200, 40));
-    buttonPanel.add(logout);
+    // Pulsante Logout
+    buttonPanel.add(MyButton.createButton("Logout", controller::logout));
 
     JPanel queryButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+
     //Pulsanti spedizioni
-    JButton spedizioniInviateButton = new JButton("Spedizioni inviate");
-    queryButtonPanel.add(spedizioniInviateButton);
+    queryButtonPanel.add(MyButton.createButton("Crea Spedizione", controller::creaSpedizione));
 
-    JButton spedizioniRicevuteButton = new JButton("Spedizioni ricevute");
-    queryButtonPanel.add(spedizioniRicevuteButton);
+    queryButtonPanel.add(MyButton.createButton("Spedizioni in arrivo", controller::mostraSpedizioniRicevute));
 
-    JButton spedizioniInCorsoButton = new JButton("Spedizioni in corso");
-    queryButtonPanel.add(spedizioniInCorsoButton);
+    queryButtonPanel.add(MyButton.createButton("Mie spedizioni inviate", controller::mostraSpedizioniInviate));
 
-    JButton spedizioniPrenotateButton = new JButton("Spedizioni prenotate");
-    queryButtonPanel.add(spedizioniPrenotateButton);
+    queryButtonPanel.add(MyButton.createButton("Spedizioni in corso", controller::mostraSpedizioniInCorso));
+
+    queryButtonPanel.add(MyButton.createButton("Spedizioni consegnate", controller::mostraSpedizioniEffettuate));
+
+    queryButtonPanel.add(MyButton.createButton("Spedizioni prenotate", controller::mostraSpedizioniPrenotate));
 
     //Ricevute
-    JButton ricevuteButton = new JButton("Ricevute");
-    queryButtonPanel.add(ricevuteButton);
+    queryButtonPanel.add(MyButton.createButton("Visualizza ricevute pagamenti", controller::mostraRicevute));
 
     //Resi
-    JButton resiButton = new JButton("Resi effettuati");
-    queryButtonPanel.add(resiButton);
+    queryButtonPanel.add(MyButton.createButton("Crea reso", controller::creaReso));
+
+    queryButtonPanel.add(MyButton.createButton("Visualizza resi effettuati", controller::visualizzaResi));
 
     JPanel wrapperButtonPanel = new JPanel(new BorderLayout(5,5));
     wrapperButtonPanel.add(buttonPanel, BorderLayout.NORTH);
-    wrapperButtonPanel.add(queryButtonPanel, BorderLayout.SOUTH);
+    wrapperButtonPanel.add(queryButtonPanel, BorderLayout.CENTER);
     add(wrapperButtonPanel, BorderLayout.CENTER);
 
-    JPanel queryPanel = new JPanel(new BorderLayout(5,5));
     JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+    JPanel tablePanel = new JPanel(new BorderLayout(5,5));
+
+    //Campo di ricerca
     JTextField toSearch = new JTextField(20);
-    toSearch.setPreferredSize(new Dimension(200, 30));
-    JButton searchButton = new JButton("Cerca");
-    searchButton.setPreferredSize(new Dimension(100, 30));
+    toSearch.setPreferredSize(new Dimension(300, 30));
     searchPanel.add(toSearch);
-    searchPanel.add(searchButton);
-    QueryResultsTable resultsTable = new QueryResultsTable();
-    JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
-    resultsScrollPane.setPreferredSize(new Dimension(600, 400));
-    queryPanel.add(searchPanel, BorderLayout.NORTH);
-    queryPanel.add(resultsScrollPane, BorderLayout.SOUTH);
+    searchPanel.add(MyButton.createButton("Cerca", () -> controller.cercaInTable(toSearch.getText())));
 
-    add(queryPanel, BorderLayout.SOUTH);
+    table = new QueryResultsTable();
+    JScrollPane resultsScrollPane = new JScrollPane(table.getTable());
+    tablePanel.add(searchPanel, BorderLayout.NORTH);
+    tablePanel.add(resultsScrollPane, BorderLayout.SOUTH);
 
-    String[] columnNames = {"ID", "Name", "Value", "Date"}; //aggiungi i campi necessari qui
-    resultsTable.setColumnNames(columnNames);
-
-    //aggiungi i risultati delle query
-    List<Object[]> queryResults = List.of(
-        new Object[]{1, "John", 123.45, "2023-10-20"},
-        new Object[]{2, "Jane", 678.90, "2023-10-21"},
-        new Object[]{3, "Doe", 345.00, "2023-10-22"}
-    );
-    resultsTable.updateTableData(queryResults);
-    resultsTable.enableSortByColumn();
-  }
-
-
-  public void updateContent() {
-    dati = ((MainFrame) SwingUtilities.getWindowAncestor(this)).getLoggedUser();
-    datiPanel.removeAll();
-    datiPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-    datiPanel.setBackground(new Color(200, 220, 240)); // Colore di sfondo
-    datiPanel.add(new JLabel(dati.getNome()));
-    datiPanel.add(new JLabel(dati.getCognome()));
-    datiPanel.add(new JLabel(dati.getEmail()));
-    if (dati instanceof DatiCliente) {
-      datiPanel.setLayout(new GridLayout(5, 1));
-      Indirizzo indirizzo = MainController.trovaIndirizzo(dati.getEmail());
-      datiPanel.add(new JLabel(indirizzo.toString()));
+    add(tablePanel, BorderLayout.SOUTH);
     }
-    else {
-      datiPanel.setLayout(new GridLayout(4, 1));
+
+    public void updateContent(){
+    controller.updateContent(this);
     }
-  }
+
 }

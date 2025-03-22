@@ -11,17 +11,30 @@ import java.util.List;
 
 public class GestoreClienti {
 
+    public static DatiCliente autentica(String email, String password) {
+        Utente utente;
+        Connection connection = null;
+        try{
+            utente = UtentePeer.retrieveByPK(email);
+            if(utente.getPassword().equals(password))
+                return new DatiCliente(utente.getNome(), utente.getCognome(), utente.getEmail());
+        }catch (TorqueException e){
+            return null;
+        }
+        return null;
+    }
+
     /**
      * Permette di creare un'oggetto di tipo Cliente e inserirlo all'interno della base di dati
      *
      * @return true se l'operazione va a buon fine, <br> false altrimenti.
      * @throws CloneNotSupportedException Nel caso in cui il Cliente che si sta cercando di creare è gia presente
      */
-    public static Cliente creaCliente(DatiCliente datoCliente) throws CloneNotSupportedException {
+    public static boolean creaCliente(DatiCliente datoCliente) throws CloneNotSupportedException {
         if (esiste(datoCliente.getEmail())) throw new CloneNotSupportedException("Il cliente è già esistente");
 
         Connection connection = null;
-        Cliente cliente = null;
+        Cliente cliente;
         try {
             connection = Transaction.begin();
             Utente utente = new Utente(datoCliente.getNome(), datoCliente.getCognome(), datoCliente.getEmail(), datoCliente.getPassword());
@@ -33,8 +46,9 @@ public class GestoreClienti {
         } catch (TorqueException e) {
             Transaction.safeRollback(connection);
             e.printStackTrace();
+            return false;
         }
-        return cliente;
+        return true;
     }
 
     /**
@@ -100,39 +114,61 @@ public class GestoreClienti {
      * Permette di cancellare un cliente già esistente all'interno della base di dati
      *
      * @param cliente L'oggetto di tipo cliente che dovrà essere eliminato
-     * @throws ClassNotFoundException Nel caso in cui il cliente non è presente nella classe
      */
-    public static void cancellaCliente(Cliente cliente) throws ClassNotFoundException {
+    public static boolean cancellaCliente(Cliente cliente) {
         try {
             ClientePeer.doDelete(cliente);
+            UtentePeer.doDelete(cliente.getUtente());
+            return true;
         } catch (TorqueException e) {
-            throw new ClassNotFoundException("Il cliente non è stato trovato");
+            return false;
         }
+
     }
 
     /**
      * Permette di cancellare un cliente già esistente all'interno della base di dati
      *
      * @param email L'identificatore del cliente che dovrà essere eliminato
-     * @throws ClassNotFoundException Nel caso in cui il cliente non è presente nella classe
      */
-    public static void cancellaCliente(String email) throws ClassNotFoundException {
-        try {
-            cancellaCliente(ClientePeer.retrieveByPK(email));
+    public static boolean cancellaCliente(String email){
+        try{
+            Criteria criteria1 = new Criteria();
+            Criteria criteria2 = new Criteria();
+
+            criteria1.where(ClientePeer.EMAIL, email);
+            criteria2.where(UtentePeer.EMAIL, email);
+
+            ClientePeer.doDelete(criteria1);
+            UtentePeer.doDelete(criteria2);
+            return true;
         } catch (TorqueException e) {
-            throw new ClassNotFoundException("Il cliente non è stato trovato");
+            e.printStackTrace();
+            return false;
         }
     }
 
+    public static Dati trovaUtente(String email) {
+        Utente utente;
+      try {
+        utente = UtentePeer.retrieveByPK(email);
+      } catch (TorqueException e) {
+          e.printStackTrace();
+          return null;
+      }
+      return new DatiCliente(utente.getNome(), utente.getCognome(), email);
+    }
+
     /**
-     * Permette di ricevere la lista delle spedizioni a consegnate a un cliente ordinate in ordine ascendente per data.
+     * Permette di ricevere la lista delle spedizioni a consegnate a un cliente
      *
      * @param cliente Il cliente che richiede le sue consegne
      * @return La lista delle consegne in ordine alfabetico, è inizializzata come ArrayList.
      */
-    public List<Spedizione> getStoricoConsegne(Cliente cliente) {
-        return getStoricoConsegne(cliente, 1);
+    public List<Spedizione> storicoConsegne(Cliente cliente) {
+        return storicoConsegneImpl(cliente, new Criteria().addAscendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
     }
+
 
     /**
      * Permette di ricevere la lista delle spedizioni a consegnate a un cliente
@@ -142,18 +178,61 @@ public class GestoreClienti {
      *                <br> 2 crescente per codice, <br> 3 decrescente per codice.
      * @return Un'oggetto di tipo List che è la lista delle spedizioni, è inizializzata come ArrayList.
      */
-    public static List<Spedizione> getStoricoConsegne(Cliente cliente, int tipo) {
+    public static List<Spedizione> storicoConsegne(Cliente cliente, int tipo) {
         switch (tipo) {
-            case 0:
-                return storicoConsegneImpl(cliente, new Criteria().addAscendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
             case 1:
-                return storicoConsegneImpl(cliente, new Criteria().addDescendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
+                return storicoConsegneImpl(cliente, new Criteria().addAscendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
             case 2:
-                return storicoConsegneImpl(cliente, new Criteria().addAscendingOrderByColumn(SpedizionePeer.CODICE));
+                return storicoConsegneImpl(cliente, new Criteria().addDescendingOrderByColumn(EffettuataPeer.DATA_CONSEGNA));
             case 3:
+                return storicoConsegneImpl(cliente, new Criteria().addAscendingOrderByColumn(SpedizionePeer.CODICE));
+            case 4:
                 return storicoConsegneImpl(cliente, new Criteria().addDescendingOrderByColumn(SpedizionePeer.CODICE));
             default:
                 throw new IllegalArgumentException("Tipo non ammesso");
+        }
+    }
+
+
+
+
+    public static List<Object[]> listaRicevute(String email) {
+        //SELECT *
+        // FROM Ricevuta JOIN sedizione s ON r.codiceSpedizione=s.codice
+        // WHERE s.email_mittente = cliente.email()
+
+        Criteria criteria = new Criteria();
+        criteria.addJoin(RicevutaPeer.CODICE, SpedizionePeer.CODICE);
+        criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
+
+        List<Ricevuta> ris;
+        try {
+            ris = RicevutaPeer.doSelect(criteria);
+        } catch (TorqueException e) {
+            System.out.println("Errore nella query");
+            return null;
+        }
+        return buildReturn(ris);
+    }
+
+    private static List<Object[]> buildReturn(List<Ricevuta> ris) {
+        List<Object[]> returnList = new ArrayList<>();
+      for (Ricevuta r : ris) {
+        Object[] obj = new Object[4];
+        obj[0] = r.getCodice();
+        obj[1] = r.getData();
+        obj[2] = r.getStato();
+        obj[3] = associaPrezzo(r.getCodice());
+        returnList.add(obj);
+      }
+        return returnList;
+    }
+
+    private static Object associaPrezzo(Integer codice) {
+        try {
+            return SpedizionePeer.retrieveByPK(codice).getPrezzo() + " EUR";
+        }catch (TorqueException e){
+            return 0;
         }
     }
 
@@ -165,80 +244,6 @@ public class GestoreClienti {
         criteria.addJoin(SpedizionePeer.CODICE, EffettuataPeer.CODICE);
         criteria.where(SpedizionePeer.EMAIL_DESTINATARIO,cliente.getEmail());
 
-        return getSpedizioni(criteria);
-    }
-
-
-    /**
-     * Permette di ricevere la lista delle ricevute di un cliente ordinate in ordine ascendente per data.
-     *
-     * @param cliente Il cliente che richiede le sue ricevute
-     * @return Un'oggetto di tipo List che è la lista delle ricevute     , è inizializzata come ArrayList.
-     */
-
-    public static List<Ricevuta> getListaRicevute(Cliente cliente){
-        return getListaRicevute(cliente,1);
-    }
-
-   /**
-    * Permette di ricevere la lista delle ricevute di un cliente.
-    *
-    * @param cliente Il cliente che richiede le sue ricevute
-    * @param tipo    Un intero tra 0 e 3 che indica il tipo di ordinamento, <br> 0 ritorna l'ordinamento crescente per data, <br> 1 decrescente per data,
-    *                <br> 2 crescente per codice, <br> 3 decrescente per codice, <br> 4 crescente per stato, <br> 5 decrescente per stato.
-    * @return Un'oggetto di tipo List che è la lista delle ricevute, è inizializzata come ArrayList.
-    */
-    public static List<Ricevuta> getListaRicevute(Cliente cliente, int tipo){
-        switch (tipo) {
-            case 1:
-                return listaRicevuteImpl(cliente, new Criteria().addAscendingOrderByColumn(RicevutaPeer.DATA));
-            case 2:
-                return listaRicevuteImpl(cliente, new Criteria().addDescendingOrderByColumn(RicevutaPeer.DATA));
-            case 3:
-                return listaRicevuteImpl(cliente, new Criteria().addAscendingOrderByColumn(RicevutaPeer.CODICE));
-            case 4:
-                return listaRicevuteImpl(cliente, new Criteria().addDescendingOrderByColumn(RicevutaPeer.CODICE));
-            case 5:
-                return listaRicevuteImpl(cliente, new Criteria().addAscendingOrderByColumn(RicevutaPeer.STATO));
-            case 6:
-                return listaRicevuteImpl(cliente, new Criteria().addDescendingOrderByColumn(RicevutaPeer.STATO));
-            default:
-                throw new IllegalArgumentException("Tipo non ammesso");
-        }
-    }
-
-    private static List<Ricevuta> listaRicevuteImpl(Cliente cliente, Criteria criteria) {
-        //SELECT codice
-        // FROM Ricevuta JOIN sedizione s ON r.codiceSpedizione=s.codice
-        // WHERE s.email_mittente = cliente.email()
-
-        criteria.addJoin(RicevutaPeer.CODICE, SpedizionePeer.CODICE);
-        criteria.where(SpedizionePeer.EMAIL_MITTENTE, cliente.getEmail());
-
-        criteria.addSelectColumn(RicevutaPeer.CODICE);
-
-        List<Ricevuta> ris = new ArrayList<>();
-
-        try {
-            ris = RicevutaPeer.doSelect(criteria);
-        } catch (TorqueException e) {
-            System.out.println("Errore nella query");
-        }
-        return ris;
-    }
-
-    private static List<Spedizione> storicoSpedizioniImpl(Cliente cliente, Criteria criteria) {
-        //SELECT codice
-        // FROM spedizione s
-        // WHERE s.email_destinatario = cliente.email and s.codice NOT IN ( Select codice FROM Effettuata )
-
-        criteria.where(SpedizionePeer.EMAIL_DESTINATARIO,cliente.getEmail());
-        criteria.where(SpedizionePeer.CODICE,EffettuataPeer.CODICE,Criteria.NOT_IN);
-
-        return getSpedizioni(criteria);
-    }
-
-    private static List<Spedizione> getSpedizioni(Criteria criteria) {
         criteria.addSelectColumn(SpedizionePeer.CODICE);
 
         List<Spedizione> ris = new ArrayList<>();
@@ -251,61 +256,6 @@ public class GestoreClienti {
 
         return ris;
     }
-
-    /** Permette di ricevere la lista dei clienti.
-     *
-     * @param tipo Un intero tra 0 e 1 che indica il tipo di ordinamento, <br> 0 ritorna l'ordinamento crescente per cognome, <br> 1 decrescente per cognome,
-     * @return  Un'oggetto di tipo List che è la lista dei clienti, è inizializzata come ArrayList.
-     */
-    public static List<Cliente> getListaClienti(int tipo){
-        if (tipo == 0)
-            return listaClientiImpl(new Criteria().addAscendingOrderByColumn(UtentePeer.COGNOME));
-        else if (tipo == 1)
-            return listaClientiImpl(new Criteria().addDescendingOrderByColumn(UtentePeer.COGNOME));
-
-        else
-            throw new IllegalArgumentException("Tipo non ammesso");
-    }
-
-    /** Permette di ricevere la lista dei clienti ordinata ascendente per cognome.
-
-     * @return  Un'oggetto di tipo List che è la lista dei clienti, è inizializzata come ArrayList.
-     */
-    public static List<Cliente> getListaClienti(){
-        return getListaClienti(1);
-    }
-
-    private static List<Cliente> listaClientiImpl(Criteria criteria) {
-
-        criteria.addJoin(UtentePeer.EMAIL,ClientePeer.EMAIL);
-        criteria.addSelectColumn(ClientePeer.EMAIL);
-        criteria.addDescendingOrderByColumn(UtentePeer.COGNOME);
-
-        List<Cliente> ris = new ArrayList<>();
-
-        try {
-            ris = ClientePeer.doSelect(criteria);
-        } catch (TorqueException e) {
-            System.out.println("Errore nella query");
-        }
-
-        return ris;
-    }
-
-    /** Permette di ricevere la lista delle email dei clienti.
-     *
-     * @return  Un'oggetto di tipo List che è la lista delle email, è inizializzata come ArrayList.
-     */
-    public static List<String> getMailingList(){
-        ArrayList<Cliente> lc = (ArrayList<Cliente>) getListaClienti();
-        ArrayList<String> mailingList = new ArrayList<>();
-
-        for (Cliente cliente : lc)
-            mailingList.add(cliente.getEmail());
-        
-        return mailingList;
-    }
-
 
     private static boolean esiste(String email) {
         try {

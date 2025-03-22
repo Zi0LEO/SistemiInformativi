@@ -48,7 +48,7 @@ public class GeneratoreEtichette {
         document.add(new Paragraph("Tracking: " + spedizione.getCodice()));
 
         Barcode128 barcode = new Barcode128(pdf);
-        barcode.setCode(spedizione.getCodice());
+        barcode.setCode(spedizione.getCodice().toString());
         barcode.setBarHeight(50);
         barcode.setFont(null);
 

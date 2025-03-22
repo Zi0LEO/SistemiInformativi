@@ -12,9 +12,8 @@ public class Effettuata
     super();
   }
 
-  public Effettuata(String codice, Date dataSpedizione) {
-    super();
-    setCodice(codice);
+  public Effettuata(Spedizione spedizione, Date dataSpedizione) {
+    setSpedizione(spedizione);
     setDataConsegna(new Date(System.currentTimeMillis()));
     setDataSpedizione(new Date(dataSpedizione.getTime()));
   }
