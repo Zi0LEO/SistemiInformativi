@@ -36,4 +36,10 @@ public class QueryResultsTable implements TableModelListener {
         model.setDataVector(data.toArray(new Object[0][]), columnNames);
         model.fireTableStructureChanged();
     }
+
+    public void search(String search) {
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
+        table.setRowSorter(sorter);
+        sorter.setRowFilter(RowFilter.regexFilter(search));
+    }
 }

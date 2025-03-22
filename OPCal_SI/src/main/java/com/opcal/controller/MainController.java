@@ -124,7 +124,7 @@ public class MainController {
   }
 
   public void cercaInTable(String text) {
-    //todo
+    mainPage.table.search(text);
   }
 
   public Dati trovaUtente(String email) {
