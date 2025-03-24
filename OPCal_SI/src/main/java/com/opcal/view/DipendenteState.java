@@ -31,6 +31,8 @@ public class DipendenteState implements PageState {
     queryButtonPanel.add(MyButton.createButton("Lista Clienti", page.controller::listaClienti));
 
     queryButtonPanel.add(MyButton.createButton("Modifica dati clienti", page.controller::modificaDati));
+
+    queryButtonPanel.add(MyButton.createButton("Visualizza indirizzi", page.controller::listaIndirizzi));
     //Pulsanti spedizioni
     queryButtonPanel.add(MyButton.createButton("Crea Spedizione", page.controller::creaSpedizioneDipendente));
 

@@ -170,5 +170,11 @@ public class MainController {
   public void modificaDati() {
     JDialog dialog = new SelectClienteDialog(mainPage.getParentFrame());
   }
+
+  public void listaIndirizzi() {
+    List<Object[]> data = GestoreRecapiti.listaIndirizzi();
+    String[] campi = List.of("Email", "Comune", "Via", "Civico", "Orario").toArray(new String[0]);
+    mainPage.table.setTableData(data, campi);
+  }
 }
 

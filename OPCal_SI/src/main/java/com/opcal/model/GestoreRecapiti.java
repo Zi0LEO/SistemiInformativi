@@ -3,10 +3,12 @@ package com.opcal.model;
 import com.opcal.*;
 import org.apache.torque.TorqueException;
 import org.apache.torque.criteria.Criteria;
+import org.apache.torque.om.mapper.RecordMapper;
 import org.apache.torque.util.Transaction;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.util.*;
 
 public class GestoreRecapiti {
@@ -129,18 +131,18 @@ public class GestoreRecapiti {
         }
     }
 
-    public List<Object[]> listaIndirizzi() {
+    public static List<Object[]> listaIndirizzi() {
       Criteria criteria = new Criteria();
       List<Indirizzo> partialRet;
       try {
-        partialRet = IndirizzoPeer.doSelect(criteria);
+          partialRet = IndirizzoPeer.doSelect(criteria);
       } catch (TorqueException e) {
         return null;
       }
       return costruisciIndirizzi(partialRet);
     }
 
-    private List<Object[]> costruisciIndirizzi(List<Indirizzo> partialRet) {
+    private static List<Object[]> costruisciIndirizzi(List<Indirizzo> partialRet) {
         List<Object[]> result = new LinkedList<>();
         for(Indirizzo indirizzo : partialRet) {
             Object[] row = new Object[5];
@@ -382,7 +384,7 @@ public class GestoreRecapiti {
     }
 
     public static Indirizzo creaIndirizzo(String comune, String via, String civico, String email) {
-        Indirizzo indirizzo;
+        Indirizzo indirizzo = null;
         try{
             indirizzo = new Indirizzo(comune, via, civico, ClientePeer.retrieveByPK(email));
             indirizzo.save();
