@@ -1,6 +1,7 @@
 package com.opcal.model;
 
 import com.opcal.*;
+import org.apache.torque.NoRowsException;
 import org.apache.torque.TorqueException;
 import org.apache.torque.criteria.Criteria;
 import org.apache.torque.util.Transaction;
@@ -11,13 +12,20 @@ import java.util.*;
 
 public class GestoreRecapiti {
 
-    public static boolean creaSpedizione(Cliente mittente, Cliente destinatario, int peso) {
+    public static boolean creaSpedizione(String emailMittente, String emailDestinatario, int peso) {
         Connection connection = null;
+        try{
+            ClientePeer.retrieveByPK(emailMittente);
+            ClientePeer.retrieveByPK(emailDestinatario);
+        }catch (Exception E){
+            return false;
+        }
 
-        Spedizione spedizione = new Spedizione(mittente.getEmail(), destinatario.getEmail(), peso, calcolaPrezzo(peso, destinatario.getEmail()));
+        Spedizione spedizione = new Spedizione(emailMittente, emailDestinatario, peso, calcolaPrezzo(peso, emailDestinatario));
         InCorso inCorso = new InCorso(spedizione);
         try {
             connection = Transaction.begin();
+            inCorso.setStato("Presa in carico");
             inCorso.save();
             spedizione.addInCorso(inCorso);
             spedizione.save();
@@ -60,8 +68,7 @@ public class GestoreRecapiti {
             criteria.where(IndirizzoPeer.EMAIL_CLIENTE, emailDestinatario);
             indirizzo = IndirizzoPeer.doSelect(criteria).getFirst();
         }catch (TorqueException e){
-            e.printStackTrace();
-            return null;
+            return 0;
         }
         if (indirizzo.getComune().equals("Cosenza") || indirizzo.getComune().equals("Rende") || indirizzo.getComune().equals("Castrolibero"))
             return prezzoSuddiviso(peso, true);
@@ -109,9 +116,12 @@ public class GestoreRecapiti {
           return centinaia * media100 + decine * media10 + unita * media1;
       }
 
-    public static Indirizzo visualizzaIndirizzo(String emailCliente) {
+    public static Indirizzo visualizzaIndirizzo(String email) {
         Criteria criteria = new Criteria();
-        criteria.where(IndirizzoPeer.EMAIL_CLIENTE, emailCliente);
+        try{
+            ClientePeer.retrieveByPK(email);
+            criteria.where(IndirizzoPeer.EMAIL_CLIENTE, email);
+        }catch (Exception e){}
         try {
             return IndirizzoPeer.doSelect(criteria).getFirst();
         } catch (Exception e) {
@@ -120,26 +130,29 @@ public class GestoreRecapiti {
         }
     }
 
-    public static List<Indirizzo> visualizzaIndirizzi(int criterio, String options) {
-        Criteria criteria = new Criteria();
-        try {
-            switch (criterio) {
-                case 1:
-                    criteria.where(IndirizzoPeer.COMUNE, options);
-                    break;
-                case 2:
-                    criteria.where(IndirizzoPeer.VIA, options);
-                    break;
-                case 3:
-                    criteria.where(IndirizzoPeer.ORARIO, Integer.valueOf(options));
-                    break;
-            }
-            return IndirizzoPeer.doSelect(criteria);
+    public List<Object[]> listaIndirizzi() {
+      Criteria criteria = new Criteria();
+      List<Indirizzo> partialRet;
+      try {
+        partialRet = IndirizzoPeer.doSelect(criteria);
+      } catch (TorqueException e) {
+        return null;
+      }
+      return costruisciIndirizzi(partialRet);
+    }
 
-        } catch (TorqueException e) {
-            e.printStackTrace();
-            return null;
+    private List<Object[]> costruisciIndirizzi(List<Indirizzo> partialRet) {
+        List<Object[]> result = new LinkedList<>();
+        for(Indirizzo indirizzo : partialRet) {
+            Object[] row = new Object[5];
+            row[0] = indirizzo.getEmailCliente();
+            row[1] = indirizzo.getComune();
+            row[2] = indirizzo.getVia();
+            row[3] = indirizzo.getCivico();
+            row[4] = indirizzo.getOrario();
+            result.add(row);
         }
+        return result;
     }
 
     public static boolean cambiaStato(Spedizione spedizione, int stato) {
@@ -169,6 +182,7 @@ public class GestoreRecapiti {
             Prenotata prenotata = PrenotataPeer.retrieveByPK(spedizione.getCodice(), con);
             PrenotataPeer.doDelete(prenotata, con);
             InCorso inCorso = new InCorso(spedizione);
+            inCorso.setStato("Presa in carico");
             inCorso.save(con);
             spedizione.resetPrenotata();
             spedizione.save(con);
@@ -234,19 +248,25 @@ public class GestoreRecapiti {
                 criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
                 break;
             case 3:
-                criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
-                criteria.or(SpedizionePeer.EMAIL_DESTINATARIO, email);
-                criteria.addJoin(SpedizionePeer.CODICE, InCorsoPeer.CODICE, Criteria.INNER_JOIN);
+                if (email != null) {
+                    criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
+                    criteria.or(SpedizionePeer.EMAIL_DESTINATARIO, email);
+                }
+                criteria.addJoin(SpedizionePeer.CODICE, PrenotataPeer.CODICE, Criteria.INNER_JOIN);
                 break;
             case 4:
-                criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
-                criteria.or(SpedizionePeer.EMAIL_DESTINATARIO, email);
-                criteria.addJoin(SpedizionePeer.CODICE, EffettuataPeer.CODICE, Criteria.INNER_JOIN);
+                if (email != null) {
+                    criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
+                    criteria.or(SpedizionePeer.EMAIL_DESTINATARIO, email);
+                }
+                criteria.addJoin(SpedizionePeer.CODICE, InCorsoPeer.CODICE, Criteria.INNER_JOIN);
                 break;
             case 5:
-                criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
-                criteria.or(SpedizionePeer.EMAIL_DESTINATARIO, email);
-                criteria.addJoin(SpedizionePeer.CODICE, PrenotataPeer.CODICE, Criteria.INNER_JOIN);
+                if (email != null) {
+                    criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
+                    criteria.or(SpedizionePeer.EMAIL_DESTINATARIO, email);
+                }
+                criteria.addJoin(SpedizionePeer.CODICE, EffettuataPeer.CODICE, Criteria.INNER_JOIN);
         }
         return criteria;
     }
