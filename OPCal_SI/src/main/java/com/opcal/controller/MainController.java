@@ -166,5 +166,9 @@ public class MainController {
   public void creaSpedizioneDipendente() {
     Dialog dialog = new SpedizioneDialog(mainPage.getParentFrame());
   }
+
+  public void modificaDati() {
+    JDialog dialog = new SelectClienteDialog(mainPage.getParentFrame());
+  }
 }
 

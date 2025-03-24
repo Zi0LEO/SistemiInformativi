@@ -29,6 +29,8 @@ public class DipendenteState implements PageState {
     JPanel queryButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
     queryButtonPanel.add(MyButton.createButton("Lista Clienti", page.controller::listaClienti));
+
+    queryButtonPanel.add(MyButton.createButton("Modifica dati clienti", page.controller::modificaDati));
     //Pulsanti spedizioni
     queryButtonPanel.add(MyButton.createButton("Crea Spedizione", page.controller::creaSpedizioneDipendente));
 
