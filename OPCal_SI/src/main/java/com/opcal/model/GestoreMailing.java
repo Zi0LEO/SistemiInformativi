@@ -30,41 +30,6 @@ public class GestoreMailing {
         return mailingList;
     }
 
-//    public static void main(String[] args) {
-//        java.io.ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//        PdfWriter writer = new PdfWriter(stream);
-//        PdfDocument pdf = new PdfDocument(writer);
-//        Document document = new Document(pdf, PageSize.A6);
-//
-//        document.add(new Paragraph("ETICHETTA DI RESO").setFontSize(14).setFontColor(ColorConstants.RED));
-//
-//        document.add(new Paragraph("Mittente: " + "Pizza" + "Micini"));
-//        document.add(new Paragraph("Destinatario: " + "Lollo" + "Gay"));
-//
-//
-//        document.add(new Paragraph("Tracking: " + "1234"));
-//
-//        Barcode128 barcode = new Barcode128(pdf);
-//        barcode.setCode("1234");
-//        barcode.setBarHeight(50);
-//        barcode.setFont(null);
-//
-//        Image barcodeImage = new Image(barcode.createFormXObject(pdf));
-//        document.add(barcodeImage);
-//
-//        document.close();
-//
-//        DataSource ds = new ByteArrayDataSource(stream.toByteArray(),"application/pdf");
-//
-//
-//        send(EmailBuilder.startingBlank()
-//                .from("Servizio Clienti OPCAL","opcalsi@libero.it")
-//                .to("Leo Napoli","leonardo.npl.02@gmail.com")
-//                .withSubject("etichetta")
-//                .withAttachment("Etichetta di reso",ds)
-//                .buildEmail());
-//    }
-
     /**Permette di mandare una email a uno specifico cliente.
      *
      *
