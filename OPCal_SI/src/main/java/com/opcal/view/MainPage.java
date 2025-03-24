@@ -2,10 +2,8 @@ package com.opcal.view;
 
 import com.opcal.controller.MainController;
 import com.opcal.model.DatiCliente;
-import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Map;
 
 public class MainPage extends JPanel{

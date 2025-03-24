@@ -3,8 +3,6 @@ package com.opcal.controller;
 import com.opcal.*;
 import com.opcal.model.*;
 import com.opcal.view.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +14,7 @@ import java.util.Map;
 public class MainController {
 
   private final MainPage mainPage;
-  private Dati dati;
+  private final Dati dati;
 
   public MainController(MainPage mainPage) {
     this.mainPage = mainPage;

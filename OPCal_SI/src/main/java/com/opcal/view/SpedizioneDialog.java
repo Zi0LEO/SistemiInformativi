@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SpedizioneDialog extends JDialog {
-      private JLabel prezzoLabel;
+      private final JLabel prezzoLabel;
 
       public SpedizioneDialog(String email, Frame owner) {
         super(owner, "Spedizione", true);

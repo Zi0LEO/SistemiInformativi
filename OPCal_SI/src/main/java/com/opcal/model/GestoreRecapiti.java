@@ -1,7 +1,6 @@
 package com.opcal.model;
 
 import com.opcal.*;
-import org.apache.torque.NoRowsException;
 import org.apache.torque.TorqueException;
 import org.apache.torque.criteria.Criteria;
 import org.apache.torque.util.Transaction;
@@ -383,7 +382,7 @@ public class GestoreRecapiti {
     }
 
     public static Indirizzo creaIndirizzo(String comune, String via, String civico, String email) {
-        Indirizzo indirizzo = null;
+        Indirizzo indirizzo;
         try{
             indirizzo = new Indirizzo(comune, via, civico, ClientePeer.retrieveByPK(email));
             indirizzo.save();
