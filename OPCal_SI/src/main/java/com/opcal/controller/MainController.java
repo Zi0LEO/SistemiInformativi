@@ -15,12 +15,12 @@ import java.util.Map;
 
 public class MainController {
 
-  private static final Logger log = LoggerFactory.getLogger(MainController.class);
   private final MainPage mainPage;
   private Dati dati;
 
   public MainController(MainPage mainPage) {
     this.mainPage = mainPage;
+    dati = mainPage.getParentFrame().getLoggedUser();
   }
 
   public Indirizzo trovaIndirizzo() {
@@ -48,14 +48,14 @@ public class MainController {
         add("Orario");
       }};
     EditDataDialog dialog = new EditDataDialog(mainPage.getParentFrame(), dati.getEmail(), campi);
-    System.out.println("test");
-    mainPage.controller.updateContent(mainPage);
+    mainPage.buildPage();
   }
 
   public void creaSpedizione(){
     SpedizioneDialog dialog = new SpedizioneDialog(dati.getEmail(), mainPage.getParentFrame());
   }
 
+  //hardcoded at the moment
   private String[] retrieveCampi(int tipo) {
     Map<String, String> fieldsWithTable = SpedizionePeer.getFields();
     switch (tipo) {
@@ -85,25 +85,47 @@ public class MainController {
     mainPage.table.setTableData(data, retrieveCampi(0));
   }
 
-  public void mostraSpedizioniInCorso() {
+  public void mostraSpedizioniPrenotate() {
     List<Object[]> data = GestoreRecapiti.mostraSpedizioni(dati.getEmail(), 3);
+    mainPage.table.setTableData(data, retrieveCampi(1));
+  }
+  public void mostraSpedizioniPrenotateDip() {
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(null, 3);
+    mainPage.table.setTableData(data, retrieveCampi(1));
+  }
 
+  public void mostraSpedizioniInCorso() {
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni("%", 4);
+    mainPage.table.setTableData(data, retrieveCampi(2));
+  }
+
+  public void mostraSpedizioniInCorsoDip() {
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(null, 4);
     mainPage.table.setTableData(data, retrieveCampi(2));
   }
 
   public void mostraSpedizioniEffettuate() {
-    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(dati.getEmail(), 4);
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(dati.getEmail(), 5);
     //SpedizionePeer.getFields()
     mainPage.table.setTableData(data, retrieveCampi(3));
   }
-
-  public void mostraSpedizioniPrenotate() {
-    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(dati.getEmail(), 5);
-    mainPage.table.setTableData(data, retrieveCampi(1));
+  public void mostraSpedizioniEffettuateDip() {
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(null, 5);
+    mainPage.table.setTableData(data, retrieveCampi(3));
   }
+
+
 
   public void mostraRicevute() {
     List<Object[]> data = GestoreClienti.getListaRicevute(dati.getEmail());
+    List<String> tempCampi = Ricevuta.getFieldNames();
+    String[] campi = new String[tempCampi.size() + 1];
+    campi = tempCampi.toArray(campi);
+    campi[campi.length - 1] = "Pagamento";
+    mainPage.table.setTableData(data, campi);
+  }
+  public void mostraRicevuteDip() {
+    List<Object[]> data = GestoreClienti.getListaRicevute(null);
     List<String> tempCampi = Ricevuta.getFieldNames();
     String[] campi = new String[tempCampi.size() + 1];
     campi = tempCampi.toArray(campi);
@@ -122,6 +144,18 @@ public class MainController {
     String[] campiArr = campi.toArray(new String[0]);
     mainPage.table.setTableData(data, campiArr);
   }
+  public void visualizzaResiDip() {
+    List<Object[]> data = GestoreResi.listaResi(null);
+    List<String> campi = Reso.getFieldNames();
+    String[] campiArr = campi.toArray(new String[0]);
+    mainPage.table.setTableData(data, campiArr);
+  }
+
+  public void listaClienti(){
+    List<Object[]> data = GestoreClienti.listaClienti();
+    String[] campi = List.of("Nome", "Cognome", "Email").toArray(new String[0]);
+    mainPage.table.setTableData(data, campi);
+  }
 
   public void cercaInTable(String text) {
     mainPage.table.search(text);
@@ -131,23 +165,8 @@ public class MainController {
     return GestoreClienti.trovaUtente(email);
   }
 
-  //temporary
-  public void updateContent(MainPage mainPage) {
-    Dati dati = trovaUtente(mainPage.getParentFrame().getLoggedUser().getEmail());
-    this.dati = dati;
-    mainPage.datiPanel.removeAll();
-    mainPage.datiPanel.add(new JLabel(dati.getNome()));
-    mainPage.datiPanel.add(new JLabel(dati.getCognome()));
-    mainPage.datiPanel.add(new JLabel(dati.getEmail()));
-    if (dati instanceof DatiCliente) {
-      mainPage.datiPanel.setLayout(new GridLayout(5, 1));
-      Indirizzo indirizzo = trovaIndirizzo();
-      mainPage.datiPanel.add(new JLabel(indirizzo.toString()));
-    } else {
-      mainPage.datiPanel.setLayout(new GridLayout(4, 1));
-    }
-    mainPage.revalidate();
-    mainPage.repaint();
+  public void creaSpedizioneDipendente() {
+    Dialog dialog = new SpedizioneDialog(mainPage.getParentFrame());
   }
 }
 
