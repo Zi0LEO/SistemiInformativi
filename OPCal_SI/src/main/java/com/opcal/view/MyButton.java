@@ -1,6 +1,6 @@
 package com.opcal.view;
 
-import javax.swing.JButton;
+import javax.swing.*;
 import java.awt.*;
 
 public class MyButton extends JButton {

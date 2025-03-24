@@ -1,7 +1,6 @@
 package com.opcal.view;
 
 import com.opcal.controller.CreaResoDialogController;
-import com.opcal.controller.DialogController;
 
 import javax.swing.*;
 import java.awt.*;

@@ -11,14 +11,27 @@ import com.itextpdf.layout.element.Paragraph;
 import com.opcal.Cliente;
 import com.opcal.ClientePeer;
 import com.opcal.Spedizione;
+import com.opcal.SpedizionePeer;
 import org.apache.torque.TorqueException;
 
 import java.io.ByteArrayOutputStream;
 
 public class GeneratoreEtichette {
 
+
     /**
-     * Permette di creare un'etichetta di reso per la spedizione innserita nel parametro
+     * Permette di creare un'etichetta di reso per la spedizione inserita nel parametro
+     *
+     * @param codiceSpedizione la spedizione di cui creare l'etichetta
+     * @return Un'oggetto di tipo Document che è l'etichetta.
+     */
+    public static byte[] creaEtichetta(String codiceSpedizione) throws TorqueException {
+        return creaEtichetta(SpedizionePeer.retrieveByPK(Integer.parseInt(codiceSpedizione)));
+    }
+
+
+    /**
+     * Permette di creare un'etichetta di reso per la spedizione inserita nel parametro
      *
      * @param spedizione la spedizione di cui creare l'etichetta
      * @return Un'oggetto di tipo Document che è l'etichetta.

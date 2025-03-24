@@ -7,7 +7,9 @@ import org.apache.torque.util.Transaction;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 public class GestoreRecapiti {
 
@@ -363,7 +365,7 @@ public class GestoreRecapiti {
     }
 
     public static Indirizzo creaIndirizzo(String comune, String via, String civico, String email) {
-        Indirizzo indirizzo = null;
+        Indirizzo indirizzo;
         try{
             indirizzo = new Indirizzo(comune, via, civico, ClientePeer.retrieveByPK(email));
             indirizzo.save();

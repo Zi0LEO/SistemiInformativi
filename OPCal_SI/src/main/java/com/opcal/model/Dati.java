@@ -16,6 +16,7 @@ public abstract class Dati {
     public Dati(String nome, String cognome, String email) {
         this(nome, cognome, email, null);
     }
+
     public String getNome() {
         return nome;
     }
