@@ -7,9 +7,10 @@ import java.awt.*;
 
 class LoginPage extends JPanel {
 
-  public LoginPage(MainFrame mainFrame, MainPage mainPage) {
+  public LoginPage(MainFrame mainFrame) {
     setBackground(new Color(45, 45, 48));
     setLayout(new GridBagLayout());
+    setOpaque(true);
 
     JPanel formPanel = new JPanel(new GridBagLayout());
     formPanel.setBackground(new Color(100, 100, 105));
@@ -56,7 +57,7 @@ class LoginPage extends JPanel {
     gbc.fill = GridBagConstraints.NONE;
     gbc.anchor = GridBagConstraints.CENTER;
 
-    formPanel.add(MyButton.createButton("Login", () -> LoginController.login(mainFrame, userField.getText(), passField.getPassword(), mainPage)),gbc);
+    formPanel.add(MyButton.createButton("Login", () -> LoginController.login(mainFrame, userField.getText(), passField.getPassword())),gbc);
 
     // Pulsante Registrati
     gbc.gridy++;

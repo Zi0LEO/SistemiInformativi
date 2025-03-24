@@ -1,6 +1,8 @@
 package com.opcal.view;
 
 import com.opcal.controller.MainController;
+import com.opcal.model.DatiCliente;
+import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,8 +10,9 @@ import java.util.Map;
 
 public class MainPage extends JPanel{
 
-  public final JPanel datiPanel;
+  public JPanel datiPanel;
   private final MainFrame parentFrame;
+  private final PageState pageState;
 
   private Map<String, String> currentlyShownData;
   public final MainController controller;
@@ -28,81 +31,19 @@ public class MainPage extends JPanel{
   }
 
 
-  public MainPage(MainFrame mainFrame) {
+  public MainPage(MainFrame parentFrame) {
+    this.parentFrame = parentFrame;
     controller = new MainController(this);
-    setLayout(new BorderLayout(5,5));
-    setBackground(new Color(240, 240, 240));
-    parentFrame = mainFrame;
-
-    // Pannello superiore: Dati cliente
-    datiPanel = new JPanel();
-    datiPanel.add(new JLabel("I tuoi dati:"));
-    datiPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-    datiPanel.setBackground(new Color(200, 220, 240)); // Colore di sfondo
-
-    add(datiPanel, BorderLayout.NORTH);
-
-    // Pannello centrale: Pulsanti
-    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
-    buttonPanel.setBackground(new Color(240, 240, 240));
-
-    // Pulsante modifica dati
-    buttonPanel.add(MyButton.createButton("Modifica dati", controller::modificaDatiPropri));
-
-    // Pulsante Elimina Account
-    buttonPanel.add(MyButton.createButton("Elimina Account", controller::eliminaAccount));
-
-
-    // Pulsante Logout
-    buttonPanel.add(MyButton.createButton("Logout", controller::logout));
-
-    JPanel queryButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
-
-    //Pulsanti spedizioni
-    queryButtonPanel.add(MyButton.createButton("Crea Spedizione", controller::creaSpedizione));
-
-    queryButtonPanel.add(MyButton.createButton("Spedizioni in arrivo", controller::mostraSpedizioniRicevute));
-
-    queryButtonPanel.add(MyButton.createButton("Mie spedizioni inviate", controller::mostraSpedizioniInviate));
-
-    queryButtonPanel.add(MyButton.createButton("Spedizioni in corso", controller::mostraSpedizioniInCorso));
-
-    queryButtonPanel.add(MyButton.createButton("Spedizioni consegnate", controller::mostraSpedizioniEffettuate));
-
-    queryButtonPanel.add(MyButton.createButton("Spedizioni prenotate", controller::mostraSpedizioniPrenotate));
-
-    //Ricevute
-    queryButtonPanel.add(MyButton.createButton("Visualizza ricevute pagamenti", controller::mostraRicevute));
-
-    //Resi
-    queryButtonPanel.add(MyButton.createButton("Crea reso", controller::creaReso));
-
-    queryButtonPanel.add(MyButton.createButton("Visualizza resi effettuati", controller::visualizzaResi));
-
-    JPanel wrapperButtonPanel = new JPanel(new BorderLayout(5,5));
-    wrapperButtonPanel.add(buttonPanel, BorderLayout.NORTH);
-    wrapperButtonPanel.add(queryButtonPanel, BorderLayout.CENTER);
-    add(wrapperButtonPanel, BorderLayout.CENTER);
-
-    JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
-    JPanel tablePanel = new JPanel(new BorderLayout(5,5));
-
-    //Campo di ricerca
-    JTextField toSearch = new JTextField(20);
-    toSearch.setPreferredSize(new Dimension(300, 30));
-    searchPanel.add(toSearch);
-    searchPanel.add(MyButton.createButton("Cerca", () -> controller.cercaInTable(toSearch.getText())));
-
-    table = new QueryResultsTable();
-    JScrollPane resultsScrollPane = new JScrollPane(table.getTable());
-    tablePanel.add(searchPanel, BorderLayout.NORTH);
-    tablePanel.add(resultsScrollPane, BorderLayout.SOUTH);
-
-    add(tablePanel, BorderLayout.SOUTH);
+    if(parentFrame.getLoggedUser() instanceof DatiCliente){
+      this.pageState = new ClienteState();
+    }else{
+      this.pageState = new DipendenteState();
+    }
+    buildPage();
     }
 
-    public void updateContent(){
-    controller.updateContent(this);
-    }
 
+  public void buildPage() {
+    pageState.buildPage(this);
+  }
 }
