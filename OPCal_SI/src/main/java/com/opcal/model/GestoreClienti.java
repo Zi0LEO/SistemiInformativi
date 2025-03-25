@@ -194,8 +194,8 @@ public class GestoreClienti {
         for (Ricevuta r : ris) {
             Object[] obj = new Object[4];
             obj[0] = r.getCodice();
-            obj[1] = r.getData();
-            obj[2] = r.getStato();
+            obj[1] = r.getStato();
+            obj[2] = r.getData();
             obj[3] = associaPrezzo(r.getCodice());
             returnList.add(obj);
         }

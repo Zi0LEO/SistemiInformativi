@@ -47,6 +47,9 @@ public class DipendenteState implements PageState {
 
     queryButtonPanel.add(MyButton.createButton("Visualizza resi effettuati", page.controller::visualizzaResiDip));
 
+    queryButtonPanel.add(MyButton.createButton("Visualizza corrieri", page.controller::visualizzaCorrieri));
+
+    queryButtonPanel.add(MyButton.createButton("Avanza spedizione", page.controller::avanzaSpedizione));
     JPanel wrapperButtonPanel = new JPanel(new BorderLayout(5,5));
     wrapperButtonPanel.add(buttonPanel, BorderLayout.NORTH);
     wrapperButtonPanel.add(queryButtonPanel, BorderLayout.CENTER);

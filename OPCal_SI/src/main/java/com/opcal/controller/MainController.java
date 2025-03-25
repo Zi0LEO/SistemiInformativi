@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 public class MainController {
@@ -53,23 +52,22 @@ public class MainController {
   }
 
   //hardcoded at the moment
-  private String[] retrieveCampi(int tipo) {
-    Map<String, String> fieldsWithTable = SpedizionePeer.getFields();
+  private List<String> retrieveCampi(int tipo) {
+    List<String> fields = SpedizionePeer.getFields();
     switch (tipo) {
       case 1:
-        fieldsWithTable.put("Data prenotazione", PrenotataPeer.TABLE_NAME);
-        fieldsWithTable.put("Data prevista di ritiro", PrenotataPeer.TABLE_NAME);
+        fields.add("Data prenotazione");
+        fields.add("Data prevista di ritiro");
         break;
       case 2:
-        fieldsWithTable.put("Data spedizione", InCorsoPeer.TABLE_NAME);
+        fields.add("Data spedizione");
         break;
       case 3:
-        fieldsWithTable.put("Data spedizione", EffettuataPeer.TABLE_NAME);
-        fieldsWithTable.put("Data consegna", EffettuataPeer.TABLE_NAME);
+        fields.add("Data spedizione");
+        fields.add("Data consegna");
         break;
     }
-    mainPage.setData(fieldsWithTable);
-    return fieldsWithTable.keySet().toArray(new String[0]);
+    return fields;
   }
 
   public void mostraSpedizioniRicevute() {
@@ -92,7 +90,7 @@ public class MainController {
   }
 
   public void mostraSpedizioniInCorso() {
-    List<Object[]> data = GestoreRecapiti.mostraSpedizioni("%", 4);
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(dati.getEmail(), 4);
     mainPage.table.setTableData(data, retrieveCampi(2));
   }
 
@@ -115,18 +113,14 @@ public class MainController {
 
   public void mostraRicevute() {
     List<Object[]> data = GestoreClienti.getListaRicevute(dati.getEmail());
-    List<String> tempCampi = Ricevuta.getFieldNames();
-    String[] campi = new String[tempCampi.size() + 1];
-    campi = tempCampi.toArray(campi);
-    campi[campi.length - 1] = "Pagamento";
+    List<String> campi = RicevutaPeer.getFields();
+    campi.add("Pagamento");
     mainPage.table.setTableData(data, campi);
   }
   public void mostraRicevuteDip() {
     List<Object[]> data = GestoreClienti.getListaRicevute(null);
-    List<String> tempCampi = Ricevuta.getFieldNames();
-    String[] campi = new String[tempCampi.size() + 1];
-    campi = tempCampi.toArray(campi);
-    campi[campi.length - 1] = "Pagamento";
+    List<String> campi = RicevutaPeer.getFields();
+    campi.add("Pagamento");
     mainPage.table.setTableData(data, campi);
   }
 
@@ -138,19 +132,17 @@ public class MainController {
   public void visualizzaResi() {
     List<Object[]> data = GestoreResi.listaResi(dati.getEmail());
     List<String> campi = Reso.getFieldNames();
-    String[] campiArr = campi.toArray(new String[0]);
-    mainPage.table.setTableData(data, campiArr);
+    mainPage.table.setTableData(data, campi);
   }
   public void visualizzaResiDip() {
     List<Object[]> data = GestoreResi.listaResi(null);
     List<String> campi = Reso.getFieldNames();
-    String[] campiArr = campi.toArray(new String[0]);
-    mainPage.table.setTableData(data, campiArr);
+    mainPage.table.setTableData(data, campi);
   }
 
   public void listaClienti(){
     List<Object[]> data = GestoreClienti.listaClienti();
-    String[] campi = List.of("Nome", "Cognome", "Email").toArray(new String[0]);
+    List campi = List.of("Nome", "Cognome", "Email");
     mainPage.table.setTableData(data, campi);
   }
 
@@ -172,8 +164,18 @@ public class MainController {
 
   public void listaIndirizzi() {
     List<Object[]> data = GestoreRecapiti.listaIndirizzi();
-    String[] campi = List.of("Email", "Comune", "Via", "Civico", "Orario").toArray(new String[0]);
+    List campi = List.of("Email", "Comune", "Via", "Civico", "Orario");
     mainPage.table.setTableData(data, campi);
+  }
+
+  public void visualizzaCorrieri() {
+    List<Object[]> data = GestoreRecapiti.listaCorrieri();
+    List campi = List.of("Nome", "Partita Iva", "Sito", "Numero di telefono", "prezzo 1kg", "prezzo 10kg", "prezzo 100kg");
+    mainPage.table.setTableData(data, campi);
+  }
+
+  public void avanzaSpedizione() {
+    JDialog dialog = new ModificaSpedizioneDialog(mainPage.getParentFrame());
   }
 }
 

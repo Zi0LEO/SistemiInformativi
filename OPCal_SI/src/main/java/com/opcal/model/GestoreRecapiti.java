@@ -3,12 +3,10 @@ package com.opcal.model;
 import com.opcal.*;
 import org.apache.torque.TorqueException;
 import org.apache.torque.criteria.Criteria;
-import org.apache.torque.om.mapper.RecordMapper;
 import org.apache.torque.util.Transaction;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.util.*;
 
 public class GestoreRecapiti {
@@ -156,19 +154,24 @@ public class GestoreRecapiti {
         return result;
     }
 
-    public static boolean cambiaStato(Spedizione spedizione, int stato) {
+    public static boolean cambiaStato(Integer codice, int stato) {
+        Spedizione spedizione;
+        try{
+            spedizione = SpedizionePeer.retrieveByPK(codice);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
         switch (stato) {
             case 1:
                 return prendiInCarico(spedizione);
             case 2:
-                return cambiaStato(spedizione, "Spedita");
+                return cambiaStato(spedizione, "spedita");
             case 3:
-                return cambiaStato(spedizione, "Arrivata alla filiale");
+                return cambiaStato(spedizione, "in consegna");
             case 4:
-                return cambiaStato(spedizione, "In Consegna");
-            case 5:
                 return consegna(spedizione);
-            case 6:
+            case 5:
                 return cambiaStato(spedizione, "Tentato recapito");
             default:
                 return false;
@@ -183,7 +186,7 @@ public class GestoreRecapiti {
             Prenotata prenotata = PrenotataPeer.retrieveByPK(spedizione.getCodice(), con);
             PrenotataPeer.doDelete(prenotata, con);
             InCorso inCorso = new InCorso(spedizione);
-            inCorso.setStato("Presa in carico");
+            inCorso.setStato("presa in carico");
             inCorso.save(con);
             spedizione.resetPrenotata();
             spedizione.save(con);
@@ -219,6 +222,7 @@ public class GestoreRecapiti {
         try {
             InCorso inCorso = InCorsoPeer.retrieveByPK(spedizione.getCodice());
             inCorso.setStato(stato);
+            inCorso.save();
         } catch (TorqueException e) {
             e.printStackTrace();
             return false;
@@ -231,7 +235,7 @@ public class GestoreRecapiti {
         List<Spedizione> partialResult = fetchSpedizioni(criteria);
         if (partialResult == null)
             return null;
-        return costruisciSpedizioni(partialResult);
+        return costruisciSpedizioni(partialResult, tipo);
     }
 
     private static Criteria buildCriteria(String email, int tipo) {
@@ -272,19 +276,44 @@ public class GestoreRecapiti {
         return criteria;
     }
 
-    private static List<Object[]> costruisciSpedizioni(List<Spedizione> partialResult) {
-        int rowLength = SpedizionePeer.numColumns + 2;
+    private static List<Object[]> costruisciSpedizioni(List<Spedizione> partialResult, int tipo) {
+        int rowLength = SpedizionePeer.numColumns + 1;
+        if (tipo == 3) rowLength += 2;
+        if (tipo == 4) rowLength += 1;
+        if (tipo == 5) rowLength += 2;
         List<Object[]> result = new LinkedList<>();
         for(Spedizione singola : partialResult) {
             Object[] row = new Object[rowLength];
             row[0] = singola.getCodice();
             row[1] = singola.getEmailMittente();
             row[2] = singola.getEmailDestinatario();
-            row[3] = mostraStato(singola.getCodice());
-            row[4] = getRelevantDate(singola.getCodice());
-            row[5] = singola.getPeso();
-            row[6] = singola.getPrezzo();
-            row[7] = safeCorriere(singola);
+            row[3] = getStato(singola.getCodice());
+            row[4] = singola.getPeso();
+            row[5] = singola.getPrezzo();
+            row[6] = safeCorriere(singola);
+            try {
+                switch (tipo) {
+                    case 3:
+                        Prenotata p = PrenotataPeer.retrieveByPK(singola.getCodice());
+                        row[7] = p.getDataPrenotazione();
+                        row[8] = p.getDataRitiro();
+                        break;
+                    case 4:
+                        InCorso ic = InCorsoPeer.retrieveByPK(singola.getCodice());
+                        row[7] = ic.getDataSpedizione();
+                        break;
+                    case 5:
+                        Effettuata e = EffettuataPeer.retrieveByPK(singola.getCodice());
+                        row[7] = e.getDataSpedizione();
+                        row[8] = e.getDataConsegna();
+                        break;
+                    default:
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
             result.add(row);
         }
         return result;
@@ -324,20 +353,6 @@ public class GestoreRecapiti {
             return null;
         }
         return partialResult;
-    }
-
-    private static String mostraStato(Integer codice) {
-        Criteria criteria = new Criteria();
-        criteria.where(InCorsoPeer.CODICE, codice);
-        try {
-            return InCorsoPeer.doSelect(criteria).getFirst().getStato();
-        } catch (Exception e) {
-        }
-        try {
-            PrenotataPeer.doSelect(criteria);
-            return "In attesa di ritiro";
-        }catch (Exception e){}
-        return "Consegnata";
     }
 
     public static Indirizzo modificaIndirizzo(String emailCliente, String value, int campo) {
@@ -384,7 +399,7 @@ public class GestoreRecapiti {
     }
 
     public static Indirizzo creaIndirizzo(String comune, String via, String civico, String email) {
-        Indirizzo indirizzo = null;
+        Indirizzo indirizzo;
         try{
             indirizzo = new Indirizzo(comune, via, civico, ClientePeer.retrieveByPK(email));
             indirizzo.save();
@@ -393,5 +408,66 @@ public class GestoreRecapiti {
             return null;
         }
         return indirizzo;
+    }
+
+    public static List<Object[]> listaCorrieri() {
+        Criteria criteria = new Criteria();
+        criteria.addSelectColumn(CorrierePeer.NOME)
+            .addSelectColumn(CorrierePeer.IVA)
+            .addSelectColumn(CorrierePeer.SITO)
+            .addSelectColumn(CorrierePeer.TELEFONO)
+            .addSelectColumn(CorrierePeer.PREZZO1)
+            .addSelectColumn(CorrierePeer.PREZZO10)
+            .addSelectColumn(CorrierePeer.PREZZO100);
+        List<Corriere> partialRet;
+        try{
+            partialRet = CorrierePeer.doSelect(criteria);
+        }catch (TorqueException e){
+            e.printStackTrace();
+            return null;
+        }
+        return costruisciCorriere(partialRet);
+
+    }
+
+    private static List<Object[]> costruisciCorriere(List<Corriere> partialRet) {
+        int rowLength = CorrierePeer.numColumns;
+        List<Object[]> result = new LinkedList<>();
+        for(Corriere singolo : partialRet) {
+            Object[] row = new Object[rowLength];
+            row[0] = singolo.getNome();
+            row[1] = singolo.getIva();
+            row[2] = singolo.getSito();
+            row[3] = singolo.getTelefono();
+            row[4] = singolo.getPrezzo1();
+            row[5] = singolo.getPrezzo10();
+            row[6] = singolo.getPrezzo100();
+            result.add(row);
+        }
+        return result;
+    }
+
+    public static String getStato(Integer codiceSpedizione) {
+        Spedizione spedizione;
+        try{
+            spedizione = SpedizionePeer.retrieveByPK(codiceSpedizione);
+        } catch (TorqueException e) {
+            e.printStackTrace();
+            return null;
+        }
+        try{
+            InCorso ic = spedizione.getInCorsos().getFirst();
+            return ic.getStato();
+        }catch (Exception e){}
+        try{
+            Effettuata e = spedizione.getEffettuatas().getFirst();
+            return "consegnata";
+        }catch (Exception e){}
+        try{
+            Prenotata p = spedizione.getPrenotatas().getFirst();
+            return "in attesa di ritiro";
+        }catch (Exception e){
+            return null;
+        }
     }
 }
