@@ -174,8 +174,9 @@ public class MainController {
     mainPage.table.setTableData(data, campi);
   }
 
-  public void avanzaSpedizione() {
-    JDialog dialog = new ModificaSpedizioneDialog(mainPage.getParentFrame());
-  }
+  public void avanzaSpedizione() { new ModificaSpedizioneDialog(mainPage.getParentFrame());}
+
+  public void mandaEmail(){ new EmailDialog(mainPage.getParentFrame());}
+
 }
 

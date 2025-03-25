@@ -33,6 +33,7 @@ public class DipendenteState implements PageState {
     queryButtonPanel.add(MyButton.createButton("Modifica dati clienti", page.controller::modificaDati));
 
     queryButtonPanel.add(MyButton.createButton("Visualizza indirizzi", page.controller::listaIndirizzi));
+
     //Pulsanti spedizioni
     queryButtonPanel.add(MyButton.createButton("Crea Spedizione", page.controller::creaSpedizioneDipendente));
 
@@ -42,6 +43,8 @@ public class DipendenteState implements PageState {
 
     queryButtonPanel.add(MyButton.createButton("Spedizioni prenotate", page.controller::mostraSpedizioniPrenotateDip));
 
+    queryButtonPanel.add(MyButton.createButton("Avanza spedizione", page.controller::avanzaSpedizione));
+
     //Ricevute
     queryButtonPanel.add(MyButton.createButton("Visualizza ricevute pagamenti", page.controller::mostraRicevuteDip));
 
@@ -49,7 +52,10 @@ public class DipendenteState implements PageState {
 
     queryButtonPanel.add(MyButton.createButton("Visualizza corrieri", page.controller::visualizzaCorrieri));
 
-    queryButtonPanel.add(MyButton.createButton("Avanza spedizione", page.controller::avanzaSpedizione));
+    //Manda Email
+    queryButtonPanel.add(MyButton.createButton("Manda email a cliente",page.controller::mandaEmail));
+
+
     JPanel wrapperButtonPanel = new JPanel(new BorderLayout(5,5));
     wrapperButtonPanel.add(buttonPanel, BorderLayout.NORTH);
     wrapperButtonPanel.add(queryButtonPanel, BorderLayout.CENTER);
