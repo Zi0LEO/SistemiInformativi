@@ -176,7 +176,8 @@ public class MainController {
 
   public void avanzaSpedizione() { new ModificaSpedizioneDialog(mainPage.getParentFrame());}
 
-  public void mandaEmail(){ new EmailDialog(mainPage.getParentFrame());}
+  public void mandaEmail() { new EmailDialog(mainPage.getParentFrame());}
 
+  public void annullaReso() { new AnnullaResoDialog(); }
 }
 

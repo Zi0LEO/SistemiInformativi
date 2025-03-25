@@ -57,7 +57,7 @@ public class ClienteState implements PageState {
 
     //Resi
     queryButtonPanel.add(MyButton.createButton("Crea reso", page.controller::creaReso));
-
+    queryButtonPanel.add(MyButton.createButton("Annulla reso",page.controller::annullaReso));
     queryButtonPanel.add(MyButton.createButton("Visualizza resi effettuati", page.controller::visualizzaResi));
 
     JPanel wrapperButtonPanel = new JPanel(new BorderLayout(5,5));

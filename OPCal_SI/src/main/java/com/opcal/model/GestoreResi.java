@@ -10,7 +10,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.opcal.model.GeneratoreEtichette.creaEtichetta;
 import static main.java.com.opcal.model.StatoReso.statoPossibile;
 
 public class GestoreResi {
@@ -70,36 +69,28 @@ public class GestoreResi {
     }
 
     /**
-     * Permette di creare un'etichetta di reso per la spedizione innserita nel parametro
-     *
-     * @param reso il reso di cui si deve creare l'etichetta
-     * @return Un'oggetto di tipo Document che è l'etichetta.
-     */
-    public static byte[] stampaEtichettaReso(Reso reso) {
-        try {
-            return creaEtichetta(reso.getSpedizione());
-        } catch (TorqueException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * Se un reso non è già stato processato o terminato permette di annullarlo
      *
-     * @param reso Il reso da annullare
-     * @throws ClassNotFoundException Nel caso in cui il reso non è trovato nella base di dati
+     * @param codiceReso Il reso da annullare
+     * @return True se la cancellazione è andata a buon fine <br> false altrimenti.
      */
-    public static void annullaReso(Reso reso) throws ClassNotFoundException {
+    public static boolean annullaReso(Integer codiceReso){
+        Reso reso;
+        try {
+            reso = ResoPeer.retrieveByPK(codiceReso);
+        } catch (TorqueException e) {
+            return false;
+        }
         if (reso.getStato().equals("PROCESSATO") | reso.getStato().equals("TERMINATO"))
-            throw new IllegalArgumentException("Stato non valido");
+            return false;
 
         try {
             ResoPeer.doDelete(reso);
         } catch (TorqueException e) {
-            throw new ClassNotFoundException("Il reso non è stato trovato");
+            return false;
         }
+        return true;
     }
-
 
     private static boolean esiste(Integer codice) {
         try {
