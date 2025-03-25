@@ -13,16 +13,24 @@ import java.util.ListIterator;
 
 public class GestoreRecapiti {
 
-    public static boolean creaSpedizione(String emailMittente, String emailDestinatario, int peso) {
+    /**Permette di creare una spedizione
+     *
+     *
+     * @param mittente mittente della spedizione
+     * @param destinatario destinatario della spedizione
+     * @param peso il peso del carico
+     * @return true se la spedizione è creata a buon fine, <br> false altrimenti
+     */
+    public static boolean creaSpedizione(String mittente, String destinatario, int peso) {
         Connection connection = null;
         try{
-            ClientePeer.retrieveByPK(emailMittente);
-            ClientePeer.retrieveByPK(emailDestinatario);
+            ClientePeer.retrieveByPK(mittente);
+            ClientePeer.retrieveByPK(destinatario);
         }catch (Exception E){
             return false;
         }
 
-        Spedizione spedizione = new Spedizione(emailMittente, emailDestinatario, peso, calcolaPrezzo(peso, emailDestinatario));
+        Spedizione spedizione = new Spedizione(mittente, destinatario, peso, calcolaPrezzo(peso, destinatario));
         InCorso inCorso = new InCorso(spedizione);
         try {
             connection = Transaction.begin();
@@ -39,6 +47,14 @@ public class GestoreRecapiti {
         return true;
     }
 
+    /**Permette di creare un ritiro
+     *
+     *
+     * @param mittente mittente della spedizione
+     * @param destinatario destinatario della spedizione
+     * @param peso il peso del carico
+     * @return true se la spedizione è creata a buon fine, <br> false altrimenti
+     */
     public static boolean creaRitiro(String mittente, String destinatario, int peso) {
         Connection connection = null;
         try {
@@ -62,11 +78,18 @@ public class GestoreRecapiti {
         ricevuta.save();
     }
 
-    public static Integer calcolaPrezzo(int peso, String emailDestinatario) {
+    /**Permette di calcolare il prezzo della spedizione
+     *
+     *
+     * @param peso il peso del contenuto
+     * @param destinatario l'email del destinatario della spdizione
+     * @return Integer, il prezzo
+     */
+    public static Integer calcolaPrezzo(int peso, String destinatario) {
         Indirizzo indirizzo;
         try {
             Criteria criteria = new Criteria();
-            criteria.where(IndirizzoPeer.EMAIL_CLIENTE, emailDestinatario);
+            criteria.where(IndirizzoPeer.EMAIL_CLIENTE, destinatario);
             indirizzo = IndirizzoPeer.doSelect(criteria).getFirst();
         }catch (TorqueException e){
             return 0;
@@ -117,6 +140,12 @@ public class GestoreRecapiti {
           return centinaia * media100 + decine * media10 + unita * media1;
       }
 
+    /**Permette di visualizzare l'indirizzo di un cliente a partire dalla sua email
+     *
+     *
+      * @param email l'email del cliente
+     * @return un oggetto di tipo indirizzo, l'indirizzo del cliente, è null se si presentano errori
+     */
     public static Indirizzo visualizzaIndirizzo(String email) {
         Criteria criteria = new Criteria();
         try{
@@ -131,6 +160,10 @@ public class GestoreRecapiti {
         }
     }
 
+    /**Permette di visualizzare la lista degli indirizzi
+     *
+     * @return Una lista di array di object che sono gli indirizzi.
+     */
     public static List<Object[]> listaIndirizzi() {
       Criteria criteria = new Criteria();
       List<Indirizzo> partialRet;
@@ -156,6 +189,13 @@ public class GestoreRecapiti {
         return result;
     }
 
+    /**Perette di cambiare lo stato della spedizione
+     *
+     * @param codice il codice della spedizione
+     * @param stato il numero del cambio al fronte del requisito funzionale 2.2.2.15
+     * @return True se il cambiamento va a buon fine, <br> false altrimenti
+     */
+    @SuppressWarnings("all")
     public static boolean cambiaStato(Integer codice, int stato) {
         Spedizione spedizione;
         try{
@@ -232,6 +272,12 @@ public class GestoreRecapiti {
         return true;
     }
 
+    /**Permette di visualizzare la lista delle spedizioni
+     *
+     * @param email l'email del cliente di cui verranno visualizzate le spedizioni
+     * @param tipo il tipo della richiesta
+     * @return La lista degli array delle spedizioni
+     */
     public static List<Object[]> mostraSpedizioni(String email, int tipo) {
         Criteria criteria = buildCriteria(email, tipo);
         List<Spedizione> partialResult = fetchSpedizioni(criteria);
@@ -357,6 +403,13 @@ public class GestoreRecapiti {
         return partialResult;
     }
 
+    /**Permette di modificare l'indirizzo di un cliente
+     *
+     * @param emailCliente l'email del cliente a cui apportare la mofifica
+     * @param value il nuovo valore
+     * @param campo un intero da 1 a 4 quale parte dell'indirizzo si vuole modificare: <br> 1- comune <br> 2- civico <br> 3- via <br> 4- l'orario
+     * @return Il nuovo oggetto indirizzo
+     */
     public static Indirizzo modificaIndirizzo(String emailCliente, String value, int campo) {
         Indirizzo indirizzo = GestoreRecapiti.visualizzaIndirizzo(emailCliente);
         Indirizzo newIndirizzo;
@@ -388,6 +441,11 @@ public class GestoreRecapiti {
         return indirizzo;
     }
 
+    /**Permette di cancellare l'indirizzo di un cliente
+     *
+     * @param emailCliente l'email del cliente a cui cancellare l'indirizzo
+     * @return true se la cancellazione è andata a buon fine <br> false altrimenti
+     */
     public static boolean cancellaIndirizzo(String emailCliente) {
         try {
             Indirizzo indirizzo = GestoreRecapiti.visualizzaIndirizzo(emailCliente);
@@ -400,6 +458,14 @@ public class GestoreRecapiti {
 
     }
 
+    /**Permette di creare un'oggetto di tipo indirizzo
+     *
+     * @param comune l'attributo comune
+     * @param via l'attributo via
+     * @param civico l'attributo civico
+     * @param email l'attributo email
+     * @return Il nuovo oggetto di tipo indirizzo
+     */
     public static Indirizzo creaIndirizzo(String comune, String via, String civico, String email) {
         Indirizzo indirizzo;
         try{
@@ -412,6 +478,10 @@ public class GestoreRecapiti {
         return indirizzo;
     }
 
+    /**Ritorna la lista dei corrieri, come oggetti corriere
+     *
+     * @return La lista degli array dei corrieri
+     */
     public static List<Object[]> listaCorrieri() {
         Criteria criteria = new Criteria();
         criteria.addSelectColumn(CorrierePeer.NOME)
@@ -449,6 +519,11 @@ public class GestoreRecapiti {
         return result;
     }
 
+    /**Ritorna lo stato di una spedizione
+     *
+     * @param codiceSpedizione il codice della spedizione
+     * @return lo stato della spedizione
+     */
     public static String getStato(Integer codiceSpedizione) {
         Spedizione spedizione;
         try{

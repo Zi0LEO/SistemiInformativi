@@ -167,8 +167,11 @@ public class GestoreClienti {
     }
 
 
-
-
+    /** Permette di visualizzare la lista delle ricevute a carico di un cliente
+     *
+     * @param email La mail del cliente
+     * @return La lista delle ricevute
+     */
     public static List<Object[]> getListaRicevute(String email) {
         //SELECT *
         // FROM Ricevuta JOIN sedizione s ON r.codiceSpedizione=s.codice
@@ -240,6 +243,10 @@ public class GestoreClienti {
         }
     }
 
+    /** Permette di visualizzare l'intera lista dei clienti
+     *
+     * @return La lista degli array dei clienti
+     */
     public static List<Object[]> listaClienti() {
         Criteria criteria = new Criteria();
         criteria.addJoin(UtentePeer.EMAIL, ClientePeer.EMAIL);
