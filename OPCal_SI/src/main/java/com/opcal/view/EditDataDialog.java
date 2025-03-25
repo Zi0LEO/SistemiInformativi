@@ -1,6 +1,5 @@
 package com.opcal.view;
 
-import com.opcal.Cliente;
 import com.opcal.controller.EditDataDialogController;
 import com.opcal.model.DatiCliente;
 import com.opcal.model.GestoreClienti;
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class EditDataDialog extends JDialog {
 
-  public EditDataDialog(Frame parent, String email, List<String> fields) {
+  public EditDataDialog(MainFrame parent, String email, List<String> fields) {
     super(parent, "Modifica Dati", true);
     DatiCliente test = null;
     try {
@@ -48,6 +47,7 @@ public class EditDataDialog extends JDialog {
     gbc.gridy++;
 
     add(MyButton.createButton("Salva", () -> EditDataDialogController.salva(
+        parent,
         this,
         email,
         values.stream().map(JTextComponent::getText).collect(Collectors.toList()

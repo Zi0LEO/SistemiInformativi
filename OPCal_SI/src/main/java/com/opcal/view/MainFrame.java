@@ -1,5 +1,6 @@
 package com.opcal.view;
 
+import com.opcal.controller.MainController;
 import com.opcal.model.Dati;
 
 import javax.swing.*;
@@ -13,9 +14,14 @@ public class MainFrame extends JFrame {
     return loggedUser;
   }
 
-  public void setLoggedUser(Dati loggedUser)
+  public void setLoggedUser(String email)
   {
-    this.loggedUser = loggedUser;
+    if(email == null) {
+      cardLayout.show(cardPanel, "Login");
+      this.loggedUser = null;
+      return;
+    }
+    this.loggedUser = MainController.trovaUtente(email);
     if(loggedUser == null) return;
     MainPage mainPage = new MainPage(this);
     cardPanel.add(mainPage, "Main");

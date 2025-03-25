@@ -112,14 +112,24 @@ public class GestoreClienti {
     }
 
     public static Dati trovaUtente(String email) {
+        Criteria criteria = new Criteria();
+        criteria.where(UtentePeer.EMAIL, email);
+        criteria.addJoin(UtentePeer.EMAIL, DipendentePeer.EMAIL);
         Utente utente;
         try {
-            utente = UtentePeer.retrieveByPK(email);
+            utente = UtentePeer.doSelect(criteria).getFirst();
+            return new DatiDipendente(utente.getNome(), utente.getCognome(), email);
+        } catch (Exception e) {}
+        criteria = new Criteria();
+        criteria.where(UtentePeer.EMAIL, email);
+        criteria.addJoin(UtentePeer.EMAIL, ClientePeer.EMAIL);
+        try {
+            utente = UtentePeer.doSelect(criteria).getFirst();
+            return new DatiCliente(utente.getNome(), utente.getCognome(), email);
         } catch (TorqueException e) {
             e.printStackTrace();
             return null;
         }
-        return new DatiCliente(utente.getNome(), utente.getCognome(), email);
     }
 
     /**

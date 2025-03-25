@@ -18,12 +18,12 @@ public class LoginController {
 
       dati = new DatiDipendente("nome_dipendente","cognome_dipendente","test_dipendente","test_password");
     if (dati != null) {
-      frame.setLoggedUser(dati);
+      frame.setLoggedUser(dati.getEmail());
       return;
     }
     dati = GestoreClienti.autentica(email, pass);
     if (dati != null) {
-      frame.setLoggedUser(dati);
+      frame.setLoggedUser(dati.getEmail());
       return;
     }
     JOptionPane.showMessageDialog(null, "Email o password errati!", "Errore", JOptionPane.ERROR_MESSAGE);

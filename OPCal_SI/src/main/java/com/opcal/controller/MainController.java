@@ -28,7 +28,6 @@ public class MainController {
 
   public void logout() {
     mainPage.getParentFrame().setLoggedUser(null);
-    mainPage.getParentFrame().showPage("Login");
   }
 
   public void eliminaAccount(){
@@ -159,7 +158,7 @@ public class MainController {
     mainPage.table.search(text);
   }
 
-  public Dati trovaUtente(String email) {
+  public static Dati trovaUtente(String email) {
     return GestoreClienti.trovaUtente(email);
   }
 
