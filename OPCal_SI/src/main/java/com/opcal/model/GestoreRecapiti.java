@@ -30,7 +30,7 @@ public class GestoreRecapiti {
             inCorso.save();
             spedizione.addInCorso(inCorso);
             spedizione.save();
-            creaRicevuta(spedizione);
+            creaRicevuta(spedizione, true);
             Transaction.commit(connection);
         } catch (TorqueException e) {
             Transaction.safeRollback(connection);
@@ -47,7 +47,7 @@ public class GestoreRecapiti {
             spedizione.save();
             Prenotata prenotata = new Prenotata(spedizione);
             prenotata.save();
-            creaRicevuta(spedizione);
+            creaRicevuta(spedizione, false);
             Transaction.commit(connection);
         } catch (TorqueException e) {
             e.printStackTrace();
@@ -57,8 +57,8 @@ public class GestoreRecapiti {
         return true;
     }
 
-    private static void creaRicevuta(Spedizione spedizione) throws TorqueException {
-        Ricevuta ricevuta = new Ricevuta(spedizione);
+    private static void creaRicevuta(Spedizione spedizione, boolean pagato) throws TorqueException {
+        Ricevuta ricevuta = new Ricevuta(spedizione, pagato);
         ricevuta.save();
     }
 
@@ -84,7 +84,7 @@ public class GestoreRecapiti {
 
         int media;
         if (spedizioneInterna)
-            return centinaia * 350 + decine * 45 + unita * 5;
+            return centinaia * 300 + decine * 25 + unita * 2;
         else{
             media = calcolaMediaCorrieri(centinaia, decine, unita);
         }
@@ -174,7 +174,7 @@ public class GestoreRecapiti {
             case 4:
                 return consegna(spedizione);
             case 5:
-                return cambiaStato(spedizione, "Tentato recapito");
+                return cambiaStato(spedizione, "tentato recapito");
             default:
                 return false;
 

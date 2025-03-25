@@ -15,9 +15,13 @@ public class Ricevuta
     super();
   }
 
-  public Ricevuta(Spedizione spedizione) throws TorqueException {
+  public Ricevuta(Spedizione spedizione, boolean pagato) throws TorqueException {
     super();
-    setStato("Richiesto");
+    if (pagato) {
+     setStato("Pagamento confermato");
+    }
+    else
+      setStato("Non regolarizzata");
     setData(new Date(System.currentTimeMillis()));
     setSpedizione(spedizione);
   }

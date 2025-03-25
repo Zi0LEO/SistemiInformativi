@@ -66,7 +66,7 @@ public class GeneratoreEtichette {
     }
 
     private static Cliente[] mittenteDestinatario(Spedizione s) {
-        Cliente[] cl = new Cliente[1];
+        Cliente[] cl = new Cliente[2];
 
         try {
             cl[0] = ClientePeer.retrieveByPK(s.getEmailDestinatario());
