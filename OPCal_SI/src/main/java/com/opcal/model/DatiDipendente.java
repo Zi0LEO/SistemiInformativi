@@ -6,4 +6,7 @@ public class DatiDipendente extends Dati {
     super(nome, cognome, email, passwd);
   }
 
+  public DatiDipendente(String nome, String cognome, String email) {
+    super(nome, cognome, email);
+  }
 }

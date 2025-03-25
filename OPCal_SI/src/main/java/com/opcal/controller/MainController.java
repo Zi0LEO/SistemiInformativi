@@ -3,24 +3,21 @@ package com.opcal.controller;
 import com.opcal.*;
 import com.opcal.model.*;
 import com.opcal.view.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 public class MainController {
 
-  private static final Logger log = LoggerFactory.getLogger(MainController.class);
   private final MainPage mainPage;
-  private Dati dati;
+  private final Dati dati;
 
   public MainController(MainPage mainPage) {
     this.mainPage = mainPage;
+    dati = mainPage.getParentFrame().getLoggedUser();
   }
 
   public Indirizzo trovaIndirizzo() {
@@ -30,7 +27,6 @@ public class MainController {
 
   public void logout() {
     mainPage.getParentFrame().setLoggedUser(null);
-    mainPage.getParentFrame().showPage("Login");
   }
 
   public void eliminaAccount(){
@@ -48,31 +44,30 @@ public class MainController {
         add("Orario");
       }};
     EditDataDialog dialog = new EditDataDialog(mainPage.getParentFrame(), dati.getEmail(), campi);
-    System.out.println("test");
-    mainPage.controller.updateContent(mainPage);
+    mainPage.buildPage();
   }
 
   public void creaSpedizione(){
     SpedizioneDialog dialog = new SpedizioneDialog(dati.getEmail(), mainPage.getParentFrame());
   }
 
-  private String[] retrieveCampi(int tipo) {
-    Map<String, String> fieldsWithTable = SpedizionePeer.getFields();
+  //hardcoded at the moment
+  private List<String> retrieveCampi(int tipo) {
+    List<String> fields = SpedizionePeer.getFields();
     switch (tipo) {
       case 1:
-        fieldsWithTable.put("Data prenotazione", PrenotataPeer.TABLE_NAME);
-        fieldsWithTable.put("Data prevista di ritiro", PrenotataPeer.TABLE_NAME);
+        fields.add("Data prenotazione");
+        fields.add("Data prevista di ritiro");
         break;
       case 2:
-        fieldsWithTable.put("Data spedizione", InCorsoPeer.TABLE_NAME);
+        fields.add("Data spedizione");
         break;
       case 3:
-        fieldsWithTable.put("Data spedizione", EffettuataPeer.TABLE_NAME);
-        fieldsWithTable.put("Data consegna", EffettuataPeer.TABLE_NAME);
+        fields.add("Data spedizione");
+        fields.add("Data consegna");
         break;
     }
-    mainPage.setData(fieldsWithTable);
-    return fieldsWithTable.keySet().toArray(new String[0]);
+    return fields;
   }
 
   public void mostraSpedizioniRicevute() {
@@ -85,29 +80,47 @@ public class MainController {
     mainPage.table.setTableData(data, retrieveCampi(0));
   }
 
-  public void mostraSpedizioniInCorso() {
+  public void mostraSpedizioniPrenotate() {
     List<Object[]> data = GestoreRecapiti.mostraSpedizioni(dati.getEmail(), 3);
+    mainPage.table.setTableData(data, retrieveCampi(1));
+  }
+  public void mostraSpedizioniPrenotateDip() {
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(null, 3);
+    mainPage.table.setTableData(data, retrieveCampi(1));
+  }
 
+  public void mostraSpedizioniInCorso() {
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(dati.getEmail(), 4);
+    mainPage.table.setTableData(data, retrieveCampi(2));
+  }
+
+  public void mostraSpedizioniInCorsoDip() {
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(null, 4);
     mainPage.table.setTableData(data, retrieveCampi(2));
   }
 
   public void mostraSpedizioniEffettuate() {
-    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(dati.getEmail(), 4);
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(dati.getEmail(), 5);
     //SpedizionePeer.getFields()
     mainPage.table.setTableData(data, retrieveCampi(3));
   }
-
-  public void mostraSpedizioniPrenotate() {
-    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(dati.getEmail(), 5);
-    mainPage.table.setTableData(data, retrieveCampi(1));
+  public void mostraSpedizioniEffettuateDip() {
+    List<Object[]> data = GestoreRecapiti.mostraSpedizioni(null, 5);
+    mainPage.table.setTableData(data, retrieveCampi(3));
   }
+
+
 
   public void mostraRicevute() {
     List<Object[]> data = GestoreClienti.getListaRicevute(dati.getEmail());
-    List<String> tempCampi = Ricevuta.getFieldNames();
-    String[] campi = new String[tempCampi.size() + 1];
-    campi = tempCampi.toArray(campi);
-    campi[campi.length - 1] = "Pagamento";
+    List<String> campi = RicevutaPeer.getFields();
+    campi.add("Pagamento");
+    mainPage.table.setTableData(data, campi);
+  }
+  public void mostraRicevuteDip() {
+    List<Object[]> data = GestoreClienti.getListaRicevute(null);
+    List<String> campi = RicevutaPeer.getFields();
+    campi.add("Pagamento");
     mainPage.table.setTableData(data, campi);
   }
 
@@ -119,35 +132,50 @@ public class MainController {
   public void visualizzaResi() {
     List<Object[]> data = GestoreResi.listaResi(dati.getEmail());
     List<String> campi = Reso.getFieldNames();
-    String[] campiArr = campi.toArray(new String[0]);
-    mainPage.table.setTableData(data, campiArr);
+    mainPage.table.setTableData(data, campi);
+  }
+  public void visualizzaResiDip() {
+    List<Object[]> data = GestoreResi.listaResi(null);
+    List<String> campi = Reso.getFieldNames();
+    mainPage.table.setTableData(data, campi);
+  }
+
+  public void listaClienti(){
+    List<Object[]> data = GestoreClienti.listaClienti();
+    List campi = List.of("Nome", "Cognome", "Email");
+    mainPage.table.setTableData(data, campi);
   }
 
   public void cercaInTable(String text) {
     mainPage.table.search(text);
   }
 
-  public Dati trovaUtente(String email) {
+  public static Dati trovaUtente(String email) {
     return GestoreClienti.trovaUtente(email);
   }
 
-  //temporary
-  public void updateContent(MainPage mainPage) {
-    Dati dati = trovaUtente(mainPage.getParentFrame().getLoggedUser().getEmail());
-    this.dati = dati;
-    mainPage.datiPanel.removeAll();
-    mainPage.datiPanel.add(new JLabel(dati.getNome()));
-    mainPage.datiPanel.add(new JLabel(dati.getCognome()));
-    mainPage.datiPanel.add(new JLabel(dati.getEmail()));
-    if (dati instanceof DatiCliente) {
-      mainPage.datiPanel.setLayout(new GridLayout(5, 1));
-      Indirizzo indirizzo = trovaIndirizzo();
-      mainPage.datiPanel.add(new JLabel(indirizzo.toString()));
-    } else {
-      mainPage.datiPanel.setLayout(new GridLayout(4, 1));
-    }
-    mainPage.revalidate();
-    mainPage.repaint();
+  public void creaSpedizioneDipendente() {
+    Dialog dialog = new SpedizioneDialog(mainPage.getParentFrame());
+  }
+
+  public void modificaDati() {
+    JDialog dialog = new SelectClienteDialog(mainPage.getParentFrame());
+  }
+
+  public void listaIndirizzi() {
+    List<Object[]> data = GestoreRecapiti.listaIndirizzi();
+    List campi = List.of("Email", "Comune", "Via", "Civico", "Orario");
+    mainPage.table.setTableData(data, campi);
+  }
+
+  public void visualizzaCorrieri() {
+    List<Object[]> data = GestoreRecapiti.listaCorrieri();
+    List campi = List.of("Nome", "Partita Iva", "Sito", "Numero di telefono", "prezzo 1kg", "prezzo 10kg", "prezzo 100kg");
+    mainPage.table.setTableData(data, campi);
+  }
+
+  public void avanzaSpedizione() {
+    JDialog dialog = new ModificaSpedizioneDialog(mainPage.getParentFrame());
   }
 }
 

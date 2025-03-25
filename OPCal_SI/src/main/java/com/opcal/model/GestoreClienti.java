@@ -7,6 +7,7 @@ import org.apache.torque.util.Transaction;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GestoreClienti {
@@ -89,44 +90,6 @@ public class GestoreClienti {
     }
 
     /**
-     * Permette di modificare il nome di un cliente già presente all'interno della base di dati.
-     *
-     * @param cliente il cliente da modificare.
-     * @throws ClassNotFoundException nel caso in cui il cliente che si cerca di modificare non esiste
-     */
-    public static void modificaNomeCliente(Cliente cliente, String nome) throws ClassNotFoundException {
-        modificaNomeCliente(cliente.getEmail(), nome);
-    }
-
-    /**
-     * Permette di modificare il cognome di un cliente già presente all'interno della base di dati.
-     * Nel caso in cui il cliente da modificare non esiste lo crea.
-     *
-     * @param cliente Il cliente da modificare.
-     * @param cognome Il nuovo cognome
-     * @throws ClassNotFoundException Nel caso in cui il cliente che si cerca di modificare non esiste
-     */
-    public static void modificaCognomeCliente(Cliente cliente, String cognome) throws ClassNotFoundException {
-        modificaCognomeCliente(cliente.getEmail(), cognome);
-    }
-
-    /**
-     * Permette di cancellare un cliente già esistente all'interno della base di dati
-     *
-     * @param cliente L'oggetto di tipo cliente che dovrà essere eliminato
-     */
-    public static boolean cancellaCliente(Cliente cliente) {
-        try {
-            ClientePeer.doDelete(cliente);
-            UtentePeer.doDelete(cliente.getUtente());
-            return true;
-        } catch (TorqueException e) {
-            return false;
-        }
-
-    }
-
-    /**
      * Permette di cancellare un cliente già esistente all'interno della base di dati
      *
      * @param email L'identificatore del cliente che dovrà essere eliminato
@@ -149,14 +112,24 @@ public class GestoreClienti {
     }
 
     public static Dati trovaUtente(String email) {
+        Criteria criteria = new Criteria();
+        criteria.where(UtentePeer.EMAIL, email);
+        criteria.addJoin(UtentePeer.EMAIL, DipendentePeer.EMAIL);
         Utente utente;
         try {
-            utente = UtentePeer.retrieveByPK(email);
+            utente = UtentePeer.doSelect(criteria).getFirst();
+            return new DatiDipendente(utente.getNome(), utente.getCognome(), email);
+        } catch (Exception e) {}
+        criteria = new Criteria();
+        criteria.where(UtentePeer.EMAIL, email);
+        criteria.addJoin(UtentePeer.EMAIL, ClientePeer.EMAIL);
+        try {
+            utente = UtentePeer.doSelect(criteria).getFirst();
+            return new DatiCliente(utente.getNome(), utente.getCognome(), email);
         } catch (TorqueException e) {
             e.printStackTrace();
             return null;
         }
-        return new DatiCliente(utente.getNome(), utente.getCognome(), email);
     }
 
     /**
@@ -203,7 +176,8 @@ public class GestoreClienti {
 
         Criteria criteria = new Criteria();
         criteria.addJoin(RicevutaPeer.CODICE, SpedizionePeer.CODICE);
-        criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
+        if(email != null)
+            criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
 
         List<Ricevuta> ris;
         try {
@@ -220,8 +194,8 @@ public class GestoreClienti {
         for (Ricevuta r : ris) {
             Object[] obj = new Object[4];
             obj[0] = r.getCodice();
-            obj[1] = r.getData();
-            obj[2] = r.getStato();
+            obj[1] = r.getStato();
+            obj[2] = r.getData();
             obj[3] = associaPrezzo(r.getCodice());
             returnList.add(obj);
         }
@@ -257,46 +231,41 @@ public class GestoreClienti {
         return ris;
     }
 
-    /** Permette di ricevere la lista dei clienti.
-     *
-     * @param tipo Un intero tra 0 e 1 che indica il tipo di ordinamento, <br> 0 ritorna l'ordinamento crescente per cognome, <br> 1 decrescente per cognome,
-     * @return  Un'oggetto di tipo List che è la lista dei clienti, è inizializzata come ArrayList.
-     */
-    public static List<Cliente> getListaClienti(int tipo){
-        if (tipo == 0)
-            return listaClientiImpl(new Criteria().addAscendingOrderByColumn(UtentePeer.COGNOME));
-        else if (tipo == 1)
-            return listaClientiImpl(new Criteria().addDescendingOrderByColumn(UtentePeer.COGNOME));
-
-        else
-            throw new IllegalArgumentException("Tipo non ammesso");
+    public static List<Cliente> getListaClienti() {
+        try{
+            return ClientePeer.doSelect(new Criteria());
+        }catch (TorqueException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    /** Permette di ricevere la lista dei clienti ordinata ascendente per cognome.
-
-     * @return  Un'oggetto di tipo List che è la lista dei clienti, è inizializzata come ArrayList.
-     */
-    public static List<Cliente> getListaClienti(){
-        return getListaClienti(1);
-    }
-
-    private static List<Cliente> listaClientiImpl(Criteria criteria) {
-
+    public static List<Object[]> listaClienti() {
+        Criteria criteria = new Criteria();
         criteria.addJoin(UtentePeer.EMAIL, ClientePeer.EMAIL);
-        criteria.addSelectColumn(ClientePeer.EMAIL);
-        criteria.addDescendingOrderByColumn(UtentePeer.COGNOME);
 
-        List<Cliente> ris = new ArrayList<>();
+        List<Utente> partialRis = new ArrayList<>();
 
         try {
-            ris = ClientePeer.doSelect(criteria);
+            partialRis = UtentePeer.doSelect(criteria);
         } catch (TorqueException e) {
             System.out.println("Errore nella query");
         }
 
-        return ris;
+        return costruisciClienti(partialRis);
     }
 
+    private static List<Object[]> costruisciClienti(List<Utente> partialRet) {
+        List<Object[]> result = new LinkedList<>();
+        for(Utente u: partialRet) {
+            Object[] row = new Object[3];
+            row[0] = u.getNome();
+            row[1] = u.getCognome();
+            row[2] = u.getEmail();
+            result.add(row);
+        }
+        return result;
+    }
     private static boolean esiste(String email) {
         try {
             ClientePeer.retrieveByPK(email);

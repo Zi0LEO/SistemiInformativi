@@ -20,6 +20,20 @@ public class SpedizioneDialogController extends DialogController{
     return 0;
   }
 
+  public static void confermaDip(Dialog dialog, String emailMittente, String emailDestinatario, String peso) {
+    if(!correctFields(emailDestinatario, peso))
+      return;
+
+    int pesoInt = Integer.parseInt(peso);
+    boolean successo = GestoreRecapiti.creaSpedizione(emailMittente, emailDestinatario, pesoInt);
+    if(successo) {
+      JOptionPane.showMessageDialog(null, "Ritiro prenotato con successo", "Ritiro prenotato", JOptionPane.INFORMATION_MESSAGE);
+      dialog.dispose();
+    }
+    else
+      JOptionPane.showMessageDialog(null, "Errore durante il ritiro", "Errore", JOptionPane.ERROR_MESSAGE);
+  }
+
   public static void conferma(Dialog dialog, String emailMittente, String emailDestinatario, String peso) {
     if(!correctFields(emailDestinatario, peso))
       return;

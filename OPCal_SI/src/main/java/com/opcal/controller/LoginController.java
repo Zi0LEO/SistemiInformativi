@@ -1,28 +1,29 @@
 package com.opcal.controller;
 
-import com.opcal.model.DatiCliente;
+import com.opcal.model.Dati;
+import com.opcal.model.DatiDipendente;
+import com.opcal.model.GestoreClienti;
 import com.opcal.view.MainFrame;
-import com.opcal.view.MainPage;
 
 import javax.swing.*;
 
 
 public class LoginController {
-  public static void login(MainFrame frame, String email, char[] password, MainPage mainPage){
+  public static void login(MainFrame frame, String email, char[] password){
     String pass = new String(password);
-    DatiCliente dati = null;
+    Dati dati = null;
 //    dati = GestoreDipendenti.autentica(email,pass);
+    if(email.equals("test_dipendente"))
+
+
+      dati = new DatiDipendente("nome_dipendente","cognome_dipendente","test_dipendente","test_password");
     if (dati != null) {
-      frame.setLoggedUser(dati);
-      frame.showPage("Main");
-      mainPage.updateContent();
+      frame.setLoggedUser(dati.getEmail());
       return;
     }
-    dati = new DatiCliente("umberto","frega","umbertofrega@gmail.com");
+    dati = GestoreClienti.autentica(email, pass);
     if (dati != null) {
-      frame.setLoggedUser(dati);
-      frame.showPage("Main");
-      mainPage.updateContent();
+      frame.setLoggedUser(dati.getEmail());
       return;
     }
     JOptionPane.showMessageDialog(null, "Email o password errati!", "Errore", JOptionPane.ERROR_MESSAGE);

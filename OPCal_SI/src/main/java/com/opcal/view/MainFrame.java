@@ -1,5 +1,6 @@
 package com.opcal.view;
 
+import com.opcal.controller.MainController;
 import com.opcal.model.Dati;
 
 import javax.swing.*;
@@ -13,8 +14,18 @@ public class MainFrame extends JFrame {
     return loggedUser;
   }
 
-  public void setLoggedUser(Dati loggedUser) {
-    this.loggedUser = loggedUser;
+  public void setLoggedUser(String email)
+  {
+    if(email == null) {
+      cardLayout.show(cardPanel, "Login");
+      this.loggedUser = null;
+      return;
+    }
+    this.loggedUser = MainController.trovaUtente(email);
+    if(loggedUser == null) return;
+    MainPage mainPage = new MainPage(this);
+    cardPanel.add(mainPage, "Main");
+    cardLayout.show(cardPanel, "Main");
   }
 
   private Dati loggedUser;
@@ -24,31 +35,6 @@ public class MainFrame extends JFrame {
     setSize(800, 600);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLocationRelativeTo(null);
-
-    // Creazione del CardLayout e del pannello principale
-    cardLayout = new CardLayout();
-    cardPanel = new JPanel(cardLayout);
-
-    // Aggiungi le pagine
-    MainPage mainPage = new MainPage(this);
-    cardPanel.add(createPageWithHeader(new LoginPage(this, mainPage)), "Login");
-    cardPanel.add(createPageWithHeader(new RegistrationPage(this)), "Registration");
-    cardPanel.add(createPageWithHeader(mainPage), "Main");
-
-    // Mostra la prima pagina (Login)
-    cardLayout.show(cardPanel, "Login");
-
-    // Aggiungi il pannello principale al frame
-    add(cardPanel);
-    setVisible(true);
-  }
-
-  // Metodo per creare una pagina con l'header
-  private JPanel createPageWithHeader(JPanel contentPanel) {
-    JPanel pageWithHeader = new JPanel(new BorderLayout());
-    pageWithHeader.setBackground(new Color(45, 45, 48));
-
-    // Header Panel
     JPanel headerPanel = new JPanel();
     headerPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
     headerPanel.setBackground(new Color(80, 80, 85));
@@ -67,12 +53,23 @@ public class MainFrame extends JFrame {
     // Aggiungi logo e titolo all'header
     headerPanel.add(iconLabel);
     headerPanel.add(titleLabel);
+    add(headerPanel, BorderLayout.NORTH);
 
-    // Aggiungi header e contenuto alla pagina
-    pageWithHeader.add(headerPanel, BorderLayout.NORTH);
-    pageWithHeader.add(contentPanel, BorderLayout.CENTER);
+    // Creazione del CardLayout e del pannello principale
+    cardLayout = new CardLayout();
+    cardPanel = new JPanel(cardLayout);
 
-    return pageWithHeader;
+    // Aggiungi le pagine
+    cardPanel.add(new LoginPage(this), "Login");
+    cardPanel.add(new RegistrationPage(this), "Registration");
+    cardPanel.add(new JPanel(), "Main");
+
+    // Mostra la prima pagina (Login)
+    cardLayout.show(cardPanel, "Login");
+
+    // Aggiungi il pannello principale al frame
+    add(cardPanel);
+    setVisible(true);
   }
 
   public void showPage(String pageName) {

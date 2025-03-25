@@ -3,6 +3,7 @@ package com.opcal.controller;
 import com.opcal.Indirizzo;
 import com.opcal.model.GestoreClienti;
 import com.opcal.model.GestoreRecapiti;
+import com.opcal.view.MainFrame;
 
 import javax.swing.*;
 import java.util.List;
@@ -10,12 +11,11 @@ import java.util.List;
 public class EditDataDialogController extends DialogController{
 
   //temporaneo
-  public static void salva(JDialog dialog, String email, List<String> values) {
+  public static void salva(MainFrame parent, JDialog dialog, String email, List<String> values) {
     Indirizzo indirizzo;
-    System.out.println(values.toString());
     if (!values.get(0).isEmpty())
       try {
-        GestoreClienti.modificaNomeCliente(email, values.get(0));
+        GestoreClienti.modificaNomeCliente(email, values.getFirst());
       } catch (ClassNotFoundException e) {
         JOptionPane.showMessageDialog(null, "Errore durante la modifica", "Errore", JOptionPane.ERROR_MESSAGE);
         dialog.dispose();
@@ -61,6 +61,7 @@ public class EditDataDialogController extends DialogController{
       return;
     }
   }
+    parent.setLoggedUser(email);
     dialog.dispose();
     JOptionPane.showMessageDialog(null, "Modifica completata con successo", "Modifica", JOptionPane.INFORMATION_MESSAGE);
   }

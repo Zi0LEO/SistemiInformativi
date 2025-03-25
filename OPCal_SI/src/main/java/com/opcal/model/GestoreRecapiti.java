@@ -13,13 +13,20 @@ import java.util.ListIterator;
 
 public class GestoreRecapiti {
 
-    public static boolean creaSpedizione(Cliente mittente, Cliente destinatario, int peso) {
+    public static boolean creaSpedizione(String emailMittente, String emailDestinatario, int peso) {
         Connection connection = null;
+        try{
+            ClientePeer.retrieveByPK(emailMittente);
+            ClientePeer.retrieveByPK(emailDestinatario);
+        }catch (Exception E){
+            return false;
+        }
 
-        Spedizione spedizione = new Spedizione(mittente.getEmail(), destinatario.getEmail(), peso, calcolaPrezzo(peso, destinatario.getEmail()));
+        Spedizione spedizione = new Spedizione(emailMittente, emailDestinatario, peso, calcolaPrezzo(peso, emailDestinatario));
         InCorso inCorso = new InCorso(spedizione);
         try {
             connection = Transaction.begin();
+            inCorso.setStato("Presa in carico");
             inCorso.save();
             spedizione.addInCorso(inCorso);
             spedizione.save();
@@ -62,8 +69,7 @@ public class GestoreRecapiti {
             criteria.where(IndirizzoPeer.EMAIL_CLIENTE, emailDestinatario);
             indirizzo = IndirizzoPeer.doSelect(criteria).getFirst();
         }catch (TorqueException e){
-            e.printStackTrace();
-            return null;
+            return 0;
         }
         if (indirizzo.getComune().equals("Cosenza") || indirizzo.getComune().equals("Rende") || indirizzo.getComune().equals("Castrolibero"))
             return prezzoSuddiviso(peso, true);
@@ -111,9 +117,12 @@ public class GestoreRecapiti {
           return centinaia * media100 + decine * media10 + unita * media1;
       }
 
-    public static Indirizzo visualizzaIndirizzo(String emailCliente) {
+    public static Indirizzo visualizzaIndirizzo(String email) {
         Criteria criteria = new Criteria();
-        criteria.where(IndirizzoPeer.EMAIL_CLIENTE, emailCliente);
+        try{
+            ClientePeer.retrieveByPK(email);
+            criteria.where(IndirizzoPeer.EMAIL_CLIENTE, email);
+        }catch (Exception e){}
         try {
             return IndirizzoPeer.doSelect(criteria).getFirst();
         } catch (Exception e) {
@@ -122,41 +131,49 @@ public class GestoreRecapiti {
         }
     }
 
-    public static List<Indirizzo> visualizzaIndirizzi(int criterio, String options) {
-        Criteria criteria = new Criteria();
-        try {
-            switch (criterio) {
-                case 1:
-                    criteria.where(IndirizzoPeer.COMUNE, options);
-                    break;
-                case 2:
-                    criteria.where(IndirizzoPeer.VIA, options);
-                    break;
-                case 3:
-                    criteria.where(IndirizzoPeer.ORARIO, Integer.valueOf(options));
-                    break;
-            }
-            return IndirizzoPeer.doSelect(criteria);
-
-        } catch (TorqueException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static List<Object[]> listaIndirizzi() {
+      Criteria criteria = new Criteria();
+      List<Indirizzo> partialRet;
+      try {
+          partialRet = IndirizzoPeer.doSelect(criteria);
+      } catch (TorqueException e) {
+        return null;
+      }
+      return costruisciIndirizzi(partialRet);
     }
 
-    public static boolean cambiaStato(Spedizione spedizione, int stato) {
+    private static List<Object[]> costruisciIndirizzi(List<Indirizzo> partialRet) {
+        List<Object[]> result = new LinkedList<>();
+        for(Indirizzo indirizzo : partialRet) {
+            Object[] row = new Object[5];
+            row[0] = indirizzo.getEmailCliente();
+            row[1] = indirizzo.getComune();
+            row[2] = indirizzo.getVia();
+            row[3] = indirizzo.getCivico();
+            row[4] = indirizzo.getOrario();
+            result.add(row);
+        }
+        return result;
+    }
+
+    public static boolean cambiaStato(Integer codice, int stato) {
+        Spedizione spedizione;
+        try{
+            spedizione = SpedizionePeer.retrieveByPK(codice);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
         switch (stato) {
             case 1:
                 return prendiInCarico(spedizione);
             case 2:
-                return cambiaStato(spedizione, "Spedita");
+                return cambiaStato(spedizione, "spedita");
             case 3:
-                return cambiaStato(spedizione, "Arrivata alla filiale");
+                return cambiaStato(spedizione, "in consegna");
             case 4:
-                return cambiaStato(spedizione, "In Consegna");
-            case 5:
                 return consegna(spedizione);
-            case 6:
+            case 5:
                 return cambiaStato(spedizione, "Tentato recapito");
             default:
                 return false;
@@ -171,6 +188,7 @@ public class GestoreRecapiti {
             Prenotata prenotata = PrenotataPeer.retrieveByPK(spedizione.getCodice(), con);
             PrenotataPeer.doDelete(prenotata, con);
             InCorso inCorso = new InCorso(spedizione);
+            inCorso.setStato("presa in carico");
             inCorso.save(con);
             spedizione.resetPrenotata();
             spedizione.save(con);
@@ -206,6 +224,7 @@ public class GestoreRecapiti {
         try {
             InCorso inCorso = InCorsoPeer.retrieveByPK(spedizione.getCodice());
             inCorso.setStato(stato);
+            inCorso.save();
         } catch (TorqueException e) {
             e.printStackTrace();
             return false;
@@ -218,7 +237,7 @@ public class GestoreRecapiti {
         List<Spedizione> partialResult = fetchSpedizioni(criteria);
         if (partialResult == null)
             return null;
-        return costruisciSpedizioni(partialResult);
+        return costruisciSpedizioni(partialResult, tipo);
     }
 
     private static Criteria buildCriteria(String email, int tipo) {
@@ -236,36 +255,67 @@ public class GestoreRecapiti {
                 criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
                 break;
             case 3:
-                criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
-                criteria.or(SpedizionePeer.EMAIL_DESTINATARIO, email);
-                criteria.addJoin(SpedizionePeer.CODICE, InCorsoPeer.CODICE, Criteria.INNER_JOIN);
+                if (email != null) {
+                    criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
+                    criteria.or(SpedizionePeer.EMAIL_DESTINATARIO, email);
+                }
+                criteria.addJoin(SpedizionePeer.CODICE, PrenotataPeer.CODICE, Criteria.INNER_JOIN);
                 break;
             case 4:
-                criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
-                criteria.or(SpedizionePeer.EMAIL_DESTINATARIO, email);
-                criteria.addJoin(SpedizionePeer.CODICE, EffettuataPeer.CODICE, Criteria.INNER_JOIN);
+                if (email != null) {
+                    criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
+                    criteria.or(SpedizionePeer.EMAIL_DESTINATARIO, email);
+                }
+                criteria.addJoin(SpedizionePeer.CODICE, InCorsoPeer.CODICE, Criteria.INNER_JOIN);
                 break;
             case 5:
-                criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
-                criteria.or(SpedizionePeer.EMAIL_DESTINATARIO, email);
-                criteria.addJoin(SpedizionePeer.CODICE, PrenotataPeer.CODICE, Criteria.INNER_JOIN);
+                if (email != null) {
+                    criteria.where(SpedizionePeer.EMAIL_MITTENTE, email);
+                    criteria.or(SpedizionePeer.EMAIL_DESTINATARIO, email);
+                }
+                criteria.addJoin(SpedizionePeer.CODICE, EffettuataPeer.CODICE, Criteria.INNER_JOIN);
         }
         return criteria;
     }
 
-    private static List<Object[]> costruisciSpedizioni(List<Spedizione> partialResult) {
-        int rowLength = SpedizionePeer.numColumns + 2;
+    private static List<Object[]> costruisciSpedizioni(List<Spedizione> partialResult, int tipo) {
+        int rowLength = SpedizionePeer.numColumns + 1;
+        if (tipo == 3) rowLength += 2;
+        if (tipo == 4) rowLength += 1;
+        if (tipo == 5) rowLength += 2;
         List<Object[]> result = new LinkedList<>();
         for(Spedizione singola : partialResult) {
             Object[] row = new Object[rowLength];
             row[0] = singola.getCodice();
             row[1] = singola.getEmailMittente();
             row[2] = singola.getEmailDestinatario();
-            row[3] = mostraStato(singola.getCodice());
-            row[4] = getRelevantDate(singola.getCodice());
-            row[5] = singola.getPeso();
-            row[6] = singola.getPrezzo();
-            row[7] = safeCorriere(singola);
+            row[3] = getStato(singola.getCodice());
+            row[4] = singola.getPeso();
+            row[5] = singola.getPrezzo();
+            row[6] = safeCorriere(singola);
+            try {
+                switch (tipo) {
+                    case 3:
+                        Prenotata p = PrenotataPeer.retrieveByPK(singola.getCodice());
+                        row[7] = p.getDataPrenotazione();
+                        row[8] = p.getDataRitiro();
+                        break;
+                    case 4:
+                        InCorso ic = InCorsoPeer.retrieveByPK(singola.getCodice());
+                        row[7] = ic.getDataSpedizione();
+                        break;
+                    case 5:
+                        Effettuata e = EffettuataPeer.retrieveByPK(singola.getCodice());
+                        row[7] = e.getDataSpedizione();
+                        row[8] = e.getDataConsegna();
+                        break;
+                    default:
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
             result.add(row);
         }
         return result;
@@ -305,20 +355,6 @@ public class GestoreRecapiti {
             return null;
         }
         return partialResult;
-    }
-
-    private static String mostraStato(Integer codice) {
-        Criteria criteria = new Criteria();
-        criteria.where(InCorsoPeer.CODICE, codice);
-        try {
-            return InCorsoPeer.doSelect(criteria).getFirst().getStato();
-        } catch (Exception e) {
-        }
-        try {
-            PrenotataPeer.doSelect(criteria);
-            return "In attesa di ritiro";
-        }catch (Exception e){}
-        return "Consegnata";
     }
 
     public static Indirizzo modificaIndirizzo(String emailCliente, String value, int campo) {
@@ -374,5 +410,66 @@ public class GestoreRecapiti {
             return null;
         }
         return indirizzo;
+    }
+
+    public static List<Object[]> listaCorrieri() {
+        Criteria criteria = new Criteria();
+        criteria.addSelectColumn(CorrierePeer.NOME)
+            .addSelectColumn(CorrierePeer.IVA)
+            .addSelectColumn(CorrierePeer.SITO)
+            .addSelectColumn(CorrierePeer.TELEFONO)
+            .addSelectColumn(CorrierePeer.PREZZO1)
+            .addSelectColumn(CorrierePeer.PREZZO10)
+            .addSelectColumn(CorrierePeer.PREZZO100);
+        List<Corriere> partialRet;
+        try{
+            partialRet = CorrierePeer.doSelect(criteria);
+        }catch (TorqueException e){
+            e.printStackTrace();
+            return null;
+        }
+        return costruisciCorriere(partialRet);
+
+    }
+
+    private static List<Object[]> costruisciCorriere(List<Corriere> partialRet) {
+        int rowLength = CorrierePeer.numColumns;
+        List<Object[]> result = new LinkedList<>();
+        for(Corriere singolo : partialRet) {
+            Object[] row = new Object[rowLength];
+            row[0] = singolo.getNome();
+            row[1] = singolo.getIva();
+            row[2] = singolo.getSito();
+            row[3] = singolo.getTelefono();
+            row[4] = singolo.getPrezzo1();
+            row[5] = singolo.getPrezzo10();
+            row[6] = singolo.getPrezzo100();
+            result.add(row);
+        }
+        return result;
+    }
+
+    public static String getStato(Integer codiceSpedizione) {
+        Spedizione spedizione;
+        try{
+            spedizione = SpedizionePeer.retrieveByPK(codiceSpedizione);
+        } catch (TorqueException e) {
+            e.printStackTrace();
+            return null;
+        }
+        try{
+            InCorso ic = spedizione.getInCorsos().getFirst();
+            return ic.getStato();
+        }catch (Exception e){}
+        try{
+            Effettuata e = spedizione.getEffettuatas().getFirst();
+            return "consegnata";
+        }catch (Exception e){}
+        try{
+            Prenotata p = spedizione.getPrenotatas().getFirst();
+            return "in attesa di ritiro";
+        }catch (Exception e){
+            return null;
+        }
     }
 }

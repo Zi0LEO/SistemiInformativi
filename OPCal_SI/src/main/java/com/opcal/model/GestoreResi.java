@@ -116,7 +116,8 @@ public class GestoreResi {
         criteria.addSelectColumn(ResoPeer.STATO);
         criteria.addSelectColumn(ResoPeer.DATA);
         criteria.addJoin(ResoPeer.CODICE, SpedizionePeer.CODICE);
-        criteria.where(SpedizionePeer.EMAIL_DESTINATARIO, email);
+        if(email != null)
+            criteria.where(SpedizionePeer.EMAIL_DESTINATARIO, email);
 
       try {
         return buildResoReturn(ResoPeer.doSelect(criteria));

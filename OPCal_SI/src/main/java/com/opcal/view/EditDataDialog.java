@@ -1,6 +1,8 @@
 package com.opcal.view;
 
 import com.opcal.controller.EditDataDialogController;
+import com.opcal.model.DatiCliente;
+import com.opcal.model.GestoreClienti;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -11,8 +13,17 @@ import java.util.stream.Collectors;
 
 public class EditDataDialog extends JDialog {
 
-  public EditDataDialog(Frame parent, String email, List<String> fields){
-    super(parent,"Modifica Dati",true);
+  public EditDataDialog(MainFrame parent, String email, List<String> fields) {
+    super(parent, "Modifica Dati", true);
+    DatiCliente test = null;
+    try {
+      test = (DatiCliente) GestoreClienti.trovaUtente(email);
+    } catch (Exception e) {
+      JOptionPane.showMessageDialog(this, "L'utente non è un cliente");
+    }
+    if (test == null) {
+      JOptionPane.showMessageDialog(this, "L'email inserita non esiste");
+    }
     setLayout(new GridBagLayout());
     setSize(500, 400);
     GridBagConstraints gbc = new GridBagConstraints();
@@ -36,6 +47,7 @@ public class EditDataDialog extends JDialog {
     gbc.gridy++;
 
     add(MyButton.createButton("Salva", () -> EditDataDialogController.salva(
+        parent,
         this,
         email,
         values.stream().map(JTextComponent::getText).collect(Collectors.toList()

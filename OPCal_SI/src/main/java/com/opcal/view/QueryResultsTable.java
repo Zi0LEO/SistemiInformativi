@@ -33,9 +33,9 @@ public class QueryResultsTable implements TableModelListener {
         Object value = model.getValueAt(row, column);
     }
 
-    public void setTableData(List<Object[]> data, String[] columnNames) {
+    public void setTableData(List<Object[]> data, List<String> columnNames) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setDataVector(data.toArray(new Object[0][]), columnNames);
+        model.setDataVector(data.toArray(new Object[0][]), columnNames.toArray(new String[0]));
         model.fireTableStructureChanged();
     }
 
