@@ -18,14 +18,20 @@ public class MainFrame extends JFrame {
   {
     if(email == null) {
       cardLayout.show(cardPanel, "Login");
-      this.loggedUser = null;
+      loggedUser = null;
       return;
     }
-    this.loggedUser = MainController.trovaUtente(email);
-    if(loggedUser == null) return;
-    MainPage mainPage = new MainPage(this);
-    cardPanel.add(mainPage, "Main");
-    cardLayout.show(cardPanel, "Main");
+
+    if(loggedUser != null && loggedUser.getEmail().equals(email)) {
+      loggedUser = MainController.trovaUtente(email);
+    }
+    if(loggedUser == null) {
+      loggedUser = MainController.trovaUtente(email);
+      MainPage mainPage = new MainPage(this);
+      cardPanel.add(mainPage, "Main");
+      cardLayout.show(cardPanel, "Main");
+    }
+
   }
 
   private Dati loggedUser;
