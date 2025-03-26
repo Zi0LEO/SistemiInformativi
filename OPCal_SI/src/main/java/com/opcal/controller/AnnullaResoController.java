@@ -7,7 +7,7 @@ import javax.swing.*;
 public class AnnullaResoController extends DialogController{
 
     public static void confermaAnnullamento(JDialog dialog,String codiceReso){
-        if(!codiceReso.isEmpty()){
+        if(codiceReso.isEmpty()){
             dialog.dispose();
             return;
         }
