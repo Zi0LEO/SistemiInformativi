@@ -3,12 +3,13 @@ package com.opcal.controller;
 import com.opcal.model.DatiCliente;
 import com.opcal.model.GestoreClienti;
 import com.opcal.model.GestoreRecapiti;
+import com.opcal.view.MainFrame;
 
 import javax.swing.*;
 
 public class RegistrationController {
 
-  public static void registrazione(String nome, String cognome, String comune, String via, String civico, String email, char[] pass) {
+  public static void registrazione(MainFrame parentFrame, String nome, String cognome, String comune, String via, String civico, String email, char[] pass) {
 
     String password = String.valueOf(pass);
     if (nome.isEmpty() || cognome.isEmpty() || email.isEmpty() || password.isEmpty() || comune.isEmpty() || via.isEmpty() || civico.isEmpty()) {
@@ -34,6 +35,10 @@ public class RegistrationController {
     if(GestoreRecapiti.creaIndirizzo(comune, via, civico, email) == null)
       {
       JOptionPane.showMessageDialog(null, "Errore durante la registrazione", "Errore", JOptionPane.ERROR_MESSAGE);
-    }
+      return;
+      }
+
+    JOptionPane.showMessageDialog(null, "Registrazione effettuata con successo!", "Notifica",JOptionPane.INFORMATION_MESSAGE);
+    parentFrame.showPage("Login");
   }
 }

@@ -128,6 +128,7 @@ class RegistrationPage extends JPanel {
 
     formPanel.add(MyButton.createButton("Registrati", () ->
         RegistrationController.registrazione(
+            mainFrame,
             nameField.getText(),
             surnameField.getText(),
             comuneField.getText(),
