@@ -126,7 +126,7 @@ public class GestoreClienti {
 
         List<Spedizione> ris = SpedizionePeer.doSelect(criteriaSpedizioniRicevute);
         ris.forEach(s -> {
-            s.setEmailDestinatario("Cancellato");
+            s.setEmailDestinatario(null);
           try {
             s.save(connection);
           } catch (TorqueException e) {
@@ -136,7 +136,7 @@ public class GestoreClienti {
 
         ris = SpedizionePeer.doSelect(criteriaSpedizioniInviate);
         ris.forEach(s -> {
-            s.setEmailMittente("Cancellato");
+            s.setEmailMittente(null);
           try {
             s.save(connection);
           } catch (TorqueException e) {
