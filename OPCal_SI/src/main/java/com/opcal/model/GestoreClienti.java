@@ -126,10 +126,24 @@ public class GestoreClienti {
         criteriaIndirizzi.where(IndirizzoPeer.EMAIL_CLIENTE, email);
 
         List<Spedizione> ris = SpedizionePeer.doSelect(criteriaSpedizioniRicevute);
-        ris.forEach(s -> {s.setEmailDestinatario("Cancellato");});
+        ris.forEach(s -> {
+            s.setEmailDestinatario("Cancellato");
+          try {
+            s.save();
+          } catch (TorqueException e) {
+              e.printStackTrace();
+          }
+        });
 
         ris = SpedizionePeer.doSelect(criteriaSpedizioniInviate);
-        ris.forEach(s -> {s.setEmailMittente("Cancellato");});
+        ris.forEach(s -> {
+            s.setEmailMittente("Cancellato");
+          try {
+            s.save();
+          } catch (TorqueException e) {
+              e.printStackTrace();
+          }
+        });
 
         IndirizzoPeer.doDelete(criteriaIndirizzi);
 
