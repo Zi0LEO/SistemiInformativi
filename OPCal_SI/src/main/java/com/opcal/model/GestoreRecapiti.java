@@ -37,9 +37,9 @@ public class GestoreRecapiti {
             connection = Transaction.begin();
             inCorso.setStato("presa in carico");
             spedizione.addInCorso(inCorso);
-            spedizione.save();
-            inCorso.save();
-            creaRicevuta(spedizione, true);
+            spedizione.save(connection);
+            inCorso.save(connection);
+            creaRicevuta(spedizione, true, connection);
             Transaction.commit(connection);
         } catch (TorqueException e) {
             Transaction.safeRollback(connection);
@@ -62,10 +62,10 @@ public class GestoreRecapiti {
         try {
             connection = Transaction.begin();
             Spedizione spedizione = new Spedizione(mittente, destinatario, peso, calcolaPrezzo(peso, destinatario));
-            spedizione.save();
+            spedizione.save(connection);
             Prenotata prenotata = new Prenotata(spedizione);
-            prenotata.save();
-            creaRicevuta(spedizione, false);
+            prenotata.save(connection);
+            creaRicevuta(spedizione, false, connection);
             Transaction.commit(connection);
         } catch (TorqueException e) {
             e.printStackTrace();
@@ -75,9 +75,9 @@ public class GestoreRecapiti {
         return true;
     }
 
-    private static void creaRicevuta(Spedizione spedizione, boolean pagato) throws TorqueException {
+    private static void creaRicevuta(Spedizione spedizione, boolean pagato, Connection connection) throws TorqueException {
         Ricevuta ricevuta = new Ricevuta(spedizione, pagato);
-        ricevuta.save();
+        ricevuta.save(connection);
     }
 
     /**Permette di calcolare il prezzo della spedizione
@@ -248,12 +248,12 @@ public class GestoreRecapiti {
             con = Transaction.begin();
             InCorso inCorso = InCorsoPeer.retrieveByPK(spedizione.getCodice());
             Date dataSpedizione = (Date) inCorso.getDataSpedizione();
-            InCorsoPeer.doDelete(inCorso);
+            InCorsoPeer.doDelete(inCorso, con);
             Effettuata effettuata = new Effettuata(spedizione, dataSpedizione);
-            effettuata.save();
+            effettuata.save(con);
             spedizione.resetInCorso();
             spedizione.addEffettuata(effettuata);
-            spedizione.save();
+            spedizione.save(con);
             Transaction.commit(con);
         } catch (TorqueException e) {
             Transaction.safeRollback(con);

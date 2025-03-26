@@ -14,7 +14,6 @@ public class GestoreClienti {
 
     public static DatiCliente autentica(String email, String password) {
         Utente utente;
-        Connection connection = null;
         try{
             utente = UtentePeer.retrieveByPK(email);
             if(utente.getPassword().equals(password))
@@ -39,10 +38,10 @@ public class GestoreClienti {
         try {
             connection = Transaction.begin();
             Utente utente = new Utente(datoCliente.getNome(), datoCliente.getCognome(), datoCliente.getEmail(), datoCliente.getPassword());
-            utente.save();
+            utente.save(connection);
             cliente = new Cliente(datoCliente.getEmail());
             cliente.setUtente(utente);
-            cliente.save();
+            cliente.save(connection);
             Transaction.commit(connection);
         } catch (TorqueException e) {
             Transaction.safeRollback(connection);
@@ -101,12 +100,12 @@ public class GestoreClienti {
             Criteria criteria1 = new Criteria();
             Criteria criteria2 = new Criteria();
 
-            eliminaEmail(email);
+            eliminaEmail(email, connection);
             criteria1.where(ClientePeer.EMAIL, email);
             criteria2.where(UtentePeer.EMAIL, email);
 
-            ClientePeer.doDelete(criteria1);
-            UtentePeer.doDelete(criteria2);
+            ClientePeer.doDelete(criteria1, connection);
+            UtentePeer.doDelete(criteria2, connection);
             Transaction.commit(connection);
         } catch (TorqueException e) {
             Transaction.safeRollback(connection);
@@ -116,7 +115,7 @@ public class GestoreClienti {
         return true;
     }
 
-    private static void eliminaEmail(String email) throws TorqueException {
+    private static void eliminaEmail(String email, Connection connection) throws TorqueException {
 
         Criteria criteriaSpedizioniRicevute = new Criteria();
         Criteria criteriaSpedizioniInviate = new Criteria();
@@ -129,7 +128,7 @@ public class GestoreClienti {
         ris.forEach(s -> {
             s.setEmailDestinatario("Cancellato");
           try {
-            s.save();
+            s.save(connection);
           } catch (TorqueException e) {
               e.printStackTrace();
           }
@@ -139,13 +138,13 @@ public class GestoreClienti {
         ris.forEach(s -> {
             s.setEmailMittente("Cancellato");
           try {
-            s.save();
+            s.save(connection);
           } catch (TorqueException e) {
               e.printStackTrace();
           }
         });
 
-        IndirizzoPeer.doDelete(criteriaIndirizzi);
+        IndirizzoPeer.doDelete(criteriaIndirizzi, connection);
 
     }
 
