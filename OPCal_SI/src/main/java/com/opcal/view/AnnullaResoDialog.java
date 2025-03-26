@@ -11,16 +11,25 @@ public class AnnullaResoDialog extends JDialog {
         setTitle("Annulla Reso");
         setModal(true);
         setResizable(false);
+        setSize(300, 100);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new GridLayout());
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(5, 5, 5, 5);
+        c.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel reso = new JLabel("Codice Reso");
+        c.gridx = 0; c.gridy = 0;
+        add(new JLabel("Codice Reso: "), c);
+        c.gridx++;
         JTextField codiceReso = new JTextField();
-        add(reso);
-        add(codiceReso);
-        add(MyButton.createButton("Annulla",() -> DialogController.annulla(this)));
-        add(MyButton.createButton("Conferma",() -> confermaAnnullamento(this,codiceReso.getText())));
+        add(codiceReso, c);
+
+        c.gridx = 0; c.gridy++;
+        add(MyButton.createButton("Annulla",() -> DialogController.annulla(this)), c);
+        c.gridx++;
+        add(MyButton.createButton("Conferma",() -> confermaAnnullamento(this,codiceReso.getText())), c);
+        setVisible(true);
 
     }
 }

@@ -95,20 +95,44 @@ public class GestoreClienti {
      * @param email L'identificatore del cliente che dovrà essere eliminato
      */
     public static boolean cancellaCliente(String email){
+        Connection connection = null;
         try{
+            connection = Transaction.begin();
             Criteria criteria1 = new Criteria();
             Criteria criteria2 = new Criteria();
 
+            eliminaEmail(email);
             criteria1.where(ClientePeer.EMAIL, email);
             criteria2.where(UtentePeer.EMAIL, email);
 
             ClientePeer.doDelete(criteria1);
             UtentePeer.doDelete(criteria2);
-            return true;
+            Transaction.commit(connection);
         } catch (TorqueException e) {
+            Transaction.safeRollback(connection);
             e.printStackTrace();
             return false;
         }
+        return true;
+    }
+
+    private static void eliminaEmail(String email) throws TorqueException {
+
+        Criteria criteriaSpedizioniRicevute = new Criteria();
+        Criteria criteriaSpedizioniInviate = new Criteria();
+        Criteria criteriaIndirizzi = new Criteria();
+        criteriaSpedizioniRicevute.where(SpedizionePeer.EMAIL_DESTINATARIO, email);
+        criteriaSpedizioniInviate.where(SpedizionePeer.EMAIL_MITTENTE, email);
+        criteriaIndirizzi.where(IndirizzoPeer.EMAIL_CLIENTE, email);
+
+        List<Spedizione> ris = SpedizionePeer.doSelect(criteriaSpedizioniRicevute);
+        ris.forEach(s -> {s.setEmailDestinatario("Cancellato");});
+
+        ris = SpedizionePeer.doSelect(criteriaSpedizioniInviate);
+        ris.forEach(s -> {s.setEmailMittente("Cancellato");});
+
+        IndirizzoPeer.doDelete(criteriaIndirizzi);
+
     }
 
     public static Dati trovaUtente(String email) {

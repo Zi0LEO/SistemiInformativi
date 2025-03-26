@@ -26,7 +26,8 @@ public class GestoreRecapiti {
         try{
             ClientePeer.retrieveByPK(mittente);
             ClientePeer.retrieveByPK(destinatario);
-        }catch (Exception E){
+        }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
 
@@ -34,14 +35,15 @@ public class GestoreRecapiti {
         InCorso inCorso = new InCorso(spedizione);
         try {
             connection = Transaction.begin();
-            inCorso.setStato("Presa in carico");
-            inCorso.save();
+            inCorso.setStato("presa in carico");
             spedizione.addInCorso(inCorso);
             spedizione.save();
+            inCorso.save();
             creaRicevuta(spedizione, true);
             Transaction.commit(connection);
         } catch (TorqueException e) {
             Transaction.safeRollback(connection);
+            e.printStackTrace();
             return false;
         }
         return true;
