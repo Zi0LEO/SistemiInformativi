@@ -10,19 +10,17 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import static main.java.com.opcal.model.StatoReso.statoPossibile;
-
 public class GestoreResi {
 
     /**
-     * Permette di creare un'oggetto di tipo reso e inserirlo all'interno della base di dati
+     * Permette di creare un'oggetto di tipo reso e inserirlo all'interno della base di dati, se è già esistente non fa nulla
      *
      * @param codice           Il codice del reso da inserire
      * @param emailRichiedente L'indirizzo email del richiedente
-     * @throws CloneNotSupportedException nel caso in cui il reso che si sta cercando di creare è gia presente all'interno della base di dati
+     *
      */
-    public static void creaReso(Integer codice, String emailRichiedente) throws CloneNotSupportedException, TorqueException {
-        if (esiste(codice)) throw new CloneNotSupportedException("Il reso è già esistente");
+    public static void creaReso(Integer codice, String emailRichiedente) throws TorqueException {
+        if (esiste(codice)) return;
         if (!emailRichiedente.equals(SpedizionePeer.retrieveByPK(codice).getEmailDestinatario()))
             throw new IllegalArgumentException("Richiesta non valida");
 
@@ -31,10 +29,7 @@ public class GestoreResi {
         r.setStato("RICHIESTO");
         r.setData(new Date(System.currentTimeMillis()));
 
-        try {
-            r.save();
-        } catch (TorqueException e) {
-        }
+        r.save();
     }
 
     /**
@@ -42,10 +37,10 @@ public class GestoreResi {
      *
      * @param reso     Il reso a cui bisogna modificare lo stato
      * @param newStato Il nuovo stato
-     * @throws ClassNotFoundException Nel caso in cui non esiste il reso inserito
+     * @return True se l'operazione va a buon fine <br> False Nel caso in cui non esiste il reso inserito
      */
-    public static void modificaStatoReso(Reso reso, String newStato) throws ClassNotFoundException {
-        modificaStatoReso(reso.getCodice(), newStato);
+    public static boolean modificaStatoReso(Reso reso, String newStato) {
+       return modificaStatoReso(reso.getCodice(), newStato);
     }
 
 
@@ -54,18 +49,19 @@ public class GestoreResi {
      *
      * @param codice   Il codice del reso a cui bisogna modificare lo stato
      * @param newStato Il nuovo stato
-     * @throws ClassNotFoundException Nel caso in cui non esiste il reso inserito
+     * @return True se l'operazione va a buon fine <br> False Nel caso in cui non esiste il reso inserito <br>
      */
-    public static void modificaStatoReso(int codice, String newStato) throws ClassNotFoundException {
-        if (!statoPossibile(newStato)) throw new IllegalArgumentException("Stato non valido");
+    public static boolean modificaStatoReso(int codice, String newStato){
+        if (!StatoReso.statoPossibile(newStato)) throw new IllegalArgumentException("Stato non valido");
 
         try {
             Reso r = ResoPeer.retrieveByPK(codice);
             r.setStato(newStato);
             r.save();
         } catch (TorqueException e) {
-            throw new ClassNotFoundException("Il Reso non esiste");
+            return false;
         }
+        return true;
     }
 
     /**
@@ -101,6 +97,11 @@ public class GestoreResi {
         return true;
     }
 
+    /**Permette di visualizzare l'intera lista dei resi di un cliente
+     *
+     * @param email l'email del cliente
+     * @return la lista degli array dei resi
+     */
     public static List<Object[]> listaResi(String email) {
         Criteria criteria = new Criteria();
         criteria.addSelectColumn(ResoPeer.CODICE);
